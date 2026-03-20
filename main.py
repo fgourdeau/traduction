@@ -7,10 +7,10 @@ import os
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 import logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
-)
+#logging.basicConfig(
+#    level=logging.DEBUG,
+#    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+#)
 
 def main():
     app = QApplication(sys.argv)

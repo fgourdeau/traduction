@@ -103,10 +103,11 @@ class PanneauDetail(QWidget):
         """)
         mot_layout.addWidget(self._lbl_definition)
 
-        # Lien WordReference
+        # Lien WordReference — clic intercepté → signal vers navigateur intégré
         self._lbl_wordref = QLabel()
         self._lbl_wordref.setFont(police_texte(11))
-        self._lbl_wordref.setOpenExternalLinks(True)
+        self._lbl_wordref.setOpenExternalLinks(False)
+        self._lbl_wordref.linkActivated.connect(self._on_wordref_click)
         self._lbl_wordref.setStyleSheet(
             f"color: {COULEUR_ACCENT.name()}; padding: 4px 0;"
         )
@@ -300,3 +301,7 @@ class PanneauDetail(QWidget):
     def _on_phrase_selectionnee(self, ip: int) -> None:
         """Quand on change de phrase, afficher sa traduction."""
         self._afficher_traduction(ip)
+
+    def _on_wordref_click(self, url: str) -> None:
+        """Clic sur le lien WordReference → émettre le signal pour le navigateur intégré."""
+        bus().wordref_demandee.emit(url)

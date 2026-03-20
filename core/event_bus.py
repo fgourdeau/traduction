@@ -18,8 +18,9 @@ class EventBus(QObject):
     ocr_termine = Signal(str)                    # texte extrait
     ocr_erreur = Signal(str)
 
-    # ─── Phase 2 : Analyse grammaticale (phrase par phrase) ────────────
-    analyse_phrase_demandee = Signal(int, str)    # (index, texte_phrase)
+    # ─── Phase 2 : Analyse grammaticale ──────────────────────────────
+    analyse_phrase_demandee = Signal(int, str)    # (index, texte_phrase) — 1 phrase
+    analyse_batch_demandee = Signal(list)         # list[(index, texte)] — toutes les phrases
     analyse_phrase_terminee = Signal(int, object) # (index, PhraseAnalysee)
     analyse_erreur = Signal(str)
 
@@ -28,6 +29,7 @@ class EventBus(QObject):
     mot_clique = Signal(int, int)                # (index_phrase, index_mot)
     expression_cliquee = Signal(int, int)        # (index_phrase, index_expression)
     traduction_demandee = Signal(int)            # index_phrase (clic droit)
+    wordref_demandee = Signal(str)               # URL WordReference à charger
 
     # ─── UI ──────────────────────────────────────────────────────────
     status_message = Signal(str)

@@ -1,15 +1,22 @@
 """Fenêtre principale — orchestre capture → analyse Vision → affichage.
 
-Layout 3 colonnes : Capture (portrait) | Texte analysé + légende | Panneau détail
+Layout 4 colonnes : Capture | Texte analysé + légende | Panneau détail | WordReference
 """
 
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, QUrl
 from PySide6.QtGui import QKeySequence, QShortcut, QAction, QColor
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QSplitter, QStatusBar, QLabel, QProgressBar, QFrame,
     QMenuBar, QFileDialog,
 )
+
+try:
+    from PySide6.QtWebEngineWidgets import QWebEngineView
+    HAS_WEBENGINE = True
+except ImportError:
+    HAS_WEBENGINE = False
+
 import cv2
 import numpy as np
 
@@ -103,6 +110,30 @@ class FenetrePrincipale(QMainWindow):
         # ─── Colonne droite : Panneau détail ─────────────────────
         self._panneau = PanneauDetail()
         main_layout.addWidget(self._panneau)
+
+        # ─── Colonne extrême droite : Navigateur WordReference ───
+        self._webview: QWebEngineView | None = None
+        if HAS_WEBENGINE:
+            sep3 = QFrame()
+            sep3.setFrameShape(QFrame.VLine)
+            sep3.setStyleSheet(f"color: {COULEUR_BORDURE.name()};")
+            main_layout.addWidget(sep3)
+
+            self._webview = QWebEngineView()
+            self._webview.setMinimumWidth(380)
+            self._webview.setStyleSheet("background: white;")
+            # Page d'accueil vide avec message
+            self._webview.setHtml(
+                '<html><body style="font-family:sans-serif; color:#9b9084; '
+                'display:flex; align-items:center; justify-content:center; '
+                'height:100vh; margin:0;">'
+                '<p style="text-align:center; font-size:14px;">'
+                'Cliquez sur un lien<br>'
+                '<b style="color:#c0582a;">→ WordReference</b><br>'
+                'dans le panneau de détail.</p>'
+                '</body></html>'
+            )
+            main_layout.addWidget(self._webview, stretch=1)
 
     def _build_menu(self) -> None:
         menu_bar = self.menuBar()
@@ -244,6 +275,8 @@ class FenetrePrincipale(QMainWindow):
         # UI
         b.status_message.connect(self._status.showMessage)
         b.chargement_en_cours.connect(self._on_chargement)
+        # WordReference intégré
+        b.wordref_demandee.connect(self._on_wordref)
 
     def _setup_shortcuts(self) -> None:
         QShortcut(QKeySequence("F5"), self,
@@ -304,17 +337,32 @@ class FenetrePrincipale(QMainWindow):
 
     @Slot(str)
     def _on_ocr_termine(self, texte: str) -> None:
-        """OCR terminé → afficher le texte brut. La sélection déclenchera l'analyse."""
+        """OCR terminé → afficher le texte brut → lancer analyse batch."""
         print(f"[Pipeline] OCR ok ({len(texte)} chars) → affichage texte brut")
-        self._vue_texte.scene.charger_texte_brut(texte)
-        self._vue_texte.setFocus()
+        self._charger_et_analyser(texte)
 
     @Slot(str)
     def _on_texte_colle(self, texte: str) -> None:
-        """Texte collé → bypass OCR, afficher directement."""
+        """Texte collé → bypass OCR → lancer analyse batch."""
         print(f"[Pipeline] Texte collé ({len(texte)} chars) → affichage")
+        self._charger_et_analyser(texte)
+
+    def _charger_et_analyser(self, texte: str) -> None:
+        """Charge le texte brut dans la scène, puis lance l'analyse
+        de toutes les phrases en parallèle."""
+        # Reset le worker pour le nouveau texte
+        self._analyse_worker.reset()
+
+        # Charger dans la vue
         self._vue_texte.scene.charger_texte_brut(texte)
         self._vue_texte.setFocus()
+
+        # Récupérer les phrases découpées et lancer le batch
+        phrases = self._vue_texte.scene.phrases_texte()
+        if phrases:
+            batch = [(i, t) for i, t in enumerate(phrases)]
+            print(f"[Pipeline] → Phase 2 : Analyse batch ({len(batch)} phrases)")
+            bus().analyse_batch_demandee.emit(batch)
 
     @Slot(int, object)
     def _on_phrase_analysee(self, index: int, phrase: object) -> None:
@@ -336,6 +384,16 @@ class FenetrePrincipale(QMainWindow):
     @Slot(bool)
     def _on_chargement(self, en_cours: bool) -> None:
         self._progress.setVisible(en_cours)
+
+    @Slot(str)
+    def _on_wordref(self, url: str) -> None:
+        """Charge l'URL WordReference dans le navigateur intégré."""
+        if self._webview is not None:
+            self._webview.setUrl(QUrl(url))
+        else:
+            # Fallback : ouvrir dans le navigateur système
+            from PySide6.QtGui import QDesktopServices
+            QDesktopServices.openUrl(QUrl(url))
 
     # ─── Configuration ───────────────────────────────────────────────
 

@@ -357,6 +357,10 @@ class SceneTexte(QGraphicsScene):
         if self._blocs:
             self._selectionner(0)
 
+    def phrases_texte(self) -> list[str]:
+        """Retourne les textes des phrases découpées (pour lancement batch)."""
+        return list(self._textes_phrases)
+
     # ─── Sélection ────────────────────────────────────────────────
 
     def _on_phrase_selectionnee(self, index: int) -> None:

@@ -292,7 +292,6 @@ class SceneTexte(QGraphicsScene):
         # ─── Mise en page : suivre les lignes OCR ────────────────
         y = self.MARGE_HAUT
         ligne_hauteur = 0.0
-        phrase_bounds: dict[int, list[float]] = {}
 
         for ligne_toks in lignes_tokens:
             if not ligne_toks:
@@ -320,35 +319,57 @@ class SceneTexte(QGraphicsScene):
 
                 self._mots_items[tok.ip].append(item)
 
-                if tok.ip not in phrase_bounds:
-                    phrase_bounds[tok.ip] = [y, y + ligne_hauteur]
-                else:
-                    phrase_bounds[tok.ip][0] = min(phrase_bounds[tok.ip][0], y)
-                    phrase_bounds[tok.ip][1] = max(
-                        phrase_bounds[tok.ip][1], y + ligne_hauteur)
-
             y += ligne_hauteur + self.ESPACEMENT_LIGNE
 
-        # ─── Blocs de fond par phrase (invisibles, cliquables) ────
+        # ─── Blocs de fond par phrase (basés sur les mots réels) ────
         for ip in range(nb_phrases):
-            if ip in phrase_bounds:
-                y_min, y_max = phrase_bounds[ip]
-                bloc_rect = QRectF(
-                    self.MARGE_GAUCHE - 10, y_min - 4,
-                    self.LARGEUR_MAX + 20, y_max - y_min + 8,
-                )
-            else:
-                bloc_rect = QRectF(0, 0, 0, 0)
+            items = self._mots_items[ip]
+            if not items:
+                bloc = BlocPhraseItem(QRectF(0, 0, 0, 0), ip)
+                bloc.setZValue(-1)
+                self.addItem(bloc)
+                self._blocs.append(bloc)
+                continue
+
+            # Bounds réels des mots de cette phrase
+            x_min = min(it.pos().x() for it in items)
+            x_max = max(it.pos().x() + it.boundingRect().width() for it in items)
+            y_min = min(it.pos().y() for it in items)
+            y_max = max(it.pos().y() + it.boundingRect().height() for it in items)
+
+            bloc_rect = QRectF(
+                x_min - 6, y_min - 4,
+                x_max - x_min + 12, y_max - y_min + 8,
+            )
             bloc = BlocPhraseItem(bloc_rect, ip)
             bloc.setZValue(-1)
             self.addItem(bloc)
             self._blocs.append(bloc)
 
-        # ─── Numéros de phrase ────────────────────────────────────
+        # ─── Numéros de phrase (au premier mot, décalés si collision) ──
+        used_num_positions: list[tuple[float, float]] = []  # (x, y) déjà utilisées
+        NUM_OFFSET_Y = 0.0  # décalage vertical si collision
+
         for ip in range(nb_phrases):
+            items = self._mots_items[ip]
             num = NumPhraseItem(f"{ip + 1}", self._font_num)
-            if ip in phrase_bounds:
-                num.setPos(8, phrase_bounds[ip][0] + 2)
+
+            if items:
+                first = items[0]
+                num_y = first.pos().y() + 2
+
+                # Vérifier collision avec un numéro déjà placé sur la même ligne
+                for ux, uy in used_num_positions:
+                    if abs(uy - num_y) < 12 and ux < 20:
+                        # Décaler ce numéro en dessous du dernier mot de la ligne
+                        num_y = uy + 12
+                        break
+
+                num.setPos(8, num_y)
+                used_num_positions.append((8, num_y))
+            else:
+                num.setPos(8, 0)
+
             self.addItem(num)
             self._nums.append(num)
 

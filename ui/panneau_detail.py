@@ -21,7 +21,8 @@ class PanneauDetail(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._phrases: dict[int, PhraseAnalysee] = {}
-        self.setFixedWidth(340)
+        self.setMinimumWidth(280)
+        self.setMaximumWidth(500)
         self.setStyleSheet(f"""
             QWidget {{
                 background: {COULEUR_PANNEAU.name()};
@@ -256,13 +257,14 @@ class PanneauDetail(QWidget):
 
         self._lbl_definition.setText(mot.definition)
 
-        # Lien WordReference
+        # Lien WordReference — auto-chargement + lien cliquable
         lemme = mot.lemme or mot.mot
         url = f"https://www.wordreference.com/esfr/{lemme}"
         self._lbl_wordref.setText(
             f'<a href="{url}" style="color:{COULEUR_ACCENT.name()}">'
             f'→ WordReference : {lemme}</a>'
         )
+        bus().wordref_demandee.emit(url)
 
         # Vérifier aussi si ce mot fait partie d'une expression
         expr = phrase.expression_pour_indice(im)

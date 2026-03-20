@@ -1,4 +1,10 @@
-"""Widget de capture — webcam/écran avec cadre de visée 8.5×11 déplaçable."""
+"""Widget de capture — webcam/écran avec cadre de visée libre, déplaçable.
+
+Améliorations v2 :
+- Cadre libre (plus de ratio 8.5×11 imposé)
+- Cadre se redimensionne proportionnellement au resize du widget
+- Cadre confiné dans la zone d'affichage du pixmap
+"""
 
 import cv2
 import numpy as np
@@ -16,15 +22,12 @@ from core.event_bus import bus
 from core.config import COULEUR_ACCENT
 
 
-# Ratio 8.5 x 11 (portrait) = 11/8.5 ≈ 1.294
-RATIO_PAGE = 11.0 / 8.5
-
-
 class PreviewWidget(QWidget):
-    """Widget de preview avec overlay de cadrage 8.5×11.
+    """Widget de preview avec overlay de cadrage libre.
 
     Le cadre est déplaçable (drag) et redimensionnable (coins + bords).
     La zone sombre autour du cadre indique ce qui sera ignoré.
+    Le cadre reste confiné dans la zone d'affichage du pixmap.
     """
 
     POIGNEE = 12  # taille des zones de redimensionnement en pixels
@@ -35,11 +38,11 @@ class PreviewWidget(QWidget):
         self._frame_bgr: np.ndarray | None = None
 
         # Cadre de visée (en coordonnées widget)
-        self._cadre = QRect(40, 20, 200, int(200 * RATIO_PAGE))
+        self._cadre = QRect(40, 20, 200, 260)
         self._cadre_initialise = False
 
         # Drag state
-        self._drag_mode: str | None = None  # 'move', 'n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'
+        self._drag_mode: str | None = None
         self._drag_origin = QPoint()
         self._cadre_origin = QRect()
 
@@ -48,8 +51,24 @@ class PreviewWidget(QWidget):
         self.setStyleSheet("background: #1a1613;")
 
     def sizeHint(self) -> QSize:
-        """Préférer un format qui laisse de la place au cadre portrait."""
         return QSize(400, 320)
+
+    # ─── Zone d'affichage du pixmap ──────────────────────────────
+
+    def _display_rect(self) -> QRect:
+        """Retourne le rectangle d'affichage du pixmap dans le widget."""
+        if self._pixmap is None:
+            return QRect(0, 0, self.width(), self.height())
+        ww, wh = self.width(), self.height()
+        pix_w, pix_h = self._pixmap.width(), self._pixmap.height()
+        scale = min(ww / pix_w, wh / pix_h)
+        disp_w = int(pix_w * scale)
+        disp_h = int(pix_h * scale)
+        disp_x = (ww - disp_w) // 2
+        disp_y = (wh - disp_h) // 2
+        return QRect(disp_x, disp_y, disp_w, disp_h)
+
+    # ─── Mise à jour frame ───────────────────────────────────────
 
     def set_frame(self, frame_bgr: np.ndarray) -> None:
         """Met à jour la frame affichée (BGR numpy)."""
@@ -60,7 +79,6 @@ class PreviewWidget(QWidget):
         qimg = QImage(rgb.data, w, h, ch * w, QImage.Format_RGB888)
         self._pixmap = QPixmap.fromImage(qimg)
 
-        # Initialiser le cadre au centre au premier frame
         if not self._cadre_initialise:
             self._init_cadre()
             self._cadre_initialise = True
@@ -77,19 +95,16 @@ class PreviewWidget(QWidget):
         self.update()
 
     def _init_cadre(self) -> None:
-        """Place le cadre centré, occupant le maximum d'espace en ratio 8.5×11."""
-        ww, wh = self.width(), self.height()
-        # Essayer de remplir 85% de la hauteur
-        cadre_h = int(wh * 0.85)
-        cadre_w = int(cadre_h / RATIO_PAGE)
-        # Si trop large, contraindre par la largeur
-        if cadre_w > ww * 0.90:
-            cadre_w = int(ww * 0.90)
-            cadre_h = int(cadre_w * RATIO_PAGE)
-        # Centrer
-        cx = (ww - cadre_w) // 2
-        cy = (wh - cadre_h) // 2
-        self._cadre = QRect(cx, cy, cadre_w, cadre_h)
+        """Place le cadre centré dans la zone d'affichage, 90% de la taille."""
+        dr = self._display_rect()
+        margin_x = int(dr.width() * 0.05)
+        margin_y = int(dr.height() * 0.05)
+        self._cadre = QRect(
+            dr.x() + margin_x,
+            dr.y() + margin_y,
+            dr.width() - 2 * margin_x,
+            dr.height() - 2 * margin_y,
+        )
 
     def extraire_zone(self) -> np.ndarray | None:
         """Retourne la portion de l'image source correspondant au cadre."""
@@ -97,26 +112,19 @@ class PreviewWidget(QWidget):
             return None
 
         fh, fw = self._frame_bgr.shape[:2]
-        ww, wh = self.width(), self.height()
+        dr = self._display_rect()
 
-        # Calculer la zone d'affichage du pixmap (aspect ratio maintenu)
-        pix_w, pix_h = self._pixmap.width(), self._pixmap.height()
-        scale = min(ww / pix_w, wh / pix_h)
-        disp_w = int(pix_w * scale)
-        disp_h = int(pix_h * scale)
-        disp_x = (ww - disp_w) // 2
-        disp_y = (wh - disp_h) // 2
+        if dr.width() <= 0 or dr.height() <= 0:
+            return None
 
         # Convertir le cadre widget → coordonnées image source
-        # cadre widget → cadre dans l'espace pixmap affiché → cadre image
-        cx = max(0, self._cadre.x() - disp_x)
-        cy = max(0, self._cadre.y() - disp_y)
+        cx = max(0, self._cadre.x() - dr.x())
+        cy = max(0, self._cadre.y() - dr.y())
         cw = self._cadre.width()
         ch = self._cadre.height()
 
-        # Ratio widget display → image source
-        rx = fw / disp_w if disp_w > 0 else 1
-        ry = fh / disp_h if disp_h > 0 else 1
+        rx = fw / dr.width()
+        ry = fh / dr.height()
 
         src_x = int(cx * rx)
         src_y = int(cy * ry)
@@ -143,24 +151,18 @@ class PreviewWidget(QWidget):
         ww, wh = self.width(), self.height()
 
         if self._pixmap is not None:
-            # Afficher le pixmap centré, aspect ratio maintenu
+            dr = self._display_rect()
             scaled = self._pixmap.scaled(
-                self.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
+                dr.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation
             )
-            dx = (ww - scaled.width()) // 2
-            dy = (wh - scaled.height()) // 2
-            p.drawPixmap(dx, dy, scaled)
+            p.drawPixmap(dr.x(), dr.y(), scaled)
 
             # Assombrir HORS du cadre (4 rectangles)
             overlay = QColor(0, 0, 0, 140)
             c = self._cadre
-            # Haut
             p.fillRect(0, 0, ww, c.top(), overlay)
-            # Bas
             p.fillRect(0, c.bottom() + 1, ww, wh - c.bottom() - 1, overlay)
-            # Gauche
             p.fillRect(0, c.top(), c.left(), c.height(), overlay)
-            # Droite
             p.fillRect(c.right() + 1, c.top(), ww - c.right() - 1, c.height(), overlay)
 
             # Cadre
@@ -178,32 +180,26 @@ class PreviewWidget(QWidget):
                     coin_sz, coin_sz,
                 )
 
-            # Label : ratio + résolution effective du crop
+            # Label : résolution effective du crop
             p.setPen(QPen(QColor(255, 255, 255, 220)))
             p.setFont(QFont("JetBrains Mono", 8))
-            # Calculer la résolution réelle du crop
-            res_label = "8.5 × 11"
-            if self._frame_bgr is not None:
+            res_label = ""
+            if self._frame_bgr is not None and dr.width() > 0 and dr.height() > 0:
                 fh, fw = self._frame_bgr.shape[:2]
-                disp_w = scaled.width()
-                disp_h = scaled.height()
-                if disp_w > 0 and disp_h > 0:
-                    rx = fw / disp_w
-                    ry = fh / disp_h
-                    crop_w = int(c.width() * rx)
-                    crop_h = int(c.height() * ry)
-                    res_label = f"{crop_w}×{crop_h} px"
-                    # Indicateur vert/rouge selon résolution suffisante
-                    if max(crop_w, crop_h) >= 1500:
-                        p.setPen(QPen(QColor(80, 220, 80, 220)))
-                    elif max(crop_w, crop_h) >= 800:
-                        p.setPen(QPen(QColor(255, 200, 60, 220)))
-                    else:
-                        p.setPen(QPen(QColor(255, 80, 80, 220)))
+                rx = fw / dr.width()
+                ry = fh / dr.height()
+                crop_w = int(c.width() * rx)
+                crop_h = int(c.height() * ry)
+                res_label = f"{crop_w}×{crop_h} px"
+                if max(crop_w, crop_h) >= 1500:
+                    p.setPen(QPen(QColor(80, 220, 80, 220)))
+                elif max(crop_w, crop_h) >= 800:
+                    p.setPen(QPen(QColor(255, 200, 60, 220)))
+                else:
+                    p.setPen(QPen(QColor(255, 80, 80, 220)))
             p.drawText(c.adjusted(6, 4, 0, 0), Qt.AlignLeft | Qt.AlignTop, res_label)
 
         else:
-            # Pas de frame — texte d'accueil
             p.setPen(QPen(QColor("#9b9084")))
             p.setFont(QFont("IBM Plex Sans", 13))
             p.drawText(
@@ -255,7 +251,6 @@ class PreviewWidget(QWidget):
         if near_right:
             return "e"
 
-        # À l'intérieur du cadre → déplacement
         if c.contains(pos):
             return "move"
 
@@ -272,7 +267,6 @@ class PreviewWidget(QWidget):
         pos = event.pos()
 
         if self._drag_mode is None:
-            # Juste mettre à jour le curseur
             zone = self._zone_sous_curseur(pos)
             curseurs = {
                 "move": Qt.SizeAllCursor,
@@ -287,44 +281,39 @@ class PreviewWidget(QWidget):
         dx = pos.x() - self._drag_origin.x()
         dy = pos.y() - self._drag_origin.y()
         co = self._cadre_origin
-        ww, wh = self.width(), self.height()
-        MIN_SZ = 60
+        bounds = self._display_rect()
+        MIN_SZ = 40
 
         if self._drag_mode == "move":
-            nx = max(0, min(co.x() + dx, ww - co.width()))
-            ny = max(0, min(co.y() + dy, wh - co.height()))
+            # Déplacement confiné dans la zone d'affichage
+            nx = co.x() + dx
+            ny = co.y() + dy
+            nx = max(bounds.left(), min(nx, bounds.right() - co.width() + 1))
+            ny = max(bounds.top(), min(ny, bounds.bottom() - co.height() + 1))
             self._cadre.moveTopLeft(QPoint(nx, ny))
 
         else:
-            # Resize en conservant le ratio 8.5x11
+            # Resize libre (pas de ratio imposé), confiné dans bounds
             new_rect = QRect(co)
 
             if "e" in self._drag_mode:
-                new_w = max(MIN_SZ, co.width() + dx)
-                new_h = int(new_w * RATIO_PAGE)
-                new_rect.setWidth(new_w)
-                new_rect.setHeight(new_h)
-            elif "w" in self._drag_mode:
-                new_w = max(MIN_SZ, co.width() - dx)
-                new_h = int(new_w * RATIO_PAGE)
-                new_rect.setLeft(co.right() - new_w)
-                new_rect.setHeight(new_h)
+                new_right = min(co.right() + dx, bounds.right())
+                new_w = max(MIN_SZ, new_right - co.left() + 1)
+                new_rect.setRight(co.left() + new_w - 1)
+            if "w" in self._drag_mode:
+                new_left = max(co.left() + dx, bounds.left())
+                new_w = max(MIN_SZ, co.right() - new_left + 1)
+                new_rect.setLeft(co.right() - new_w + 1)
+            if "s" in self._drag_mode:
+                new_bottom = min(co.bottom() + dy, bounds.bottom())
+                new_h = max(MIN_SZ, new_bottom - co.top() + 1)
+                new_rect.setBottom(co.top() + new_h - 1)
+            if "n" in self._drag_mode:
+                new_top = max(co.top() + dy, bounds.top())
+                new_h = max(MIN_SZ, co.bottom() - new_top + 1)
+                new_rect.setTop(co.bottom() - new_h + 1)
 
-            if "s" in self._drag_mode and "e" not in self._drag_mode and "w" not in self._drag_mode:
-                new_h = max(MIN_SZ, co.height() + dy)
-                new_w = int(new_h / RATIO_PAGE)
-                new_rect.setWidth(new_w)
-                new_rect.setHeight(new_h)
-            elif "n" in self._drag_mode and "e" not in self._drag_mode and "w" not in self._drag_mode:
-                new_h = max(MIN_SZ, co.height() - dy)
-                new_w = int(new_h / RATIO_PAGE)
-                new_rect.setTop(co.bottom() - new_h)
-                new_rect.setWidth(new_w)
-
-            # Clamp dans le widget
-            if new_rect.left() >= 0 and new_rect.top() >= 0 and \
-               new_rect.right() < ww and new_rect.bottom() < wh:
-                self._cadre = new_rect
+            self._cadre = new_rect
 
         self.update()
 
@@ -334,22 +323,61 @@ class PreviewWidget(QWidget):
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         super().resizeEvent(event)
-        if self._cadre_initialise:
-            # Garder le cadre dans les limites
-            c = self._cadre
-            ww, wh = event.size().width(), event.size().height()
-            if c.right() >= ww:
-                c.moveRight(ww - 1)
-            if c.bottom() >= wh:
-                c.moveBottom(wh - 1)
-            if c.left() < 0:
-                c.moveLeft(0)
-            if c.top() < 0:
-                c.moveTop(0)
+        if not self._cadre_initialise:
+            return
+
+        old_sz = event.oldSize()
+        new_sz = event.size()
+
+        # Éviter division par zéro au premier resize
+        if old_sz.width() <= 0 or old_sz.height() <= 0:
+            return
+
+        # Redimensionner le cadre proportionnellement
+        sx = new_sz.width() / old_sz.width()
+        sy = new_sz.height() / old_sz.height()
+
+        c = self._cadre
+        new_x = int(c.x() * sx)
+        new_y = int(c.y() * sy)
+        new_w = int(c.width() * sx)
+        new_h = int(c.height() * sy)
+
+        # Minimum
+        new_w = max(40, new_w)
+        new_h = max(40, new_h)
+
+        self._cadre = QRect(new_x, new_y, new_w, new_h)
+
+        # Confiner dans la zone pixmap
+        self._confiner_cadre()
+
+    def _confiner_cadre(self) -> None:
+        """S'assure que le cadre reste dans la zone d'affichage du pixmap."""
+        bounds = self._display_rect()
+        c = self._cadre
+
+        # Réduire si plus grand que les bounds
+        if c.width() > bounds.width():
+            c.setWidth(bounds.width())
+        if c.height() > bounds.height():
+            c.setHeight(bounds.height())
+
+        # Repositionner si hors limites
+        if c.right() > bounds.right():
+            c.moveRight(bounds.right())
+        if c.bottom() > bounds.bottom():
+            c.moveBottom(bounds.bottom())
+        if c.left() < bounds.left():
+            c.moveLeft(bounds.left())
+        if c.top() < bounds.top():
+            c.moveTop(bounds.top())
+
+        self._cadre = c
 
 
 class CaptureWidget(QWidget):
-    """Zone de capture : preview avec cadre 8.5×11 + boutons."""
+    """Zone de capture : preview avec cadre libre + boutons."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -553,7 +581,6 @@ class CaptureWidget(QWidget):
         h, w = zone.shape[:2]
         print(f"[Capture] Zone extraite: {w}×{h} px")
 
-        # Log aussi la frame source pour comparaison
         if self._preview._frame_bgr is not None:
             sh, sw = self._preview._frame_bgr.shape[:2]
             print(f"[Capture] Frame source: {sw}×{sh} px")

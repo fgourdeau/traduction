@@ -8,7 +8,7 @@ from PySide6.QtGui import QKeySequence, QShortcut, QAction, QColor
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QSplitter, QStatusBar, QLabel, QProgressBar, QFrame,
-    QMenuBar, QFileDialog,
+    QMenuBar, QFileDialog, QDockWidget,
 )
 
 try:
@@ -43,6 +43,7 @@ class FenetrePrincipale(QMainWindow):
         self.setWindowTitle("Analizador — Analyse grammaticale espagnole")
         self.setMinimumSize(1200, 700)
         self.resize(1400, 850)
+        self.setDockNestingEnabled(True)
         self.setStyleSheet(f"""
             QMainWindow {{
                 background: {COULEUR_FOND.name()};
@@ -65,25 +66,7 @@ class FenetrePrincipale(QMainWindow):
         self._setup_shortcuts()
 
     def _build_ui(self) -> None:
-        central = QWidget()
-        self.setCentralWidget(central)
-        main_layout = QHBoxLayout(central)
-        main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.setSpacing(0)
-
-        # ─── Colonne gauche : Capture (portrait) ─────────────────
-        self._capture = CaptureWidget()
-        self._capture.setMinimumWidth(260)
-        self._capture.setMaximumWidth(380)
-        main_layout.addWidget(self._capture)
-
-        # Séparateur vertical
-        sep1 = QFrame()
-        sep1.setFrameShape(QFrame.VLine)
-        sep1.setStyleSheet(f"color: {COULEUR_BORDURE.name()};")
-        main_layout.addWidget(sep1)
-
-        # ─── Colonne centre : Texte analysé ──────────────────────
+        # ─── Colonne centre : Texte analysé (widget central) ─────
         centre = QWidget()
         centre_layout = QVBoxLayout(centre)
         centre_layout.setContentsMargins(0, 0, 0, 0)
@@ -99,41 +82,75 @@ class FenetrePrincipale(QMainWindow):
         self._vue_texte = VueTexte()
         centre_layout.addWidget(self._vue_texte, stretch=1)
 
-        main_layout.addWidget(centre, stretch=1)
+        self.setCentralWidget(centre)
 
-        # Séparateur vertical
-        sep2 = QFrame()
-        sep2.setFrameShape(QFrame.VLine)
-        sep2.setStyleSheet(f"color: {COULEUR_BORDURE.name()};")
-        main_layout.addWidget(sep2)
+        # ─── Dock gauche : Capture ───────────────────────────────
+        self._capture = CaptureWidget()
+        self._capture.setMinimumWidth(220)
 
-        # ─── Colonne droite : Panneau détail ─────────────────────
+        self._dock_capture = QDockWidget("Capture", self)
+        self._dock_capture.setWidget(self._capture)
+        self._dock_capture.setFeatures(
+            QDockWidget.DockWidgetMovable
+            | QDockWidget.DockWidgetFloatable
+        )
+        self.addDockWidget(Qt.LeftDockWidgetArea, self._dock_capture)
+
+        # ─── Dock droit : Panneau détail ─────────────────────────
         self._panneau = PanneauDetail()
-        main_layout.addWidget(self._panneau)
 
-        # ─── Colonne extrême droite : Navigateur WordReference ───
+        self._dock_detail = QDockWidget("Détail", self)
+        self._dock_detail.setWidget(self._panneau)
+        self._dock_detail.setFeatures(
+            QDockWidget.DockWidgetMovable
+            | QDockWidget.DockWidgetFloatable
+        )
+        self.addDockWidget(Qt.RightDockWidgetArea, self._dock_detail)
+
+        # ─── Dock droit : WordReference (côte à côte avec Détail) ─
         self._webview: QWebEngineView | None = None
         if HAS_WEBENGINE:
-            sep3 = QFrame()
-            sep3.setFrameShape(QFrame.VLine)
-            sep3.setStyleSheet(f"color: {COULEUR_BORDURE.name()};")
-            main_layout.addWidget(sep3)
-
             self._webview = QWebEngineView()
-            self._webview.setMinimumWidth(380)
-            self._webview.setStyleSheet("background: white;")
-            # Page d'accueil vide avec message
+            self._webview.setMinimumWidth(350)
             self._webview.setHtml(
                 '<html><body style="font-family:sans-serif; color:#9b9084; '
                 'display:flex; align-items:center; justify-content:center; '
                 'height:100vh; margin:0;">'
                 '<p style="text-align:center; font-size:14px;">'
-                'Cliquez sur un lien<br>'
-                '<b style="color:#c0582a;">→ WordReference</b><br>'
-                'dans le panneau de détail.</p>'
+                'Cliquez sur un mot pour charger<br>'
+                '<b style="color:#c0582a;">WordReference</b><br>'
+                'automatiquement.</p>'
                 '</body></html>'
             )
-            main_layout.addWidget(self._webview, stretch=1)
+
+            self._dock_wordref = QDockWidget("WordReference", self)
+            self._dock_wordref.setWidget(self._webview)
+            self._dock_wordref.setFeatures(
+                QDockWidget.DockWidgetMovable
+                | QDockWidget.DockWidgetFloatable
+                | QDockWidget.DockWidgetClosable
+            )
+            self.addDockWidget(Qt.RightDockWidgetArea, self._dock_wordref)
+
+            # Côte à côte : split horizontal (Détail | WordRef)
+            self.splitDockWidget(
+                self._dock_detail, self._dock_wordref, Qt.Horizontal
+            )
+
+        # ─── Style des docks ─────────────────────────────────────
+        self.setStyleSheet(self.styleSheet() + f"""
+            QDockWidget {{
+                font-size: 12px;
+                font-weight: bold;
+                color: {COULEUR_ACCENT.name()};
+            }}
+            QDockWidget::title {{
+                background: {COULEUR_PANNEAU.name()};
+                border-bottom: 1px solid {COULEUR_BORDURE.name()};
+                padding: 4px 8px;
+                text-align: left;
+            }}
+        """)
 
     def _build_menu(self) -> None:
         menu_bar = self.menuBar()
@@ -185,6 +202,13 @@ class FenetrePrincipale(QMainWindow):
             act.triggered.connect(lambda checked, m=model_id, a=act: self._changer_modele(m))
             menu_config.addAction(act)
             self._model_actions[model_id] = act
+
+        # ─── Menu Vue (panneaux) ─────────────────────────────────
+        menu_vue = menu_bar.addMenu("&Vue")
+        menu_vue.addAction(self._dock_capture.toggleViewAction())
+        menu_vue.addAction(self._dock_detail.toggleViewAction())
+        if HAS_WEBENGINE:
+            menu_vue.addAction(self._dock_wordref.toggleViewAction())
 
     def _build_statusbar(self) -> None:
         self._status = QStatusBar()

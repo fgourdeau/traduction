@@ -7,7 +7,6 @@ Architecture v3 :
 """
 
 import json
-from collections import OrderedDict
 from pathlib import Path
 from dataclasses import dataclass
 
@@ -330,26 +329,15 @@ class _FicheView(QGraphicsView):
     def set_widget(self, widget: QWidget) -> None:
         """Affiche un widget dans la scène.
 
-        Détache le widget précédent du proxy avant de clear la scène,
-        pour ne pas détruire les widgets gardés en cache.
+        Détruit le contenu précédent (scene.clear) et affiche le nouveau.
+        Pas de cache de widgets — la construction JIT d'une seule fiche est rapide.
         """
-        self._detach_current()
+        self._scene.clear()
         self._proxy = self._scene.addWidget(widget)
         self._proxy.setTransformOriginPoint(0, 0)
         self._appliquer_zoom()
 
-    def _detach_current(self) -> None:
-        """Détache le widget courant du proxy pour le préserver en cache."""
-        if self._proxy is not None:
-            widget = self._proxy.widget()
-            if widget is not None:
-                # Reparenter hors de la scène pour empêcher Qt de le détruire
-                widget.setParent(None)
-            self._scene.removeItem(self._proxy)
-            self._proxy = None
-
     def clear(self) -> None:
-        self._detach_current()
         self._scene.clear()
         self._proxy = None
 
@@ -385,46 +373,6 @@ class _FicheView(QGraphicsView):
 
 
 # ═════════════════════════════════════════════════════════════════════
-# Cache LRU de fiches
-# ═════════════════════════════════════════════════════════════════════
-
-class _FicheCache:
-    """Cache LRU pour les widgets de fiches construites."""
-
-    def __init__(self, max_size: int = CACHE_MAX):
-        self._cache: OrderedDict[str, QWidget] = OrderedDict()
-        self._max = max_size
-
-    def get(self, theme_id: str) -> QWidget | None:
-        if theme_id in self._cache:
-            self._cache.move_to_end(theme_id)
-            return self._cache[theme_id]
-        return None
-
-    def put(self, theme_id: str, widget: QWidget) -> None:
-        if theme_id in self._cache:
-            self._cache.move_to_end(theme_id)
-            return
-        self._cache[theme_id] = widget
-        # Évincer le plus ancien si plein
-        while len(self._cache) > self._max:
-            old_id, old_widget = self._cache.popitem(last=False)
-            print(f"[Références] Cache éviction: {old_id}")
-            try:
-                old_widget.deleteLater()
-            except RuntimeError:
-                pass  # déjà détruit côté C++
-
-    def clear(self) -> None:
-        for w in self._cache.values():
-            try:
-                w.deleteLater()
-            except RuntimeError:
-                pass
-        self._cache.clear()
-
-
-# ═════════════════════════════════════════════════════════════════════
 # Panneau principal
 # ═════════════════════════════════════════════════════════════════════
 
@@ -443,7 +391,6 @@ class PanneauReferences(QWidget):
         self._themes: list[ThemeReference] = []
         self._boutons: list[QPushButton] = []
         self._index_courant: int = -1
-        self._cache = _FicheCache(CACHE_MAX)
 
         self.setMinimumWidth(300)
         self.setStyleSheet(f"background: {COULEUR_PANNEAU.name()};")
@@ -506,7 +453,6 @@ class PanneauReferences(QWidget):
             self._barre_layout.removeWidget(btn)
             btn.deleteLater()
         self._boutons.clear()
-        self._cache.clear()
         self._fiche_view.clear()
         self._index_courant = -1
 
@@ -565,17 +511,8 @@ class PanneauReferences(QWidget):
             btn.setChecked(i == index)
 
         theme = self._themes[index]
-
-        # Chercher dans le cache
-        widget = self._cache.get(theme.id)
-        if widget is None:
-            # Construction JIT
-            print(f"[Références] Construction JIT: {theme.icone} {theme.titre}")
-            widget = _construire_fiche_widget(theme)
-            self._cache.put(theme.id, widget)
-        else:
-            print(f"[Références] Cache hit: {theme.icone} {theme.titre}")
-
+        print(f"[Références] Affichage: {theme.icone} {theme.titre}")
+        widget = _construire_fiche_widget(theme)
         self._fiche_view.set_widget(widget)
 
     def _on_zoom_changed(self, zoom: float) -> None:

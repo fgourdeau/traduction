@@ -29,6 +29,7 @@ from core.config import (
 from ui.capture_widget import CaptureWidget
 from ui.scene_texte import VueTexte
 from ui.panneau_detail import PanneauDetail
+from ui.panneau_references import PanneauReferences
 from workers.analyse_worker import OcrWorker, AnalyseWorker
 
 # Résolution minimale pour un bon OCR Vision
@@ -137,6 +138,19 @@ class FenetrePrincipale(QMainWindow):
                 self._dock_detail, self._dock_wordref, Qt.Horizontal
             )
 
+        # ─── Dock bas : Références grammaticales ─────────────────
+        self._panneau_refs = PanneauReferences()
+
+        self._dock_refs = QDockWidget("Références", self)
+        self._dock_refs.setWidget(self._panneau_refs)
+        self._dock_refs.setFeatures(
+            QDockWidget.DockWidgetMovable
+            | QDockWidget.DockWidgetFloatable
+            | QDockWidget.DockWidgetClosable
+        )
+        self.addDockWidget(Qt.BottomDockWidgetArea, self._dock_refs)
+        self._dock_refs.hide()  # Caché par défaut, accessible via menu Vue
+
         # ─── Style des docks ─────────────────────────────────────
         self.setStyleSheet(self.styleSheet() + f"""
             QDockWidget {{
@@ -209,6 +223,8 @@ class FenetrePrincipale(QMainWindow):
         menu_vue.addAction(self._dock_detail.toggleViewAction())
         if HAS_WEBENGINE:
             menu_vue.addAction(self._dock_wordref.toggleViewAction())
+        menu_vue.addSeparator()
+        menu_vue.addAction(self._dock_refs.toggleViewAction())
 
     def _build_statusbar(self) -> None:
         self._status = QStatusBar()

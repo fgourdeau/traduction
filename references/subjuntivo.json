@@ -1,0 +1,135 @@
+{
+  "id": "subjuntivo",
+  "titre": "Subjonctif",
+  "icone": "🌀",
+  "ordre": 40,
+  "resume": "Présent et imparfait du subjonctif — formation, déclencheurs et usages",
+  "sections": [
+    {
+      "titre": "Principe fondamental",
+      "type": "texte",
+      "contenu": "Le subjonctif exprime ce qui n'est pas factuel : souhait, doute, émotion, ordre indirect, possibilité. En espagnol il est beaucoup plus vivant qu'en français — on l'utilise quotidiennement. La clé : le subjonctif est presque toujours déclenché par un mot ou une structure dans la phrase principale."
+    },
+    {
+      "titre": "Subjonctif présent — formation régulière",
+      "type": "tableau",
+      "colonnes": ["", "-AR (hablar)", "-ER (comer)", "-IR (vivir)"],
+      "lignes": [
+        ["yo", "hable", "coma", "viva"],
+        ["tú", "hables", "comas", "vivas"],
+        ["él/ella", "hable", "coma", "viva"],
+        ["nosotros", "hablemos", "comamos", "vivamos"],
+        ["vosotros", "habléis", "comáis", "viváis"],
+        ["ellos", "hablen", "coman", "vivan"]
+      ]
+    },
+    {
+      "titre": "Formation — astuce",
+      "type": "regles",
+      "items": [
+        {"regle": "Voyelles inversées !", "detail": "-AR prend les voyelles de -ER (e) et -ER/-IR prennent la voyelle de -AR (a)."},
+        {"regle": "Base = yo du présent indicatif", "detail": "tengo → tenga, digo → diga, conozco → conozca, salgo → salga."},
+        {"regle": "Diphtongues conservées (botte)", "detail": "puedo → pueda, quiero → quiera, pido → pida. Nosotros/vosotros réguliers."}
+      ]
+    },
+    {
+      "titre": "Subjonctif présent — irréguliers",
+      "type": "tableau",
+      "colonnes": ["", "ser", "estar", "ir", "haber", "saber", "dar"],
+      "lignes": [
+        ["yo", "sea", "esté", "vaya", "haya", "sepa", "dé"],
+        ["tú", "seas", "estés", "vayas", "hayas", "sepas", "des"],
+        ["él/ella", "sea", "esté", "vaya", "haya", "sepa", "dé"],
+        ["nosotros", "seamos", "estemos", "vayamos", "hayamos", "sepamos", "demos"],
+        ["vosotros", "seáis", "estéis", "vayáis", "hayáis", "sepáis", "deis"],
+        ["ellos", "sean", "estén", "vayan", "hayan", "sepan", "den"]
+      ]
+    },
+    {
+      "titre": "Subjonctif imparfait — formation",
+      "type": "tableau",
+      "colonnes": ["", "-AR (hablar)", "-ER (comer)", "-IR (vivir)"],
+      "lignes": [
+        ["yo", "hablara", "comiera", "viviera"],
+        ["tú", "hablaras", "comieras", "vivieras"],
+        ["él/ella", "hablara", "comiera", "viviera"],
+        ["nosotros", "habláramos", "comiéramos", "viviéramos"],
+        ["vosotros", "hablarais", "comierais", "vivierais"],
+        ["ellos", "hablaran", "comieran", "vivieran"]
+      ]
+    },
+    {
+      "titre": "Subjonctif imparfait — formation",
+      "type": "regles",
+      "items": [
+        {"regle": "Base = ellos du prétérit", "detail": "hablaron → habla-ra, comieron → comie-ra, dijeron → dije-ra, fueron → fue-ra."},
+        {"regle": "Retirer -ron, ajouter -ra/-ras/-ra/-ramos/-rais/-ran", "detail": "tuvieron → tuvie- → tuviera, pudieron → pudie- → pudiera."},
+        {"regle": "Forme en -se existe aussi", "detail": "hablase = hablara. Les deux sont correctes. -ra est plus fréquente en conversation."},
+        {"regle": "Tous les irréguliers du prétérit → irréguliers ici", "detail": "ser/ir → fuera, tener → tuviera, hacer → hiciera, decir → dijera."}
+      ]
+    },
+    {
+      "titre": "Subjonctif imparfait — irréguliers courants",
+      "type": "tableau",
+      "colonnes": ["Infinitif", "Prétérit ellos", "Subj. imp. yo"],
+      "lignes": [
+        ["ser / ir", "fueron", "fuera"],
+        ["tener", "tuvieron", "tuviera"],
+        ["estar", "estuvieron", "estuviera"],
+        ["hacer", "hicieron", "hiciera"],
+        ["poder", "pudieron", "pudiera"],
+        ["poner", "pusieron", "pusiera"],
+        ["saber", "supieron", "supiera"],
+        ["querer", "quisieron", "quisiera"],
+        ["decir", "dijeron", "dijera"],
+        ["venir", "vinieron", "viniera"],
+        ["haber", "hubieron", "hubiera"],
+        ["dar", "dieron", "diera"]
+      ]
+    },
+    {
+      "titre": "Déclencheurs du subjonctif — les grandes catégories",
+      "type": "regles",
+      "items": [
+        {"regle": "Souhait / volonté (querer que, esperar que, pedir que)", "detail": "Quiero que vengas. Espero que estés bien."},
+        {"regle": "Émotion (alegrarse de que, temer que, sorprender que)", "detail": "Me alegro de que estés aquí. Es triste que se vaya."},
+        {"regle": "Doute / négation (dudar que, no creer que)", "detail": "Dudo que venga. No creo que sea verdad."},
+        {"regle": "Ordre indirect / conseil (decir que, recomendar que)", "detail": "Te digo que lo hagas. Recomiendo que estudies."},
+        {"regle": "Jugement impersonnel (es necesario que, es posible que)", "detail": "Es importante que sepas. Es posible que llueva."},
+        {"regle": "But (para que, a fin de que)", "detail": "Te lo digo para que lo sepas."},
+        {"regle": "Temps futur (cuando, hasta que, antes de que)", "detail": "Cuando llegues, llámame. Antes de que se vaya."},
+        {"regle": "Concession (aunque + doute)", "detail": "Aunque llueva, iré. (même s'il pleut — incertain)"}
+      ]
+    },
+    {
+      "titre": "Indicatif vs Subjonctif — paires contrastées",
+      "type": "exemples",
+      "items": [
+        {"es": "Creo que es verdad. (indicatif)", "fr": "Je crois que c'est vrai. (certitude → indicatif)"},
+        {"es": "No creo que sea verdad. (subjonctif)", "fr": "Je ne crois pas que ce soit vrai. (doute → subjonctif)"},
+        {"es": "Cuando llega, come. (indicatif)", "fr": "Quand il arrive, il mange. (habitude → indicatif)"},
+        {"es": "Cuando llegue, comeremos. (subjonctif)", "fr": "Quand il arrivera, nous mangerons. (futur → subjonctif)"},
+        {"es": "Aunque está enfermo, trabaja. (indicatif)", "fr": "Bien qu'il soit malade (fait), il travaille."},
+        {"es": "Aunque esté enfermo, trabajará. (subjonctif)", "fr": "Même s'il est malade (hypothèse), il travaillera."}
+      ]
+    },
+    {
+      "titre": "Si + imparfait du subjonctif (hypothèse irréelle)",
+      "type": "regles",
+      "items": [
+        {"regle": "Si + subj. imparfait → conditionnel", "detail": "Si tuviera dinero, viajaría. (si j'avais de l'argent, je voyagerais)"},
+        {"regle": "JAMAIS si + présent du subjonctif", "detail": "Si tengo (indicatif), iré. PAS *si tenga."},
+        {"regle": "JAMAIS si + conditionnel", "detail": "*Si tendría est FAUX. Toujours si + subj. imparfait."},
+        {"regle": "Quisiera = forme de politesse", "detail": "Quisiera un café = je voudrais un café. (subj. imp. de querer, très poli)"}
+      ]
+    },
+    {
+      "titre": "Ojalá",
+      "type": "regles",
+      "items": [
+        {"regle": "Ojalá + subj. présent = souhait possible", "detail": "¡Ojalá venga! (pourvu qu'il vienne — c'est possible)"},
+        {"regle": "Ojalá + subj. imparfait = souhait irréel", "detail": "¡Ojalá pudiera! (si seulement je pouvais — impossible ou improbable)"}
+      ]
+    }
+  ]
+}

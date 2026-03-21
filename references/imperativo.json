@@ -1,0 +1,139 @@
+{
+  "id": "imperativo",
+  "titre": "Impératif",
+  "icone": "📢",
+  "ordre": 45,
+  "resume": "Ordres, conseils et interdictions — formes affirmatives et négatives",
+  "sections": [
+    {
+      "titre": "Principe clé",
+      "type": "texte",
+      "contenu": "L'impératif espagnol a deux systèmes distincts : l'affirmatif (fais !) et le négatif (ne fais pas !). L'affirmatif a ses propres formes pour tú et vosotros. Le négatif utilise le subjonctif présent pour toutes les personnes. C'est la principale difficulté."
+    },
+    {
+      "titre": "Impératif affirmatif — réguliers",
+      "type": "tableau",
+      "colonnes": ["", "-AR (hablar)", "-ER (comer)", "-IR (vivir)", "D'où vient la forme ?"],
+      "lignes": [
+        ["tú", "habla", "come", "vive", "= 3e pers. sg. présent indicatif"],
+        ["usted", "hable", "coma", "viva", "= subjonctif présent"],
+        ["nosotros", "hablemos", "comamos", "vivamos", "= subjonctif présent"],
+        ["vosotros", "hablad", "comed", "vivid", "-r de l'infinitif → -d"],
+        ["ustedes", "hablen", "coman", "vivan", "= subjonctif présent"]
+      ]
+    },
+    {
+      "titre": "Astuce formation",
+      "type": "regles",
+      "items": [
+        {"regle": "tú affirmatif = él/ella du présent indicatif", "detail": "habla (él habla), come (él come), vive (él vive). Simple !"},
+        {"regle": "Toutes les autres personnes = subjonctif", "detail": "usted, nosotros, ustedes → formes du subjonctif présent."},
+        {"regle": "vosotros = infinitif avec -r → -d", "detail": "hablar → hablad, comer → comed, vivir → vivid."}
+      ]
+    },
+    {
+      "titre": "Impératif négatif — TOUT au subjonctif",
+      "type": "tableau",
+      "colonnes": ["", "-AR (hablar)", "-ER (comer)", "-IR (vivir)"],
+      "lignes": [
+        ["tú", "no hables", "no comas", "no vivas"],
+        ["usted", "no hable", "no coma", "no viva"],
+        ["nosotros", "no hablemos", "no comamos", "no vivamos"],
+        ["vosotros", "no habléis", "no comáis", "no viváis"],
+        ["ustedes", "no hablen", "no coman", "no vivan"]
+      ]
+    },
+    {
+      "titre": "Affirmatif vs Négatif — le piège tú",
+      "type": "exemples",
+      "items": [
+        {"es": "Habla. → No hables.", "fr": "Parle. → Ne parle pas. (forme différente !)"},
+        {"es": "Come. → No comas.", "fr": "Mange. → Ne mange pas."},
+        {"es": "Ven. → No vengas.", "fr": "Viens. → Ne viens pas."},
+        {"es": "Hazlo. → No lo hagas.", "fr": "Fais-le. → Ne le fais pas. (pronom change de place aussi !)"}
+      ]
+    },
+    {
+      "titre": "Irréguliers affirmatifs — tú (8 à mémoriser)",
+      "type": "tableau",
+      "colonnes": ["Infinitif", "tú affirmatif", "Mnémo"],
+      "lignes": [
+        ["tener", "ten", ""],
+        ["venir", "ven", ""],
+        ["poner", "pon", "ven-ten-pon"],
+        ["salir", "sal", "sal-haz-di"],
+        ["hacer", "haz", ""],
+        ["decir", "di", ""],
+        ["ser", "sé", "sé (= sois !)"],
+        ["ir", "ve", "ve (= va !)"]
+      ]
+    },
+    {
+      "titre": "Mnémo pour les 8 irréguliers",
+      "type": "texte",
+      "contenu": "Phrase mnémotechnique : « Ven, ten pon sal, haz di sé ve » — les 8 formes irrégulières de tú affirmatif. Toutes sont monosyllabiques. Au négatif, elles redeviennent régulières (subjonctif) : no vengas, no tengas, no pongas, etc."
+    },
+    {
+      "titre": "Pronoms enclitiques — position",
+      "type": "regles",
+      "items": [
+        {"regle": "Affirmatif → pronoms COLLÉS après le verbe", "detail": "Dime (dis-moi). Hazlo (fais-le). Cómpralo (achète-le). Siéntate (assieds-toi)."},
+        {"regle": "Négatif → pronoms AVANT le verbe (séparés)", "detail": "No me digas (ne me dis pas). No lo hagas (ne le fais pas). No te sientes (ne t'assieds pas)."},
+        {"regle": "Plusieurs pronoms → se + COI + COD", "detail": "Dámelo (donne-le-moi). Dígaselo (dites-le-lui). No me lo digas (ne me le dis pas)."},
+        {"regle": "Accent souvent nécessaire", "detail": "L'ajout de pronoms déplace l'accent : dime (ok), dímelo (esdrújula → accent). Siéntate (accent)."}
+      ]
+    },
+    {
+      "titre": "Pronoms — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "Dime. → No me digas.", "fr": "Dis-moi. → Ne me dis pas."},
+        {"es": "Dámelo. → No me lo des.", "fr": "Donne-le-moi. → Ne me le donne pas."},
+        {"es": "Siéntate. → No te sientes.", "fr": "Assieds-toi. → Ne t'assieds pas."},
+        {"es": "Vámonos. → No nos vayamos.", "fr": "Allons-nous-en. → Ne nous en allons pas."},
+        {"es": "Cómpralo. → No lo compres.", "fr": "Achète-le. → Ne l'achète pas."}
+      ]
+    },
+    {
+      "titre": "Vosotros + pronoms → le -d disparaît",
+      "type": "regles",
+      "items": [
+        {"regle": "vosotros + os → le -d tombe", "detail": "sentad + os → sentaos (pas *sentados). Levantad + os → levantaos."},
+        {"regle": "Exception : idos (allez-vous-en)", "detail": "ir → id + os → idos (pas *ios). Seul cas où le d reste."}
+      ]
+    },
+    {
+      "titre": "Nosotros — « allons ! »",
+      "type": "regles",
+      "items": [
+        {"regle": "Forme = subjonctif présent", "detail": "Hablemos (parlons). Comamos (mangeons). Salgamos (sortons)."},
+        {"regle": "Vamos = exception figée (pas *vayamos à l'affirmatif)", "detail": "¡Vamos! (allons-y). Mais négatif : No vayamos (n'allons pas)."},
+        {"regle": "Vamos a + infinitif = courant", "detail": "Vamos a comer (allons manger). Équivalent de « let's »."}
+      ]
+    },
+    {
+      "titre": "Usages de l'impératif",
+      "type": "regles",
+      "items": [
+        {"regle": "Ordre direct", "detail": "¡Ven aquí! ¡Cállate! ¡No toques eso!"},
+        {"regle": "Conseil / recommandation", "detail": "Estudia más. No te preocupes. Descansa un poco."},
+        {"regle": "Instruction / recette", "detail": "Corta la cebolla. Añade sal. Mezcla bien."},
+        {"regle": "Invitation", "detail": "Pasa, pasa. Siéntate. Toma un café."},
+        {"regle": "Permission", "detail": "Dime. Cuéntame. Pregunta lo que quieras."}
+      ]
+    },
+    {
+      "titre": "Résumé express",
+      "type": "tableau",
+      "colonnes": ["", "Affirmatif", "Négatif"],
+      "lignes": [
+        ["tú", "forme propre (habla, come)", "no + subjonctif (no hables)"],
+        ["usted", "subjonctif (hable)", "no + subjonctif (no hable)"],
+        ["nosotros", "subjonctif (hablemos)", "no + subjonctif (no hablemos)"],
+        ["vosotros", "infinitif -r→-d (hablad)", "no + subjonctif (no habléis)"],
+        ["ustedes", "subjonctif (hablen)", "no + subjonctif (no hablen)"],
+        ["Pronoms", "collés après (dime)", "avant le verbe (no me digas)"]
+      ]
+    }
+  ]
+}

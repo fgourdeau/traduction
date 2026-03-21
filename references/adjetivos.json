@@ -1,0 +1,208 @@
+{
+  "id": "adjetivos",
+  "titre": "Adjectifs",
+  "icone": "🎨",
+  "ordre": 60,
+  "resume": "Accord en genre et nombre, position avant/après le nom, comparatif et superlatif",
+  "sections": [
+    {
+      "titre": "Accord — règle générale",
+      "type": "tableau",
+      "colonnes": ["Terminaison masc. sg.", "Fém. sg.", "Masc. pl.", "Fém. pl.", "Exemple"],
+      "lignes": [
+        ["-o", "-a", "-os", "-as", "alto → alta → altos → altas"],
+        ["-e", "-e", "-es", "-es", "grande → grande → grandes → grandes"],
+        ["-consonne", "-consonne", "+es", "+es", "fácil → fácil → fáciles → fáciles"],
+        ["-ista", "-ista", "-istas", "-istas", "optimista (invariable en genre)"],
+        ["-or", "-ora", "-ores", "-oras", "trabajador → trabajadora"]
+      ]
+    },
+    {
+      "titre": "Accord — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "El gato negro. La gata negra.", "fr": "Le chat noir. La chatte noire. (-o/-a)"},
+        {"es": "Un problema grande. Una casa grande.", "fr": "Un grand problème. Une grande maison. (-e invariable)"},
+        {"es": "Un ejercicio fácil. Unas preguntas fáciles.", "fr": "Un exercice facile. Des questions faciles. (-consonne +es)"},
+        {"es": "Un chico optimista. Una chica optimista.", "fr": "Un garçon optimiste. Une fille optimiste. (-ista invariable)"}
+      ]
+    },
+    {
+      "titre": "Adjectifs de nationalité",
+      "type": "regles",
+      "items": [
+        {"regle": "Terminés en -o → 4 formes", "detail": "mexicano, mexicana, mexicanos, mexicanas"},
+        {"regle": "Terminés en consonne → ajout -a au féminin", "detail": "español → española, francés → francesa, alemán → alemana"},
+        {"regle": "Terminés en -e ou -í → invariable en genre", "detail": "canadiense, estadounidense, marroquí"},
+        {"regle": "Pas de majuscule", "detail": "En espagnol, les nationalités s'écrivent en minuscule : soy canadiense."}
+      ]
+    },
+    {
+      "titre": "Position — règle de base",
+      "type": "texte",
+      "contenu": "En espagnol, l'adjectif se place généralement APRÈS le nom (contrairement au français où c'est variable). Un libro interesante, una mujer inteligente, el coche rojo. C'est la position neutre, descriptive, qui distingue ou classifie."
+    },
+    {
+      "titre": "Position — AVANT le nom (cas spéciaux)",
+      "type": "regles",
+      "items": [
+        {"regle": "Adjectifs très courants et subjectifs", "detail": "bueno, malo, grande, pequeño, joven, viejo, nuevo, hermoso. Un buen día. Una gran idea."},
+        {"regle": "Sens affectif ou littéraire", "detail": "Avant = jugement subjectif, émotion. La hermosa ciudad (émotion). La ciudad hermosa (description neutre)."},
+        {"regle": "Ordinaux", "detail": "El primer capítulo. La segunda vez. (avant le nom, normalement)"},
+        {"regle": "Quantificateurs", "detail": "mucho, poco, otro, todo, cada → toujours avant. Muchos libros. Otra vez."}
+      ]
+    },
+    {
+      "titre": "Adjectifs qui changent de sens selon la position",
+      "type": "tableau",
+      "colonnes": ["Adjectif", "AVANT le nom", "APRÈS le nom"],
+      "lignes": [
+        ["grande", "gran = remarquable (un gran hombre)", "grande = physiquement grand (un hombre grande)"],
+        ["pobre", "= malheureux (el pobre niño)", "= sans argent (el niño pobre)"],
+        ["nuevo", "= autre, différent (un nuevo coche)", "= neuf, pas usé (un coche nuevo)"],
+        ["viejo", "= de longue date (un viejo amigo)", "= âgé (un amigo viejo)"],
+        ["antiguo", "= ancien, ex- (mi antigua profesora)", "= antique, vieux (una mesa antigua)"],
+        ["único", "= seul (el único problema)", "= unique, exceptionnel (un caso único)"],
+        ["cierto", "= un certain (cierta persona)", "= vrai, sûr (una cosa cierta)"],
+        ["medio", "= demi (media hora)", "= moyen (un resultado medio)"],
+        ["mismo", "= même (el mismo día)", "= lui-même (el director mismo)"]
+      ]
+    },
+    {
+      "titre": "Changement de sens — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "Es un gran escritor.", "fr": "C'est un grand (remarquable) écrivain."},
+        {"es": "Es un escritor grande.", "fr": "C'est un écrivain de grande taille."},
+        {"es": "El pobre hombre perdió todo.", "fr": "Le pauvre (malheureux) homme a tout perdu."},
+        {"es": "Es un hombre pobre.", "fr": "C'est un homme pauvre (sans argent)."},
+        {"es": "Mi viejo amigo vino a verme.", "fr": "Mon vieil ami (de longue date) est venu me voir."},
+        {"es": "Mi amigo viejo necesita ayuda.", "fr": "Mon ami âgé a besoin d'aide."}
+      ]
+    },
+    {
+      "titre": "Apocope — formes raccourcies",
+      "type": "tableau",
+      "colonnes": ["Forme pleine", "Forme courte", "Quand ?", "Exemple"],
+      "lignes": [
+        ["bueno", "buen", "avant nom masc. sg.", "un buen libro"],
+        ["malo", "mal", "avant nom masc. sg.", "un mal día"],
+        ["grande", "gran", "avant nom sg. (m. et f.)", "un gran país, una gran idea"],
+        ["primero", "primer", "avant nom masc. sg.", "el primer paso"],
+        ["tercero", "tercer", "avant nom masc. sg.", "el tercer piso"],
+        ["alguno", "algún", "avant nom masc. sg.", "algún problema"],
+        ["ninguno", "ningún", "avant nom masc. sg.", "ningún motivo"],
+        ["santo", "san", "avant prénom (sauf Do-, To-)", "San Pedro, MAIS Santo Domingo"]
+      ]
+    },
+    {
+      "titre": "Comparatif — structure",
+      "type": "tableau",
+      "colonnes": ["Type", "Structure", "Exemple"],
+      "lignes": [
+        ["Supériorité", "más + adj. + que", "María es más alta que Pedro."],
+        ["Infériorité", "menos + adj. + que", "Este libro es menos interesante que ese."],
+        ["Égalité", "tan + adj. + como", "Soy tan alto como tú."]
+      ]
+    },
+    {
+      "titre": "Comparatif — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "Madrid es más grande que Barcelona.", "fr": "Madrid est plus grand que Barcelone."},
+        {"es": "El invierno es menos caluroso que el verano.", "fr": "L'hiver est moins chaud que l'été."},
+        {"es": "Mi casa es tan bonita como la tuya.", "fr": "Ma maison est aussi jolie que la tienne."}
+      ]
+    },
+    {
+      "titre": "Comparatifs irréguliers",
+      "type": "tableau",
+      "colonnes": ["Adjectif", "Comparatif", "Ne pas dire"],
+      "lignes": [
+        ["bueno (bon)", "mejor", "más bueno ✗"],
+        ["malo (mauvais)", "peor", "más malo ✗"],
+        ["grande (grand/vieux)", "mayor", "más grande ✓ pour taille physique"],
+        ["pequeño (petit/jeune)", "menor", "más pequeño ✓ pour taille physique"]
+      ]
+    },
+    {
+      "titre": "Mayor / menor — nuance",
+      "type": "regles",
+      "items": [
+        {"regle": "mayor = plus âgé, plus important", "detail": "Mi hermano mayor (mon frère aîné). Un problema mayor (un problème plus important)."},
+        {"regle": "más grande = plus grand physiquement", "detail": "Esta casa es más grande (cette maison est plus grande en taille)."},
+        {"regle": "menor = plus jeune, moindre", "detail": "Mi hermana menor (ma sœur cadette). En menor medida (dans une moindre mesure)."},
+        {"regle": "más pequeño = plus petit physiquement", "detail": "Tu coche es más pequeño que el mío."}
+      ]
+    },
+    {
+      "titre": "Superlatif relatif",
+      "type": "tableau",
+      "colonnes": ["Type", "Structure", "Exemple"],
+      "lignes": [
+        ["Le plus", "el/la/los/las + más + adj. + de", "Es el más alto de la clase."],
+        ["Le moins", "el/la/los/las + menos + adj. + de", "Es la menos difícil de todas."],
+        ["Irrégulier", "el/la mejor / peor / mayor / menor", "Es el mejor estudiante del grupo."]
+      ]
+    },
+    {
+      "titre": "Superlatif — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "Es la película más larga del festival.", "fr": "C'est le film le plus long du festival."},
+        {"es": "Son los mejores jugadores del mundo.", "fr": "Ce sont les meilleurs joueurs du monde."},
+        {"es": "Es el peor día de mi vida.", "fr": "C'est le pire jour de ma vie."}
+      ]
+    },
+    {
+      "titre": "Superlatif absolu (-ísimo)",
+      "type": "regles",
+      "items": [
+        {"regle": "Adj. + -ísimo/-ísima/-ísimos/-ísimas", "detail": "Très, extrêmement. Altísimo = très grand. Facilísimo = très facile."},
+        {"regle": "Adj. en -co → -quísimo", "detail": "rico → riquísimo"},
+        {"regle": "Adj. en -go → -guísimo", "detail": "largo → larguísimo"},
+        {"regle": "Adj. en -ble → -bilísimo", "detail": "amable → amabilísimo"}
+      ]
+    },
+    {
+      "titre": "Superlatif absolu — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "La comida está riquísima.", "fr": "La nourriture est absolument délicieuse."},
+        {"es": "Estoy cansadísimo.", "fr": "Je suis extrêmement fatigué."},
+        {"es": "Es facilísimo.", "fr": "C'est super facile."},
+        {"es": "Una ciudad grandísima.", "fr": "Une ville immense."}
+      ]
+    },
+    {
+      "titre": "Comparatif de quantité (noms)",
+      "type": "tableau",
+      "colonnes": ["Type", "Structure", "Exemple"],
+      "lignes": [
+        ["Plus de", "más + nom + que", "Tiene más libros que yo."],
+        ["Moins de", "menos + nom + que", "Hay menos gente que ayer."],
+        ["Autant de", "tanto/-a/-os/-as + nom + como", "Tiene tantos amigos como tú."],
+        ["Plus de (nombre)", "más de + chiffre", "Hay más de cien personas."]
+      ]
+    },
+    {
+      "titre": "Piège : más de vs más que avec des chiffres",
+      "type": "regles",
+      "items": [
+        {"regle": "más de + chiffre (affirmatif)", "detail": "Tiene más de treinta años. (= il a plus de 30 ans)"},
+        {"regle": "más que en négation (no… más que = seulement)", "detail": "No tiene más que treinta años. (= il n'a que 30 ans)"}
+      ]
+    },
+    {
+      "titre": "Résumé express",
+      "type": "regles",
+      "items": [
+        {"regle": "Accord", "detail": "-o/-a/-os/-as ; -e/-es invariable en genre ; -consonne +es au pluriel."},
+        {"regle": "Position", "detail": "Après le nom (normal). Avant = subjectif, affectif, ou sens différent."},
+        {"regle": "Apocope", "detail": "buen, mal, gran, primer, tercer, algún, ningún devant nom masc. sg."},
+        {"regle": "Comparatif", "detail": "más/menos + adj. + que ; tan + adj. + como. Irréguliers : mejor, peor, mayor, menor."},
+        {"regle": "Superlatif", "detail": "el/la más + adj. + de. Absolu : -ísimo."}
+      ]
+    }
+  ]
+}

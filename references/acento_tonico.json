@@ -1,0 +1,212 @@
+{
+  "id": "acento_tonico",
+  "titre": "Accent tonique et accentuation",
+  "icone": "🎯",
+  "ordre": 70,
+  "resume": "Où tombe l'accent, quand écrire le tilde (´), diphtongues, hiatus et accents diacritiques",
+  "sections": [
+    {
+      "titre": "Principe fondamental",
+      "type": "texte",
+      "contenu": "Chaque mot espagnol a UNE syllabe tonique (prononcée plus fort). La plupart du temps, l'accent tonique est prévisible par la terminaison du mot. On écrit un accent (´) UNIQUEMENT quand la prononciation ne suit pas la règle par défaut."
+    },
+    {
+      "titre": "Règle par défaut — où tombe l'accent si rien n'est écrit",
+      "type": "tableau",
+      "colonnes": ["Le mot se termine par…", "Accent tonique sur…", "Exemples"],
+      "lignes": [
+        ["voyelle (a, e, i, o, u)", "avant-dernière syllabe", "ca-SA, me-SA, LI-bro"],
+        ["n", "avant-dernière syllabe", "e-XA-men, JO-ven, car-MEN"],
+        ["s", "avant-dernière syllabe", "LU-nes, CLA-ses, a-MI-gos"],
+        ["autre consonne (l, r, d, z…)", "dernière syllabe", "ho-TEL, pa-PEL, co-MER, fe-LIZ"]
+      ]
+    },
+    {
+      "titre": "Boussole mentale",
+      "type": "regles",
+      "items": [
+        {"regle": "Voyelle / n / s → pénultième", "detail": "L'accent tombe sur l'avant-dernière syllabe. C'est le cas le plus fréquent."},
+        {"regle": "Toute autre consonne → dernière", "detail": "L'accent tombe sur la dernière syllabe."},
+        {"regle": "Si la prononciation dévie de cette règle → accent écrit (´)", "detail": "C'est la seule raison d'être du tilde."}
+      ]
+    },
+    {
+      "titre": "Les 4 familles de mots",
+      "type": "tableau",
+      "colonnes": ["Famille", "Accent tonique sur…", "Accent écrit quand…", "Exemples"],
+      "lignes": [
+        ["Aguda", "dernière syllabe", "finit par voyelle, n ou s", "ca-FÉ, can-CIÓN, co-MER (pas d'accent)"],
+        ["Llana (grave)", "avant-dernière", "finit par consonne ≠ n, s", "ÁR-bol, LÁ-piz, CA-sa (pas d'accent)"],
+        ["Esdrújula", "antépénultième", "TOUJOURS", "te-LÉ-fo-no, MÚ-si-ca, pá-ja-ro"],
+        ["Sobresdrújula", "encore avant", "TOUJOURS", "DÍ-ga-me-lo, CÓM-pre-se-lo"]
+      ]
+    },
+    {
+      "titre": "Familles — exemples détaillés",
+      "type": "exemples",
+      "items": [
+        {"es": "café — aguda, finit par voyelle → accent", "fr": "Sans accent, on dirait *CA-fe (faux)"},
+        {"es": "canción — aguda, finit par n → accent", "fr": "Sans accent, on dirait *can-CI-on (faux)"},
+        {"es": "hotel — aguda, finit par l → PAS d'accent", "fr": "ho-TEL suit la règle par défaut"},
+        {"es": "árbol — llana, finit par l → accent", "fr": "Sans accent, on dirait *ar-BOL (faux)"},
+        {"es": "casa — llana, finit par voyelle → PAS d'accent", "fr": "CA-sa suit la règle par défaut"},
+        {"es": "teléfono — esdrújula → TOUJOURS accent", "fr": "Toute esdrújula prend un accent"},
+        {"es": "dígamelo — sobresdrújula → TOUJOURS accent", "fr": "Impératif + pronoms enclitiques"}
+      ]
+    },
+    {
+      "titre": "Checklist en 5 étapes — faut-il un accent ?",
+      "type": "regles",
+      "items": [
+        {"regle": "1. Accent diacritique ?", "detail": "Est-ce un mot comme él/tu/tú, sí/si, qué/que ? → voir tableau diacritiques."},
+        {"regle": "2. í ou ú tonique à côté d'une voyelle ?", "detail": "Si oui → accent obligatoire (casse la diphtongue). país, río, baúl."},
+        {"regle": "3. Appliquer la règle de terminaison", "detail": "Voyelle/n/s → avant-dernière. Autre consonne → dernière."},
+        {"regle": "4. L'accent réel est-il ailleurs ?", "detail": "Si oui → écrire l'accent. café (aguda + voyelle), árbol (llana + consonne ≠ n/s)."},
+        {"regle": "5. Enclitiques / -mente ?", "detail": "-mente garde l'accent de l'adjectif. Pronoms collés : dímelo, decírmelo."}
+      ]
+    },
+    {
+      "titre": "Voyelles fortes et faibles",
+      "type": "tableau",
+      "colonnes": ["Type", "Voyelles", "Caractéristique"],
+      "lignes": [
+        ["Fortes (abiertas)", "a, e, o", "Peuvent porter l'accent, forment le noyau de la syllabe"],
+        ["Faibles (cerradas)", "i, u", "Se combinent facilement avec une forte pour former une diphtongue"]
+      ]
+    },
+    {
+      "titre": "Diphtongues — 1 syllabe, pas d'accent spécial",
+      "type": "tableau",
+      "colonnes": ["Combinaison", "Type", "Exemples"],
+      "lignes": [
+        ["faible + forte (ia, ie, io, ua, ue, uo)", "diphtongue croissante", "tierra, cuadro, fuego"],
+        ["forte + faible (ai, ei, oi, au, eu, ou)", "diphtongue décroissante", "causa, peine, hoy"],
+        ["faible + faible (iu, ui)", "diphtongue", "ciudad, ruido, cuidar"]
+      ]
+    },
+    {
+      "titre": "Hiatus — í/ú cassent la diphtongue",
+      "type": "texte",
+      "contenu": "Quand i ou u est tonique à côté d'une voyelle forte, la diphtongue se brise : les deux voyelles forment 2 syllabes. On DOIT écrire l'accent, même si la règle de terminaison ne l'exigerait pas. C'est une règle prioritaire."
+    },
+    {
+      "titre": "Hiatus — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "país → pa-ÍS (2 syllabes)", "fr": "Sans accent, *pais serait une diphtongue (1 syllabe, faux)"},
+        {"es": "río → RÍ-o (2 syllabes)", "fr": "Sans accent, *rio serait une diphtongue"},
+        {"es": "baúl → ba-ÚL (2 syllabes)", "fr": "L'accent casse au combinaison"},
+        {"es": "oír → o-ÍR (2 syllabes)", "fr": "Entendre — le í se sépare du o"},
+        {"es": "maíz → ma-ÍZ (2 syllabes)", "fr": "Le maïs"},
+        {"es": "continúa → con-ti-NÚ-a (4 syllabes)", "fr": "Il/elle continue — le ú se sépare du a"}
+      ]
+    },
+    {
+      "titre": "Hiatus entre deux voyelles fortes",
+      "type": "regles",
+      "items": [
+        {"regle": "Deux fortes = toujours 2 syllabes", "detail": "ae, ao, ea, eo, oa, oe → hiatus naturel, pas besoin d'accent pour ça."},
+        {"regle": "Exemples", "detail": "le-er (2 syll.), ca-os (2 syll.), po-e-ta (3 syll.). L'accent écrit suit les règles normales."}
+      ]
+    },
+    {
+      "titre": "Accents diacritiques — même prononciation, sens différent",
+      "type": "tableau",
+      "colonnes": ["Sans accent", "Sens", "Avec accent", "Sens"],
+      "lignes": [
+        ["el", "le (article)", "él", "lui (pronom)"],
+        ["tu", "ton/ta", "tú", "toi"],
+        ["mi", "mon/ma", "mí", "moi"],
+        ["si", "si (condition)", "sí", "oui / soi"],
+        ["de", "de (préposition)", "dé", "(qu'il) donne"],
+        ["se", "se (réfléchi)", "sé", "je sais / sois"],
+        ["mas", "mais (littéraire)", "más", "plus"],
+        ["aun", "même (= incluso)", "aún", "encore (= todavía)"],
+        ["te", "te (pronom)", "té", "thé"],
+        ["solo", "seul (adj.)", "sólo", "seulement (usage en recul)"]
+      ]
+    },
+    {
+      "titre": "Diacritiques — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "El libro es de él.", "fr": "Le livre est à lui."},
+        {"es": "Tu casa es bonita. Tú lo sabes.", "fr": "Ta maison est jolie. Toi tu le sais."},
+        {"es": "Para mí, mi café está frío.", "fr": "Pour moi, mon café est froid."},
+        {"es": "Si vienes, sí te ayudo.", "fr": "Si tu viens, oui je t'aide."},
+        {"es": "No sé si se puede.", "fr": "Je ne sais pas si on peut."},
+        {"es": "Aún no ha llegado, aun siendo rápido.", "fr": "Il n'est pas encore arrivé, même en étant rapide."}
+      ]
+    },
+    {
+      "titre": "Interrogatifs / exclamatifs — toujours avec accent",
+      "type": "tableau",
+      "colonnes": ["Sans accent (relatif)", "Avec accent (question/exclamation)"],
+      "lignes": [
+        ["que (que, qui)", "qué (quoi, quel)"],
+        ["como (comme)", "cómo (comment)"],
+        ["cual (lequel — relatif)", "cuál (lequel — question)"],
+        ["quien (qui — relatif)", "quién (qui — question)"],
+        ["cuando (quand — relatif)", "cuándo (quand — question)"],
+        ["donde (où — relatif)", "dónde (où — question)"],
+        ["cuanto (autant que)", "cuánto (combien)"]
+      ]
+    },
+    {
+      "titre": "Interrogatifs — exemples",
+      "type": "exemples",
+      "items": [
+        {"es": "¿Qué quieres? — El libro que compré.", "fr": "Que veux-tu ? — Le livre que j'ai acheté."},
+        {"es": "¿Cómo estás? — Como siempre.", "fr": "Comment vas-tu ? — Comme toujours."},
+        {"es": "¿Dónde vives? — La ciudad donde nací.", "fr": "Où vis-tu ? — La ville où je suis né."},
+        {"es": "No sé cuánto cuesta.", "fr": "Je ne sais pas combien ça coûte. (question indirecte → accent)"}
+      ]
+    },
+    {
+      "titre": "Piège : question indirecte = accent aussi",
+      "type": "regles",
+      "items": [
+        {"regle": "Question directe → accent", "detail": "¿Dónde está? ¿Qué hora es?"},
+        {"regle": "Question indirecte → accent aussi !", "detail": "No sé dónde está. Dime qué quieres. Me pregunto cómo lo hizo."},
+        {"regle": "Relatif (pas de question) → PAS d'accent", "detail": "La casa donde vivo. El libro que leí. Hazlo como quieras."}
+      ]
+    },
+    {
+      "titre": "Mots en -mente",
+      "type": "regles",
+      "items": [
+        {"regle": "Féminin de l'adjectif + mente", "detail": "L'accent de l'adjectif est conservé."},
+        {"regle": "rápida → rápidamente", "detail": "L'accent sur á reste."},
+        {"regle": "fácil → fácilmente", "detail": "L'accent sur á reste."},
+        {"regle": "lenta → lentamente", "detail": "Pas d'accent sur lenta → pas d'accent sur lentamente."}
+      ]
+    },
+    {
+      "titre": "Pronoms enclitiques",
+      "type": "regles",
+      "items": [
+        {"regle": "Verbe + pronom(s) collés = un seul mot", "detail": "On recompte les syllabes et on applique les règles normales."},
+        {"regle": "dime → di-ME (2 syll., llana, fin voyelle → pas d'accent)", "detail": "Dis-moi."},
+        {"regle": "dímelo → DÍ-me-lo (3 syll., esdrújula → accent)", "detail": "Dis-le-moi."},
+        {"regle": "decir → decirme (llana, fin voyelle → OK) → decírmelo (esdrújula → accent)", "detail": "Me le dire."}
+      ]
+    },
+    {
+      "titre": "Majuscules",
+      "type": "texte",
+      "contenu": "Les accents s'écrivent AUSSI sur les majuscules. ÚLTIMO, ÁRBOL, ÉL. Ne jamais les omettre."
+    },
+    {
+      "titre": "Résumé express",
+      "type": "regles",
+      "items": [
+        {"regle": "Terminaison voyelle/n/s → avant-dernière syllabe", "detail": "Accent écrit seulement si l'accent est ailleurs (aguda ou esdrújula)."},
+        {"regle": "Terminaison autre consonne → dernière syllabe", "detail": "Accent écrit seulement si l'accent est ailleurs (llana ou esdrújula)."},
+        {"regle": "Esdrújula / sobresdrújula → TOUJOURS accent", "detail": "teléfono, música, dígamelo."},
+        {"regle": "í/ú tonique + voyelle → accent obligatoire", "detail": "Casse la diphtongue : país, río, baúl. Règle prioritaire."},
+        {"regle": "Diacritiques → à mémoriser", "detail": "él/el, tú/tu, mí/mi, sí/si, sé/se, dé/de, más/mas, aún/aun."},
+        {"regle": "Interrogatifs → accent en question directe ET indirecte", "detail": "¿Qué? / No sé qué. Mais : el libro que leí (relatif, pas d'accent)."}
+      ]
+    }
+  ]
+}

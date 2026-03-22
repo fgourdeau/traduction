@@ -8,197 +8,526 @@
     {
       "titre": "Vue d'ensemble",
       "type": "tableau",
-      "colonnes": ["Type", "Fonction", "Principales conjonctions"],
+      "colonnes": [
+        "Type",
+        "Fonction",
+        "Principales conjonctions"
+      ],
       "lignes": [
-        ["Coordination", "relie des éléments de même niveau", "y, e, o, u, ni, pero, sino, mas"],
-        ["Subordination causale", "exprime la cause", "porque, ya que, puesto que, como"],
-        ["Subordination consécutive", "exprime la conséquence", "así que, por lo tanto, de modo que"],
-        ["Subordination concessive", "exprime la concession", "aunque, a pesar de que, si bien"],
-        ["Subordination conditionnelle", "exprime la condition", "si, a menos que, con tal de que"],
-        ["Subordination temporelle", "situe dans le temps", "cuando, mientras, antes de que, después de que"],
-        ["Subordination finale", "exprime le but", "para que, a fin de que"],
-        ["Subordination comparative", "compare", "como, tal como, así como"]
+        [
+          "Coordination",
+          "relie des éléments de même niveau",
+          "y, e, o, u, ni, pero, sino, mas"
+        ],
+        [
+          "Subordination causale",
+          "exprime la cause",
+          "porque, ya que, puesto que, como"
+        ],
+        [
+          "Subordination consécutive",
+          "exprime la conséquence",
+          "así que, por lo tanto, de modo que"
+        ],
+        [
+          "Subordination concessive",
+          "exprime la concession",
+          "aunque, a pesar de que, si bien"
+        ],
+        [
+          "Subordination conditionnelle",
+          "exprime la condition",
+          "si, a menos que, con tal de que"
+        ],
+        [
+          "Subordination temporelle",
+          "situe dans le temps",
+          "cuando, mientras, antes de que, después de que"
+        ],
+        [
+          "Subordination finale",
+          "exprime le but",
+          "para que, a fin de que"
+        ],
+        [
+          "Subordination comparative",
+          "compare",
+          "como, tal como, así como"
+        ]
       ]
     },
     {
       "titre": "Conjonctions de coordination",
       "type": "regles",
       "items": [
-        {"regle": "y (et) → e devant i-/hi-", "detail": "padre y madre, MAIS : francés e inglés, aguja e hilo. Pas devant hie- : hierro y acero."},
-        {"regle": "o (ou) → u devant o-/ho-", "detail": "uno o dos, MAIS : siete u ocho, mujer u hombre."},
-        {"regle": "ni (ni)", "detail": "Ni tú ni yo. No come ni bebe. Toujours avec négation."},
-        {"regle": "pero (mais)", "detail": "Opposition partielle. Es difícil, pero posible."},
-        {"regle": "sino (mais — correction)", "detail": "Après négation, corrige. No es rojo, sino azul. ≠ pero."},
-        {"regle": "sino que (mais — correction + verbe)", "detail": "No salió, sino que se quedó en casa."},
-        {"regle": "mas (mais — littéraire)", "detail": "Équivalent soutenu de pero. Quiso hablar, mas no pudo."}
+        {
+          "regle": "y (et) → e devant i-/hi-",
+          "detail": "padre y madre, MAIS : francés e inglés, aguja e hilo. Pas devant hie- : hierro y acero."
+        },
+        {
+          "regle": "o (ou) → u devant o-/ho-",
+          "detail": "uno o dos, MAIS : siete u ocho, mujer u hombre."
+        },
+        {
+          "regle": "ni (ni)",
+          "detail": "Ni tú ni yo. No come ni bebe. Toujours avec négation."
+        },
+        {
+          "regle": "pero (mais)",
+          "detail": "Opposition partielle. Es difícil, pero posible."
+        },
+        {
+          "regle": "sino (mais — correction)",
+          "detail": "Après négation, corrige. No es rojo, sino azul. ≠ pero."
+        },
+        {
+          "regle": "sino que (mais — correction + verbe)",
+          "detail": "No salió, sino que se quedó en casa."
+        },
+        {
+          "regle": "mas (mais — littéraire)",
+          "detail": "Équivalent soutenu de pero. Quiso hablar, mas no pudo."
+        }
       ]
     },
     {
       "titre": "PERO vs SINO — le piège majeur",
       "type": "tableau",
-      "colonnes": ["", "pero", "sino"],
+      "colonnes": [
+        "",
+        "pero",
+        "sino"
+      ],
       "lignes": [
-        ["Sens", "mais (opposition)", "mais (correction/remplacement)"],
-        ["Après négation ?", "pas obligatoire", "toujours après négation"],
-        ["Structure", "A, pero B (les deux coexistent)", "No A, sino B (B remplace A)"],
-        ["Avec verbe", "pero + verbe conjugué", "sino que + verbe conjugué"]
+        [
+          "Sens",
+          "mais (opposition)",
+          "mais (correction/remplacement)"
+        ],
+        [
+          "Après négation ?",
+          "pas obligatoire",
+          "toujours après négation"
+        ],
+        [
+          "Structure",
+          "A, pero B (les deux coexistent)",
+          "No A, sino B (B remplace A)"
+        ],
+        [
+          "Avec verbe",
+          "pero + verbe conjugué",
+          "sino que + verbe conjugué"
+        ]
       ]
     },
     {
       "titre": "PERO vs SINO — exemples",
       "type": "exemples",
       "items": [
-        {"es": "Es caro, pero bueno.", "fr": "C'est cher, mais bon. (les deux sont vrais → pero)"},
-        {"es": "No es caro, sino barato.", "fr": "Ce n'est pas cher, mais bon marché. (correction → sino)"},
-        {"es": "No quiero comer, pero tengo que hacerlo.", "fr": "Je ne veux pas manger, mais je dois le faire. (opposition → pero)"},
-        {"es": "No quiero comer, sino dormir.", "fr": "Je ne veux pas manger, mais dormir. (remplacement → sino)"},
-        {"es": "No salió, sino que se quedó.", "fr": "Il n'est pas sorti, mais est resté. (sino que + verbe)"}
+        {
+          "es": "Es caro, pero bueno.",
+          "fr": "C'est cher, mais bon. (les deux sont vrais → pero)"
+        },
+        {
+          "es": "No es caro, sino barato.",
+          "fr": "Ce n'est pas cher, mais bon marché. (correction → sino)"
+        },
+        {
+          "es": "No quiero comer, pero tengo que hacerlo.",
+          "fr": "Je ne veux pas manger, mais je dois le faire. (opposition → pero)"
+        },
+        {
+          "es": "No quiero comer, sino dormir.",
+          "fr": "Je ne veux pas manger, mais dormir. (remplacement → sino)"
+        },
+        {
+          "es": "No salió, sino que se quedó.",
+          "fr": "Il n'est pas sorti, mais est resté. (sino que + verbe)"
+        }
       ]
     },
     {
       "titre": "Cause — porque, ya que, como, puesto que",
       "type": "regles",
       "items": [
-        {"regle": "porque (parce que)", "detail": "La plus courante. Estudio porque quiero aprender."},
-        {"regle": "ya que (puisque, étant donné que)", "detail": "Cause connue/évidente. Ya que estás aquí, ayúdame."},
-        {"regle": "puesto que (puisque — plus formel)", "detail": "Puesto que no hay alternativa, aceptamos."},
-        {"regle": "como (comme — cause en début de phrase)", "detail": "Como llovía, nos quedamos en casa. TOUJOURS en début de phrase pour la cause."},
-        {"regle": "es que (c'est que)", "detail": "Excuse/explication orale. Es que no sabía."},
-        {"regle": "Attention : porque ≠ por qué ≠ porqué ≠ por que", "detail": "porque = parce que. ¿Por qué? = pourquoi ?. El porqué = la raison. por que = pour lequel."}
+        {
+          "regle": "porque (parce que)",
+          "detail": "La plus courante. Estudio porque quiero aprender."
+        },
+        {
+          "regle": "ya que (puisque, étant donné que)",
+          "detail": "Cause connue/évidente. Ya que estás aquí, ayúdame."
+        },
+        {
+          "regle": "puesto que (puisque — plus formel)",
+          "detail": "Puesto que no hay alternativa, aceptamos."
+        },
+        {
+          "regle": "como (comme — cause en début de phrase)",
+          "detail": "Como llovía, nos quedamos en casa. TOUJOURS en début de phrase pour la cause."
+        },
+        {
+          "regle": "es que (c'est que)",
+          "detail": "Excuse/explication orale. Es que no sabía."
+        },
+        {
+          "regle": "Attention : porque ≠ por qué ≠ porqué ≠ por que",
+          "detail": "porque = parce que. ¿Por qué? = pourquoi ?. El porqué = la raison. por que = pour lequel."
+        }
       ]
     },
     {
       "titre": "Cause — exemples",
       "type": "exemples",
       "items": [
-        {"es": "No vine porque estaba enfermo.", "fr": "Je ne suis pas venu parce que j'étais malade."},
-        {"es": "Ya que insistes, te lo digo.", "fr": "Puisque tu insistes, je te le dis."},
-        {"es": "Como no contestabas, me fui.", "fr": "Comme tu ne répondais pas, je suis parti."},
-        {"es": "¿Por qué no viniste? — Porque estaba enfermo.", "fr": "Pourquoi n'es-tu pas venu ? — Parce que j'étais malade."}
+        {
+          "es": "No vine porque estaba enfermo.",
+          "fr": "Je ne suis pas venu parce que j'étais malade."
+        },
+        {
+          "es": "Ya que insistes, te lo digo.",
+          "fr": "Puisque tu insistes, je te le dis."
+        },
+        {
+          "es": "Como no contestabas, me fui.",
+          "fr": "Comme tu ne répondais pas, je suis parti."
+        },
+        {
+          "es": "¿Por qué no viniste? — Porque estaba enfermo.",
+          "fr": "Pourquoi n'es-tu pas venu ? — Parce que j'étais malade."
+        }
       ]
     },
     {
       "titre": "Conséquence — así que, por lo tanto, de modo que",
       "type": "regles",
       "items": [
-        {"regle": "así que (donc, alors)", "detail": "Courant à l'oral. Llovía, así que nos quedamos."},
-        {"regle": "por lo tanto (par conséquent)", "detail": "Plus formel. No hay pruebas, por lo tanto es inocente."},
-        {"regle": "de modo que / de manera que (de sorte que)", "detail": "Habló claro, de modo que todos entendieron."},
-        {"regle": "por eso (c'est pourquoi)", "detail": "Très courant. Estaba cansado, por eso no vino."},
-        {"regle": "entonces (alors, donc)", "detail": "Courant à l'oral. ¿No vienes? Entonces me voy solo."},
-        {"regle": "de ahí que + subjonctif", "detail": "D'où le fait que. De ahí que sea tan importante."}
+        {
+          "regle": "así que (donc, alors)",
+          "detail": "Courant à l'oral. Llovía, así que nos quedamos."
+        },
+        {
+          "regle": "por lo tanto (par conséquent)",
+          "detail": "Plus formel. No hay pruebas, por lo tanto es inocente."
+        },
+        {
+          "regle": "de modo que / de manera que (de sorte que)",
+          "detail": "Habló claro, de modo que todos entendieron."
+        },
+        {
+          "regle": "por eso (c'est pourquoi)",
+          "detail": "Très courant. Estaba cansado, por eso no vino."
+        },
+        {
+          "regle": "entonces (alors, donc)",
+          "detail": "Courant à l'oral. ¿No vienes? Entonces me voy solo."
+        },
+        {
+          "regle": "de ahí que + subjonctif",
+          "detail": "D'où le fait que. De ahí que sea tan importante."
+        }
       ]
     },
     {
       "titre": "Concession — aunque, a pesar de que",
       "type": "regles",
       "items": [
-        {"regle": "aunque + indicatif = fait réel", "detail": "Aunque llueve, salgo. (il pleut vraiment, mais je sors quand même)"},
-        {"regle": "aunque + subjonctif = hypothèse", "detail": "Aunque llueva, saldré. (même s'il pleut — ce n'est pas sûr)"},
-        {"regle": "a pesar de que (malgré le fait que)", "detail": "A pesar de que estaba cansado, siguió trabajando."},
-        {"regle": "si bien (bien que — formel)", "detail": "Si bien es cierto, no es relevante."},
-        {"regle": "por más que (avoir beau)", "detail": "Por más que intento, no lo consigo."}
+        {
+          "regle": "aunque + indicatif = fait réel",
+          "detail": "Aunque llueve, salgo. (il pleut vraiment, mais je sors quand même)"
+        },
+        {
+          "regle": "aunque + subjonctif = hypothèse",
+          "detail": "Aunque llueva, saldré. (même s'il pleut — ce n'est pas sûr)"
+        },
+        {
+          "regle": "a pesar de que (malgré le fait que)",
+          "detail": "A pesar de que estaba cansado, siguió trabajando."
+        },
+        {
+          "regle": "si bien (bien que — formel)",
+          "detail": "Si bien es cierto, no es relevante."
+        },
+        {
+          "regle": "por más que (avoir beau)",
+          "detail": "Por más que intento, no lo consigo."
+        }
       ]
     },
     {
       "titre": "Concession — exemples",
       "type": "exemples",
       "items": [
-        {"es": "Aunque está enfermo, trabaja.", "fr": "Bien qu'il soit malade, il travaille. (fait → indicatif)"},
-        {"es": "Aunque esté enfermo, trabajará.", "fr": "Même s'il est malade, il travaillera. (hypothèse → subjonctif)"},
-        {"es": "Por más que estudio, no apruebo.", "fr": "J'ai beau étudier, je ne réussis pas."},
-        {"es": "A pesar de todo, lo logramos.", "fr": "Malgré tout, nous y sommes arrivés."}
+        {
+          "es": "Aunque está enfermo, trabaja.",
+          "fr": "Bien qu'il soit malade, il travaille. (fait → indicatif)"
+        },
+        {
+          "es": "Aunque esté enfermo, trabajará.",
+          "fr": "Même s'il est malade, il travaillera. (hypothèse → subjonctif)"
+        },
+        {
+          "es": "Por más que estudio, no apruebo.",
+          "fr": "J'ai beau étudier, je ne réussis pas."
+        },
+        {
+          "es": "A pesar de todo, lo logramos.",
+          "fr": "Malgré tout, nous y sommes arrivés."
+        }
       ]
     },
     {
       "titre": "Condition — si, a menos que, con tal de que",
       "type": "regles",
       "items": [
-        {"regle": "si + présent indicatif → futur/présent", "detail": "Si vienes, te lo digo. Si llueve, me quedo."},
-        {"regle": "si + imparfait subjonctif → conditionnel", "detail": "Si tuviera dinero, viajaría. JAMAIS *si tendría."},
-        {"regle": "a menos que + subjonctif (à moins que)", "detail": "Iré, a menos que llueva."},
-        {"regle": "con tal de que + subjonctif (pourvu que)", "detail": "Acepto, con tal de que sea justo."},
-        {"regle": "siempre que + subjonctif (à condition que)", "detail": "Te ayudo siempre que me lo pidas."},
-        {"regle": "en caso de que + subjonctif (au cas où)", "detail": "Llévate un paraguas en caso de que llueva."}
+        {
+          "regle": "si + présent indicatif → futur/présent",
+          "detail": "Si vienes, te lo digo. Si llueve, me quedo."
+        },
+        {
+          "regle": "si + imparfait subjonctif → conditionnel",
+          "detail": "Si tuviera dinero, viajaría. JAMAIS *si tendría."
+        },
+        {
+          "regle": "a menos que + subjonctif (à moins que)",
+          "detail": "Iré, a menos que llueva."
+        },
+        {
+          "regle": "con tal de que + subjonctif (pourvu que)",
+          "detail": "Acepto, con tal de que sea justo."
+        },
+        {
+          "regle": "siempre que + subjonctif (à condition que)",
+          "detail": "Te ayudo siempre que me lo pidas."
+        },
+        {
+          "regle": "en caso de que + subjonctif (au cas où)",
+          "detail": "Llévate un paraguas en caso de que llueva."
+        }
       ]
     },
     {
       "titre": "Condition — exemples",
       "type": "exemples",
       "items": [
-        {"es": "Si puedo, iré.", "fr": "Si je peux, j'irai. (réel → indicatif)"},
-        {"es": "Si pudiera, iría.", "fr": "Si je pouvais, j'irais. (irréel → subjonctif imp.)"},
-        {"es": "A menos que me llames, no vendré.", "fr": "À moins que tu m'appelles, je ne viendrai pas."},
-        {"es": "Te perdono con tal de que no lo repitas.", "fr": "Je te pardonne à condition que tu ne recommences pas."}
+        {
+          "es": "Si puedo, iré.",
+          "fr": "Si je peux, j'irai. (réel → indicatif)"
+        },
+        {
+          "es": "Si pudiera, iría.",
+          "fr": "Si je pouvais, j'irais. (irréel → subjonctif imp.)"
+        },
+        {
+          "es": "A menos que me llames, no vendré.",
+          "fr": "À moins que tu m'appelles, je ne viendrai pas."
+        },
+        {
+          "es": "Te perdono con tal de que no lo repitas.",
+          "fr": "Je te pardonne à condition que tu ne recommences pas."
+        }
       ]
     },
     {
       "titre": "Temps — cuando, mientras, hasta que",
       "type": "regles",
       "items": [
-        {"regle": "cuando + indicatif = habitude/passé", "detail": "Cuando llega, come. Cuando llegó, comió."},
-        {"regle": "cuando + subjonctif = futur", "detail": "Cuando llegue, comeremos. (pas encore arrivé)"},
-        {"regle": "mientras (pendant que, tandis que)", "detail": "Mientras dormía, sonó el teléfono."},
-        {"regle": "antes de que + subjonctif (avant que)", "detail": "Antes de que salgas, llámame. Toujours subjonctif."},
-        {"regle": "después de que + indicatif ou subjonctif", "detail": "Después de que llegó / llegara, comimos."},
-        {"regle": "hasta que (jusqu'à ce que)", "detail": "Espera hasta que yo vuelva. (subj. si futur)"},
-        {"regle": "desde que (depuis que)", "detail": "Desde que vivo aquí, soy feliz."},
-        {"regle": "en cuanto / tan pronto como (dès que)", "detail": "En cuanto llegue, te llamo. (subj. si futur)"}
+        {
+          "regle": "cuando + indicatif = habitude/passé",
+          "detail": "Cuando llega, come. Cuando llegó, comió."
+        },
+        {
+          "regle": "cuando + subjonctif = futur",
+          "detail": "Cuando llegue, comeremos. (pas encore arrivé)"
+        },
+        {
+          "regle": "mientras (pendant que, tandis que)",
+          "detail": "Mientras dormía, sonó el teléfono."
+        },
+        {
+          "regle": "antes de que + subjonctif (avant que)",
+          "detail": "Antes de que salgas, llámame. Toujours subjonctif."
+        },
+        {
+          "regle": "después de que + indicatif ou subjonctif",
+          "detail": "Después de que llegó / llegara, comimos."
+        },
+        {
+          "regle": "hasta que (jusqu'à ce que)",
+          "detail": "Espera hasta que yo vuelva. (subj. si futur)"
+        },
+        {
+          "regle": "desde que (depuis que)",
+          "detail": "Desde que vivo aquí, soy feliz."
+        },
+        {
+          "regle": "en cuanto / tan pronto como (dès que)",
+          "detail": "En cuanto llegue, te llamo. (subj. si futur)"
+        }
       ]
     },
     {
       "titre": "Temps — exemples",
       "type": "exemples",
       "items": [
-        {"es": "Cuando era niño, jugaba mucho.", "fr": "Quand j'étais enfant, je jouais beaucoup. (passé → indicatif)"},
-        {"es": "Cuando llegues, avísame.", "fr": "Quand tu arriveras, préviens-moi. (futur → subjonctif)"},
-        {"es": "Mientras tú cocinas, yo limpio.", "fr": "Pendant que tu cuisines, moi je nettoie."},
-        {"es": "Antes de que te vayas, dime algo.", "fr": "Avant que tu partes, dis-moi quelque chose."},
-        {"es": "En cuanto lo sepa, te llamo.", "fr": "Dès que je le saurai, je t'appelle."}
+        {
+          "es": "Cuando era niño, jugaba mucho.",
+          "fr": "Quand j'étais enfant, je jouais beaucoup. (passé → indicatif)"
+        },
+        {
+          "es": "Cuando llegues, avísame.",
+          "fr": "Quand tu arriveras, préviens-moi. (futur → subjonctif)"
+        },
+        {
+          "es": "Mientras tú cocinas, yo limpio.",
+          "fr": "Pendant que tu cuisines, moi je nettoie."
+        },
+        {
+          "es": "Antes de que te vayas, dime algo.",
+          "fr": "Avant que tu partes, dis-moi quelque chose."
+        },
+        {
+          "es": "En cuanto lo sepa, te llamo.",
+          "fr": "Dès que je le saurai, je t'appelle."
+        }
       ]
     },
     {
       "titre": "But — para que, a fin de que",
       "type": "regles",
       "items": [
-        {"regle": "para que + subjonctif (pour que)", "detail": "Te lo digo para que lo sepas. Toujours subjonctif."},
-        {"regle": "a fin de que + subjonctif (afin que)", "detail": "Plus formel. A fin de que todos entiendan."},
-        {"regle": "para + infinitif (si même sujet)", "detail": "Estudio para aprender. (je étudie pour apprendre — même sujet)"},
-        {"regle": "Piège francophone", "detail": "En français « pour que » + subjonctif. Même chose en espagnol. Mais si même sujet → infinitif obligatoire."}
+        {
+          "regle": "para que + subjonctif (pour que)",
+          "detail": "Te lo digo para que lo sepas. Toujours subjonctif."
+        },
+        {
+          "regle": "a fin de que + subjonctif (afin que)",
+          "detail": "Plus formel. A fin de que todos entiendan."
+        },
+        {
+          "regle": "para + infinitif (si même sujet)",
+          "detail": "Estudio para aprender. (je étudie pour apprendre — même sujet)"
+        },
+        {
+          "regle": "Piège francophone",
+          "detail": "En français « pour que » + subjonctif. Même chose en espagnol. Mais si même sujet → infinitif obligatoire."
+        }
       ]
     },
     {
       "titre": "Connecteurs de discours fréquents",
       "type": "tableau",
-      "colonnes": ["Espagnol", "Français", "Usage"],
+      "colonnes": [
+        "Espagnol",
+        "Français",
+        "Usage"
+      ],
       "lignes": [
-        ["además", "de plus, en outre", "ajouter"],
-        ["sin embargo", "cependant", "opposer"],
-        ["no obstante", "néanmoins", "opposer (formel)"],
-        ["en cambio", "en revanche", "contraster"],
-        ["por un lado... por otro", "d'un côté... de l'autre", "balancer"],
-        ["en primer lugar", "en premier lieu", "ordonner"],
-        ["por último", "enfin, pour finir", "conclure"],
-        ["en resumen", "en résumé", "résumer"],
-        ["es decir", "c'est-à-dire", "reformuler"],
-        ["o sea", "c'est-à-dire (oral)", "reformuler"],
-        ["en efecto", "en effet", "confirmer"],
-        ["de hecho", "en fait", "préciser"],
-        ["por ejemplo", "par exemple", "illustrer"],
-        ["en definitiva", "en définitive", "conclure"]
+        [
+          "además",
+          "de plus, en outre",
+          "ajouter"
+        ],
+        [
+          "sin embargo",
+          "cependant",
+          "opposer"
+        ],
+        [
+          "no obstante",
+          "néanmoins",
+          "opposer (formel)"
+        ],
+        [
+          "en cambio",
+          "en revanche",
+          "contraster"
+        ],
+        [
+          "por un lado... por otro",
+          "d'un côté... de l'autre",
+          "balancer"
+        ],
+        [
+          "en primer lugar",
+          "en premier lieu",
+          "ordonner"
+        ],
+        [
+          "por último",
+          "enfin, pour finir",
+          "conclure"
+        ],
+        [
+          "en resumen",
+          "en résumé",
+          "résumer"
+        ],
+        [
+          "es decir",
+          "c'est-à-dire",
+          "reformuler"
+        ],
+        [
+          "o sea",
+          "c'est-à-dire (oral)",
+          "reformuler"
+        ],
+        [
+          "en efecto",
+          "en effet",
+          "confirmer"
+        ],
+        [
+          "de hecho",
+          "en fait",
+          "préciser"
+        ],
+        [
+          "por ejemplo",
+          "par exemple",
+          "illustrer"
+        ],
+        [
+          "en definitiva",
+          "en définitive",
+          "conclure"
+        ]
       ]
     },
     {
       "titre": "Résumé express",
       "type": "regles",
       "items": [
-        {"regle": "y/e, o/u, ni", "detail": "Coordination. e devant i-/hi-, u devant o-/ho-."},
-        {"regle": "pero = opposition, sino = correction", "detail": "No A sino B (remplace). A pero B (les deux coexistent)."},
-        {"regle": "porque = parce que, como = comme (en début)", "detail": "Cause. Attention aux 4 graphies : porque/por qué/porqué/por que."},
-        {"regle": "aunque + indicatif = fait, + subjonctif = hypothèse", "detail": "Concession. Même pattern pour cuando, hasta que, etc."},
-        {"regle": "si + indicatif (réel), si + subj. imp. (irréel)", "detail": "Condition. JAMAIS *si + conditionnel."},
-        {"regle": "para que / antes de que → toujours subjonctif", "detail": "But et antériorité. Même sujet → infinitif."}
+        {
+          "regle": "y/e, o/u, ni",
+          "detail": "Coordination. e devant i-/hi-, u devant o-/ho-."
+        },
+        {
+          "regle": "pero = opposition, sino = correction",
+          "detail": "No A sino B (remplace). A pero B (les deux coexistent)."
+        },
+        {
+          "regle": "porque = parce que, como = comme (en début)",
+          "detail": "Cause. Attention aux 4 graphies : porque/por qué/porqué/por que."
+        },
+        {
+          "regle": "aunque + indicatif = fait, + subjonctif = hypothèse",
+          "detail": "Concession. Même pattern pour cuando, hasta que, etc."
+        },
+        {
+          "regle": "si + indicatif (réel), si + subj. imp. (irréel)",
+          "detail": "Condition. JAMAIS *si + conditionnel."
+        },
+        {
+          "regle": "para que / antes de que → toujours subjonctif",
+          "detail": "But et antériorité. Même sujet → infinitif."
+        }
       ]
     }
+  ],
+  "hooks": [
+    "conjunción"
   ]
 }

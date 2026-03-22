@@ -13,98 +13,312 @@
     {
       "titre": "Futur simple — terminaisons",
       "type": "tableau",
-      "colonnes": ["", "-AR (hablar)", "-ER (comer)", "-IR (vivir)"],
+      "colonnes": [
+        "",
+        "-AR (hablar)",
+        "-ER (comer)",
+        "-IR (vivir)"
+      ],
       "lignes": [
-        ["yo", "hablaré", "comeré", "viviré"],
-        ["tú", "hablarás", "comerás", "vivirás"],
-        ["él/ella", "hablará", "comerá", "vivirá"],
-        ["nosotros", "hablaremos", "comeremos", "viviremos"],
-        ["vosotros", "hablaréis", "comeréis", "viviréis"],
-        ["ellos", "hablarán", "comerán", "vivirán"]
+        [
+          "yo",
+          "hablaré",
+          "comeré",
+          "viviré"
+        ],
+        [
+          "tú",
+          "hablarás",
+          "comerás",
+          "vivirás"
+        ],
+        [
+          "él/ella",
+          "hablará",
+          "comerá",
+          "vivirá"
+        ],
+        [
+          "nosotros",
+          "hablaremos",
+          "comeremos",
+          "viviremos"
+        ],
+        [
+          "vosotros",
+          "hablaréis",
+          "comeréis",
+          "viviréis"
+        ],
+        [
+          "ellos",
+          "hablarán",
+          "comerán",
+          "vivirán"
+        ]
       ]
     },
     {
       "titre": "Conditionnel — terminaisons",
       "type": "tableau",
-      "colonnes": ["", "-AR (hablar)", "-ER (comer)", "-IR (vivir)"],
+      "colonnes": [
+        "",
+        "-AR (hablar)",
+        "-ER (comer)",
+        "-IR (vivir)"
+      ],
       "lignes": [
-        ["yo", "hablaría", "comería", "viviría"],
-        ["tú", "hablarías", "comerías", "vivirías"],
-        ["él/ella", "hablaría", "comería", "viviría"],
-        ["nosotros", "hablaríamos", "comeríamos", "viviríamos"],
-        ["vosotros", "hablaríais", "comeríais", "viviríais"],
-        ["ellos", "hablarían", "comerían", "vivirían"]
+        [
+          "yo",
+          "hablaría",
+          "comería",
+          "viviría"
+        ],
+        [
+          "tú",
+          "hablarías",
+          "comerías",
+          "vivirías"
+        ],
+        [
+          "él/ella",
+          "hablaría",
+          "comería",
+          "viviría"
+        ],
+        [
+          "nosotros",
+          "hablaríamos",
+          "comeríamos",
+          "viviríamos"
+        ],
+        [
+          "vosotros",
+          "hablaríais",
+          "comeríais",
+          "viviríais"
+        ],
+        [
+          "ellos",
+          "hablarían",
+          "comerían",
+          "vivirían"
+        ]
       ]
     },
     {
       "titre": "Astuce mémorisation",
       "type": "regles",
       "items": [
-        {"regle": "Futur = infinitif + terminaisons de haber (he, has, ha…)", "detail": "hablar + é/ás/á/emos/éis/án → hablaré, hablarás…"},
-        {"regle": "Conditionnel = infinitif + terminaisons de l'imparfait de haber", "detail": "hablar + ía/ías/ía/íamos/íais/ían → hablaría, hablarías…"},
-        {"regle": "Mêmes terminaisons pour -AR, -ER, -IR", "detail": "Pas besoin de distinguer les groupes. Une seule série à apprendre."}
+        {
+          "regle": "Futur = infinitif + terminaisons de haber (he, has, ha…)",
+          "detail": "hablar + é/ás/á/emos/éis/án → hablaré, hablarás…"
+        },
+        {
+          "regle": "Conditionnel = infinitif + terminaisons de l'imparfait de haber",
+          "detail": "hablar + ía/ías/ía/íamos/íais/ían → hablaría, hablarías…"
+        },
+        {
+          "regle": "Mêmes terminaisons pour -AR, -ER, -IR",
+          "detail": "Pas besoin de distinguer les groupes. Une seule série à apprendre."
+        }
       ]
     },
     {
       "titre": "Les 12 irréguliers (radical raccourci)",
       "type": "tableau",
-      "colonnes": ["Infinitif", "Radical irrég.", "Futur yo", "Conditionnel yo", "Catégorie"],
+      "colonnes": [
+        "Infinitif",
+        "Radical irrég.",
+        "Futur yo",
+        "Conditionnel yo",
+        "Catégorie"
+      ],
       "lignes": [
-        ["tener", "tendr-", "tendré", "tendría", "perte de voyelle + d"],
-        ["venir", "vendr-", "vendré", "vendría", "perte de voyelle + d"],
-        ["poner", "pondr-", "pondré", "pondría", "perte de voyelle + d"],
-        ["salir", "saldr-", "saldré", "saldría", "perte de voyelle + d"],
-        ["valer", "valdr-", "valdré", "valdría", "perte de voyelle + d"],
-        ["poder", "podr-", "podré", "podría", "perte de voyelle"],
-        ["saber", "sabr-", "sabré", "sabría", "perte de voyelle"],
-        ["haber", "habr-", "habré", "habría", "perte de voyelle"],
-        ["caber", "cabr-", "cabré", "cabría", "perte de voyelle"],
-        ["querer", "querr-", "querré", "querría", "perte de voyelle + rr"],
-        ["hacer", "har-", "haré", "haría", "radical court"],
-        ["decir", "dir-", "diré", "diría", "radical court"]
+        [
+          "tener",
+          "tendr-",
+          "tendré",
+          "tendría",
+          "perte de voyelle + d"
+        ],
+        [
+          "venir",
+          "vendr-",
+          "vendré",
+          "vendría",
+          "perte de voyelle + d"
+        ],
+        [
+          "poner",
+          "pondr-",
+          "pondré",
+          "pondría",
+          "perte de voyelle + d"
+        ],
+        [
+          "salir",
+          "saldr-",
+          "saldré",
+          "saldría",
+          "perte de voyelle + d"
+        ],
+        [
+          "valer",
+          "valdr-",
+          "valdré",
+          "valdría",
+          "perte de voyelle + d"
+        ],
+        [
+          "poder",
+          "podr-",
+          "podré",
+          "podría",
+          "perte de voyelle"
+        ],
+        [
+          "saber",
+          "sabr-",
+          "sabré",
+          "sabría",
+          "perte de voyelle"
+        ],
+        [
+          "haber",
+          "habr-",
+          "habré",
+          "habría",
+          "perte de voyelle"
+        ],
+        [
+          "caber",
+          "cabr-",
+          "cabré",
+          "cabría",
+          "perte de voyelle"
+        ],
+        [
+          "querer",
+          "querr-",
+          "querré",
+          "querría",
+          "perte de voyelle + rr"
+        ],
+        [
+          "hacer",
+          "har-",
+          "haré",
+          "haría",
+          "radical court"
+        ],
+        [
+          "decir",
+          "dir-",
+          "diré",
+          "diría",
+          "radical court"
+        ]
       ]
     },
     {
       "titre": "Irréguliers — 3 patterns faciles",
       "type": "regles",
       "items": [
-        {"regle": "Groupe 1 : e/i disparaît → +d", "detail": "tener → tendr-, venir → vendr-, poner → pondr-, salir → saldr-, valer → valdr-"},
-        {"regle": "Groupe 2 : e disparaît", "detail": "poder → podr-, saber → sabr-, haber → habr-, caber → cabr-"},
-        {"regle": "Groupe 3 : radical court", "detail": "hacer → har-, decir → dir-, querer → querr-"}
+        {
+          "regle": "Groupe 1 : e/i disparaît → +d",
+          "detail": "tener → tendr-, venir → vendr-, poner → pondr-, salir → saldr-, valer → valdr-"
+        },
+        {
+          "regle": "Groupe 2 : e disparaît",
+          "detail": "poder → podr-, saber → sabr-, haber → habr-, caber → cabr-"
+        },
+        {
+          "regle": "Groupe 3 : radical court",
+          "detail": "hacer → har-, decir → dir-, querer → querr-"
+        }
       ]
     },
     {
       "titre": "Usages du futur",
       "type": "regles",
       "items": [
-        {"regle": "Action future", "detail": "Mañana iré al cine. El año que viene viajaremos."},
-        {"regle": "Prédiction / promesse", "detail": "Lloverá mañana. Te lo diré."},
-        {"regle": "Probabilité au présent (futur de conjecture)", "detail": "¿Qué hora será? (= il doit être quelle heure ?) Tendrá unos 30 años (= il doit avoir ~30 ans)."},
-        {"regle": "Alternative courante : ir a + infinitif", "detail": "Voy a comer (je vais manger) est souvent préféré au futur simple dans la conversation."}
+        {
+          "regle": "Action future",
+          "detail": "Mañana iré al cine. El año que viene viajaremos."
+        },
+        {
+          "regle": "Prédiction / promesse",
+          "detail": "Lloverá mañana. Te lo diré."
+        },
+        {
+          "regle": "Probabilité au présent (futur de conjecture)",
+          "detail": "¿Qué hora será? (= il doit être quelle heure ?) Tendrá unos 30 años (= il doit avoir ~30 ans)."
+        },
+        {
+          "regle": "Alternative courante : ir a + infinitif",
+          "detail": "Voy a comer (je vais manger) est souvent préféré au futur simple dans la conversation."
+        }
       ]
     },
     {
       "titre": "Usages du conditionnel",
       "type": "regles",
       "items": [
-        {"regle": "Hypothèse / souhait", "detail": "Me gustaría viajar. Sería genial."},
-        {"regle": "Politesse", "detail": "¿Podrías ayudarme? ¿Tendría usted un momento?"},
-        {"regle": "Conseil", "detail": "Yo que tú, estudiaría más. Deberías descansar."},
-        {"regle": "Futur dans le passé", "detail": "Dijo que vendría. Pensé que llovería."},
-        {"regle": "Probabilité dans le passé", "detail": "Serían las tres cuando llegó (= il devait être 3h)."}
+        {
+          "regle": "Hypothèse / souhait",
+          "detail": "Me gustaría viajar. Sería genial."
+        },
+        {
+          "regle": "Politesse",
+          "detail": "¿Podrías ayudarme? ¿Tendría usted un momento?"
+        },
+        {
+          "regle": "Conseil",
+          "detail": "Yo que tú, estudiaría más. Deberías descansar."
+        },
+        {
+          "regle": "Futur dans le passé",
+          "detail": "Dijo que vendría. Pensé que llovería."
+        },
+        {
+          "regle": "Probabilité dans le passé",
+          "detail": "Serían las tres cuando llegó (= il devait être 3h)."
+        }
       ]
     },
     {
       "titre": "Futur vs Conditionnel — exemples contrastés",
       "type": "exemples",
       "items": [
-        {"es": "Iré a Madrid.", "fr": "J'irai à Madrid. (futur certain)"},
-        {"es": "Iría a Madrid.", "fr": "J'irais à Madrid. (hypothèse)"},
-        {"es": "¿Qué hora será?", "fr": "Quelle heure peut-il être ? (conjecture présent)"},
-        {"es": "¿Qué hora sería?", "fr": "Quelle heure pouvait-il être ? (conjecture passé)"},
-        {"es": "Dice que vendrá.", "fr": "Il dit qu'il viendra. (futur)"},
-        {"es": "Dijo que vendría.", "fr": "Il a dit qu'il viendrait. (conditionnel)"}
+        {
+          "es": "Iré a Madrid.",
+          "fr": "J'irai à Madrid. (futur certain)"
+        },
+        {
+          "es": "Iría a Madrid.",
+          "fr": "J'irais à Madrid. (hypothèse)"
+        },
+        {
+          "es": "¿Qué hora será?",
+          "fr": "Quelle heure peut-il être ? (conjecture présent)"
+        },
+        {
+          "es": "¿Qué hora sería?",
+          "fr": "Quelle heure pouvait-il être ? (conjecture passé)"
+        },
+        {
+          "es": "Dice que vendrá.",
+          "fr": "Il dit qu'il viendra. (futur)"
+        },
+        {
+          "es": "Dijo que vendría.",
+          "fr": "Il a dit qu'il viendrait. (conditionnel)"
+        }
       ]
     }
+  ],
+  "hooks": [
+    "verbo"
   ]
 }

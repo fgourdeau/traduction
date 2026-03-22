@@ -8,7 +8,7 @@ from PySide6.QtGui import QKeySequence, QShortcut, QAction, QColor
 from PySide6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QSplitter, QStatusBar, QLabel, QProgressBar, QFrame,
-    QMenuBar, QFileDialog, QDockWidget,
+    QMenuBar, QFileDialog, QDockWidget, QLineEdit, QPushButton,
 )
 
 try:
@@ -87,6 +87,109 @@ class FenetrePrincipale(QMainWindow):
 
         self._vue_texte = VueTexte()
         centre_layout.addWidget(self._vue_texte, stretch=1)
+
+        # ─── Bandeau session / navigation en bas du texte ────────
+        self._session_bar = QWidget()
+        self._session_bar.setStyleSheet(
+            f"background: {COULEUR_PANNEAU.name()}; "
+            f"border-top: 1px solid {COULEUR_BORDURE.name()};"
+        )
+        self._session_bar.setFixedHeight(36)
+        sb_layout = QHBoxLayout(self._session_bar)
+        sb_layout.setContentsMargins(12, 4, 12, 4)
+        sb_layout.setSpacing(8)
+
+        btn_style_small = f"""
+            QPushButton {{
+                background: {COULEUR_PANNEAU.name()};
+                border: 1px solid {COULEUR_BORDURE.name()};
+                border-radius: 4px;
+                padding: 2px 10px;
+                font-size: 11px;
+                color: #5c5349;
+            }}
+            QPushButton:hover {{
+                background: #fff3e0;
+                border-color: {COULEUR_ACCENT.name()};
+                color: {COULEUR_ACCENT.name()};
+            }}
+            QPushButton:disabled {{
+                color: #c4b5a2;
+            }}
+        """
+
+        # Bouton Ouvrir
+        self._btn_ouvrir = QPushButton("📂 Ouvrir")
+        self._btn_ouvrir.setToolTip("Ouvrir une page sauvegardée")
+        self._btn_ouvrir.setFixedHeight(26)
+        self._btn_ouvrir.setStyleSheet(btn_style_small)
+        self._btn_ouvrir.clicked.connect(lambda: bus().ouverture_demandee.emit())
+        sb_layout.addWidget(self._btn_ouvrir)
+
+        # Bouton page précédente
+        self._btn_page_prec = QPushButton("◀")
+        self._btn_page_prec.setToolTip("Page précédente")
+        self._btn_page_prec.setFixedSize(28, 26)
+        self._btn_page_prec.setStyleSheet(btn_style_small)
+        self._btn_page_prec.setEnabled(False)
+        self._btn_page_prec.clicked.connect(
+            lambda: bus().page_precedente_demandee.emit())
+        sb_layout.addWidget(self._btn_page_prec)
+
+        # Label session + page
+        self._lbl_session_page = QLabel("")
+        self._lbl_session_page.setStyleSheet(
+            f"color: {COULEUR_ACCENT.name()}; font-size: 12px; "
+            f"font-weight: bold;"
+        )
+        self._lbl_session_page.setAlignment(Qt.AlignCenter)
+        sb_layout.addWidget(self._lbl_session_page)
+
+        # Bouton page suivante
+        self._btn_page_suiv = QPushButton("▶")
+        self._btn_page_suiv.setToolTip("Page suivante")
+        self._btn_page_suiv.setFixedSize(28, 26)
+        self._btn_page_suiv.setStyleSheet(btn_style_small)
+        self._btn_page_suiv.setEnabled(False)
+        self._btn_page_suiv.clicked.connect(
+            lambda: bus().page_suivante_demandee.emit())
+        sb_layout.addWidget(self._btn_page_suiv)
+
+        # Séparateur
+        sep_sb = QLabel("│")
+        sep_sb.setStyleSheet("color: #c0b8ad;")
+        sb_layout.addWidget(sep_sb)
+
+        # Champ nom de session
+        self._session_name = QLineEdit()
+        self._session_name.setPlaceholderText("Session…")
+        self._session_name.setText("Lecture")
+        self._session_name.setMaximumWidth(200)
+        self._session_name.setFixedHeight(24)
+        self._session_name.setStyleSheet(f"""
+            QLineEdit {{
+                border: 1px solid {COULEUR_BORDURE.name()};
+                border-radius: 4px;
+                padding: 2px 8px;
+                font-size: 11px;
+                background: white;
+            }}
+            QLineEdit:focus {{
+                border-color: {COULEUR_ACCENT.name()};
+            }}
+        """)
+        sb_layout.addWidget(self._session_name)
+
+        # Bouton Sauvegarder
+        self._btn_sauvegarder = QPushButton("💾 Sauvegarder")
+        self._btn_sauvegarder.setToolTip("Sauvegarder la page dans la session")
+        self._btn_sauvegarder.setFixedHeight(26)
+        self._btn_sauvegarder.setStyleSheet(btn_style_small)
+        self._btn_sauvegarder.clicked.connect(
+            lambda: bus().sauvegarde_demandee.emit())
+        sb_layout.addWidget(self._btn_sauvegarder)
+
+        centre_layout.addWidget(self._session_bar)
 
         self.setCentralWidget(centre)
 
@@ -263,8 +366,8 @@ class FenetrePrincipale(QMainWindow):
         self._status.addPermanentWidget(self._progress)
 
         hint = QLabel(
-            "Tab/Shift+Tab: phrases  •  Clic: définition  "
-            "•  Clic droit: traduction  •  F5: webcam  •  F6: écran  •  F7: coller"
+            "Tab: phrases  •  Clic: définition  •  Clic droit: traduction  "
+            "•  Légende: références"
         )
         hint.setStyleSheet("color: #9b9084; font-size: 11px;")
         self._status.addPermanentWidget(hint)
@@ -418,7 +521,7 @@ class FenetrePrincipale(QMainWindow):
         # Reset la navigation de session (c'est une nouvelle page, pas encore sauvegardée)
         self._current_session_id = None
         self._current_page_id = None
-        self._capture.clear_page_info()
+        self._clear_page_info()
 
         # Sanitizer : nettoyer le texte avant affichage et analyse
         texte_propre = sanitiser(texte)
@@ -459,6 +562,20 @@ class FenetrePrincipale(QMainWindow):
     @Slot(bool)
     def _on_chargement(self, en_cours: bool) -> None:
         self._progress.setVisible(en_cours)
+
+    def _set_page_info(self, session_nom: str, page_numero: int,
+                       nb_pages: int) -> None:
+        """Met à jour la barre de statut avec les infos de session/page."""
+        self._session_name.setText(session_nom)
+        self._lbl_session_page.setText(f"Page {page_numero}/{nb_pages}")
+        self._btn_page_prec.setEnabled(page_numero > 1)
+        self._btn_page_suiv.setEnabled(page_numero < nb_pages)
+
+    def _clear_page_info(self) -> None:
+        """Réinitialise l'affichage de session (nouvelle analyse)."""
+        self._lbl_session_page.setText("")
+        self._btn_page_prec.setEnabled(False)
+        self._btn_page_suiv.setEnabled(False)
 
     @Slot(str)
     def _on_wordref(self, url: str) -> None:
@@ -542,7 +659,7 @@ class FenetrePrincipale(QMainWindow):
         analyse_json = json.dumps({"phrases": phrases_json}, ensure_ascii=False)
 
         # Session : trouver ou créer
-        nom_session = self._capture.session_name
+        nom_session = self._session_name.text().strip() or "Sans titre"
         database = db()
         sessions = database.lister_sessions()
         session = next((s for s in sessions if s.nom == nom_session), None)
@@ -586,7 +703,7 @@ class FenetrePrincipale(QMainWindow):
         self._current_page_id = page.id
 
         # Mettre à jour la navigation dans le widget capture
-        self._capture.set_page_info(session.nom, page.numero, nb_pages)
+        self._set_page_info(session.nom, page.numero, nb_pages)
 
         # Reset
         self._analyse_worker.reset()

@@ -450,130 +450,15 @@ class CaptureWidget(QWidget):
         btn_grid.addLayout(row2)
         layout.addLayout(btn_grid)
 
-        # ─── Session ─────────────────────────────────────────────
-        from PySide6.QtWidgets import QLineEdit
-
-        sep = QFrame()
-        sep.setFrameShape(QFrame.HLine)
-        sep.setStyleSheet(f"color: {COULEUR_ACCENT.name()};")
-        layout.addWidget(sep)
-
-        session_label = QLabel("Session :")
-        session_label.setStyleSheet("font-size: 11px; color: #9b9084;")
-        layout.addWidget(session_label)
-
-        self._session_name = QLineEdit()
-        self._session_name.setPlaceholderText("Nom de session…")
-        self._session_name.setText("Lecture")
-        self._session_name.setStyleSheet(f"""
-            QLineEdit {{
-                border: 1px solid {COULEUR_BORDURE.name()};
-                border-radius: 4px;
-                padding: 4px 8px;
-                font-size: 12px;
-                background: white;
-            }}
-            QLineEdit:focus {{
-                border-color: {COULEUR_ACCENT.name()};
-            }}
-        """)
-        layout.addWidget(self._session_name)
-
-        # Label de page courante + navigation
-        self._lbl_page = QLabel("")
-        self._lbl_page.setStyleSheet(
-            f"font-size: 11px; color: {COULEUR_ACCENT.name()}; "
-            f"font-weight: bold; padding: 2px 0;"
-        )
-        self._lbl_page.setAlignment(Qt.AlignCenter)
-        self._lbl_page.hide()
-        layout.addWidget(self._lbl_page)
-
-        row_nav = QHBoxLayout()
-        row_nav.setSpacing(4)
-
-        self._btn_page_prec = QPushButton("◀ Préc.")
-        self._btn_page_suiv = QPushButton("Suiv. ▶")
-        self._btn_page_prec.setEnabled(False)
-        self._btn_page_suiv.setEnabled(False)
-
-        nav_style = f"""
-            QPushButton {{
-                background: #fffdf9;
-                border: 1px solid #e0d6c8;
-                border-radius: 6px;
-                padding: 4px 8px;
-                font-size: 11px;
-                color: #1a1613;
-            }}
-            QPushButton:hover {{
-                background: #fff3e0;
-                border-color: {COULEUR_ACCENT.name()};
-            }}
-            QPushButton:disabled {{
-                color: #c4b5a2;
-                background: #f0ebe5;
-            }}
-        """
-        self._btn_page_prec.setFixedHeight(28)
-        self._btn_page_suiv.setFixedHeight(28)
-        self._btn_page_prec.setStyleSheet(nav_style)
-        self._btn_page_suiv.setStyleSheet(nav_style)
-
-        row_nav.addWidget(self._btn_page_prec)
-        row_nav.addWidget(self._btn_page_suiv)
-        layout.addLayout(row_nav)
-
-        row3 = QHBoxLayout()
-        row3.setSpacing(4)
-
-        self._btn_sauvegarder = QPushButton("💾 Sauvegarder")
-        self._btn_ouvrir = QPushButton("📂 Ouvrir")
-
-        for btn in (self._btn_sauvegarder, self._btn_ouvrir):
-            btn.setFixedHeight(32)
-            btn.setStyleSheet(btn_style)
-
-        row3.addWidget(self._btn_sauvegarder)
-        row3.addWidget(self._btn_ouvrir)
-        layout.addLayout(row3)
-
         self._btn_webcam.clicked.connect(self._demarrer_webcam)
         self._btn_ecran.clicked.connect(self._capturer_ecran)
         self._btn_coller.clicked.connect(self._coller_presse_papier)
         self._btn_capturer.clicked.connect(self._envoyer_capture)
         self._btn_stop.clicked.connect(self._arreter_webcam)
-        self._btn_sauvegarder.clicked.connect(
-            lambda: bus().sauvegarde_demandee.emit())
-        self._btn_ouvrir.clicked.connect(
-            lambda: bus().ouverture_demandee.emit())
-        self._btn_page_prec.clicked.connect(
-            lambda: bus().page_precedente_demandee.emit())
-        self._btn_page_suiv.clicked.connect(
-            lambda: bus().page_suivante_demandee.emit())
 
     def _connect_signals(self) -> None:
         bus().capture_webcam_demandee.connect(self._demarrer_webcam)
         bus().capture_ecran_demandee.connect(self._capturer_ecran)
-
-    @property
-    def session_name(self) -> str:
-        return self._session_name.text().strip() or "Sans titre"
-
-    def set_page_info(self, session_nom: str, page_numero: int,
-                      nb_pages: int) -> None:
-        """Met à jour l'affichage de navigation de page."""
-        self._session_name.setText(session_nom)
-        self._lbl_page.setText(f"Page {page_numero} / {nb_pages}")
-        self._lbl_page.show()
-        self._btn_page_prec.setEnabled(page_numero > 1)
-        self._btn_page_suiv.setEnabled(page_numero < nb_pages)
-
-    def clear_page_info(self) -> None:
-        """Efface l'info de page (nouvelle analyse, pas de session)."""
-        self._lbl_page.hide()
-        self._btn_page_prec.setEnabled(False)
-        self._btn_page_suiv.setEnabled(False)
 
     # ─── Webcam ──────────────────────────────────────────────────────
 

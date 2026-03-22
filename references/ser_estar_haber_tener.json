@@ -8,139 +8,412 @@
     {
       "titre": "Vue d'ensemble",
       "type": "tableau",
-      "colonnes": ["Verbe", "Idée centrale", "Équivalent français", "Mot-clé"],
+      "colonnes": [
+        "Verbe",
+        "Idée centrale",
+        "Équivalent français",
+        "Mot-clé"
+      ],
       "lignes": [
-        ["ser", "identité, nature, définition", "être (permanent)", "ce qu'on EST"],
-        ["estar", "état, situation, lieu", "être (circonstanciel)", "comment/où on EST"],
-        ["haber", "existence, auxiliaire", "avoir (aux.) / il y a", "il y a / j'ai fait"],
-        ["tener", "possession, sensation, âge", "avoir (posséder)", "ce qu'on A"]
+        [
+          "ser",
+          "identité, nature, définition",
+          "être (permanent)",
+          "ce qu'on EST"
+        ],
+        [
+          "estar",
+          "état, situation, lieu",
+          "être (circonstanciel)",
+          "comment/où on EST"
+        ],
+        [
+          "haber",
+          "existence, auxiliaire",
+          "avoir (aux.) / il y a",
+          "il y a / j'ai fait"
+        ],
+        [
+          "tener",
+          "possession, sensation, âge",
+          "avoir (posséder)",
+          "ce qu'on A"
+        ]
       ]
     },
     {
       "titre": "Conjugaison au présent",
       "type": "tableau",
-      "colonnes": ["", "ser", "estar", "haber", "tener"],
+      "colonnes": [
+        "",
+        "ser",
+        "estar",
+        "haber",
+        "tener"
+      ],
       "lignes": [
-        ["yo", "soy", "estoy", "he", "tengo"],
-        ["tú", "eres", "estás", "has", "tienes"],
-        ["él/ella", "es", "está", "ha / hay", "tiene"],
-        ["nosotros", "somos", "estamos", "hemos", "tenemos"],
-        ["vosotros", "sois", "estáis", "habéis", "tenéis"],
-        ["ellos", "son", "están", "han", "tienen"]
+        [
+          "yo",
+          "soy",
+          "estoy",
+          "he",
+          "tengo"
+        ],
+        [
+          "tú",
+          "eres",
+          "estás",
+          "has",
+          "tienes"
+        ],
+        [
+          "él/ella",
+          "es",
+          "está",
+          "ha / hay",
+          "tiene"
+        ],
+        [
+          "nosotros",
+          "somos",
+          "estamos",
+          "hemos",
+          "tenemos"
+        ],
+        [
+          "vosotros",
+          "sois",
+          "estáis",
+          "habéis",
+          "tenéis"
+        ],
+        [
+          "ellos",
+          "son",
+          "están",
+          "han",
+          "tienen"
+        ]
       ]
     },
     {
       "titre": "SER — quand l'utiliser",
       "type": "regles",
       "items": [
-        {"regle": "Identité", "detail": "Soy François. Es mi hermano."},
-        {"regle": "Profession", "detail": "Soy médico. Es profesora."},
-        {"regle": "Origine / nationalité", "detail": "Soy de Quebec. Es canadiense."},
-        {"regle": "Caractéristique permanente", "detail": "Es alto. Es inteligente. La nieve es blanca."},
-        {"regle": "Matière", "detail": "La mesa es de madera."},
-        {"regle": "Heure / date", "detail": "Son las tres. Es lunes. Es el 5 de mayo."},
-        {"regle": "Événement (lieu d'un événement)", "detail": "La fiesta es en mi casa. La reunión es a las diez."},
-        {"regle": "Voix passive", "detail": "El libro fue escrito por Cervantes."}
+        {
+          "regle": "Identité",
+          "detail": "Soy François. Es mi hermano."
+        },
+        {
+          "regle": "Profession",
+          "detail": "Soy médico. Es profesora."
+        },
+        {
+          "regle": "Origine / nationalité",
+          "detail": "Soy de Quebec. Es canadiense."
+        },
+        {
+          "regle": "Caractéristique permanente",
+          "detail": "Es alto. Es inteligente. La nieve es blanca."
+        },
+        {
+          "regle": "Matière",
+          "detail": "La mesa es de madera."
+        },
+        {
+          "regle": "Heure / date",
+          "detail": "Son las tres. Es lunes. Es el 5 de mayo."
+        },
+        {
+          "regle": "Événement (lieu d'un événement)",
+          "detail": "La fiesta es en mi casa. La reunión es a las diez."
+        },
+        {
+          "regle": "Voix passive",
+          "detail": "El libro fue escrito por Cervantes."
+        }
       ]
     },
     {
       "titre": "ESTAR — quand l'utiliser",
       "type": "regles",
       "items": [
-        {"regle": "Lieu / position", "detail": "Estoy en casa. Madrid está en España."},
-        {"regle": "État temporaire / résultat", "detail": "Estoy cansado. La puerta está abierta."},
-        {"regle": "Humeur / santé", "detail": "¿Cómo estás? Estoy bien. Está enfermo."},
-        {"regle": "Gérondif (estar + -ando/-iendo)", "detail": "Estoy comiendo. Está lloviendo."},
-        {"regle": "Résultat d'un changement", "detail": "Está muerto (résultat). Está roto (cassé)."},
-        {"regle": "Impression subjective", "detail": "¡Qué guapa estás hoy! La comida está rica."}
+        {
+          "regle": "Lieu / position",
+          "detail": "Estoy en casa. Madrid está en España."
+        },
+        {
+          "regle": "État temporaire / résultat",
+          "detail": "Estoy cansado. La puerta está abierta."
+        },
+        {
+          "regle": "Humeur / santé",
+          "detail": "¿Cómo estás? Estoy bien. Está enfermo."
+        },
+        {
+          "regle": "Gérondif (estar + -ando/-iendo)",
+          "detail": "Estoy comiendo. Está lloviendo."
+        },
+        {
+          "regle": "Résultat d'un changement",
+          "detail": "Está muerto (résultat). Está roto (cassé)."
+        },
+        {
+          "regle": "Impression subjective",
+          "detail": "¡Qué guapa estás hoy! La comida está rica."
+        }
       ]
     },
     {
       "titre": "SER vs ESTAR — le même adjectif, deux sens",
       "type": "tableau",
-      "colonnes": ["Avec SER (nature)", "Avec ESTAR (état)", "Différence"],
+      "colonnes": [
+        "Avec SER (nature)",
+        "Avec ESTAR (état)",
+        "Différence"
+      ],
       "lignes": [
-        ["Es aburrido", "Está aburrido", "il est ennuyeux / il s'ennuie"],
-        ["Es listo", "Está listo", "il est malin / il est prêt"],
-        ["Es bueno", "Está bueno", "il est bon (personne) / c'est bon (goût/aspect)"],
-        ["Es malo", "Está malo", "il est méchant / il est malade"],
-        ["Es guapo", "Está guapo", "il est beau (nature) / il est beau (aujourd'hui)"],
-        ["Es vivo", "Está vivo", "il est vif / il est vivant"],
-        ["Es rico", "Está rico", "il est riche / c'est délicieux"],
-        ["Es seguro", "Está seguro", "c'est sûr (fiable) / il est sûr (certain)"]
+        [
+          "Es aburrido",
+          "Está aburrido",
+          "il est ennuyeux / il s'ennuie"
+        ],
+        [
+          "Es listo",
+          "Está listo",
+          "il est malin / il est prêt"
+        ],
+        [
+          "Es bueno",
+          "Está bueno",
+          "il est bon (personne) / c'est bon (goût/aspect)"
+        ],
+        [
+          "Es malo",
+          "Está malo",
+          "il est méchant / il est malade"
+        ],
+        [
+          "Es guapo",
+          "Está guapo",
+          "il est beau (nature) / il est beau (aujourd'hui)"
+        ],
+        [
+          "Es vivo",
+          "Está vivo",
+          "il est vif / il est vivant"
+        ],
+        [
+          "Es rico",
+          "Está rico",
+          "il est riche / c'est délicieux"
+        ],
+        [
+          "Es seguro",
+          "Está seguro",
+          "c'est sûr (fiable) / il est sûr (certain)"
+        ]
       ]
     },
     {
       "titre": "SER vs ESTAR — exemples contrastés",
       "type": "exemples",
       "items": [
-        {"es": "Mi hermano es alto.", "fr": "Mon frère est grand. (caractéristique permanente → ser)"},
-        {"es": "Mi hermano está enfermo.", "fr": "Mon frère est malade. (état temporaire → estar)"},
-        {"es": "La fiesta es en mi casa.", "fr": "La fête est chez moi. (événement → ser)"},
-        {"es": "Mi casa está en el centro.", "fr": "Ma maison est au centre. (lieu → estar)"},
-        {"es": "Es aburrido. / Está aburrido.", "fr": "Il est ennuyeux. / Il s'ennuie."}
+        {
+          "es": "Mi hermano es alto.",
+          "fr": "Mon frère est grand. (caractéristique permanente → ser)"
+        },
+        {
+          "es": "Mi hermano está enfermo.",
+          "fr": "Mon frère est malade. (état temporaire → estar)"
+        },
+        {
+          "es": "La fiesta es en mi casa.",
+          "fr": "La fête est chez moi. (événement → ser)"
+        },
+        {
+          "es": "Mi casa está en el centro.",
+          "fr": "Ma maison est au centre. (lieu → estar)"
+        },
+        {
+          "es": "Es aburrido. / Está aburrido.",
+          "fr": "Il est ennuyeux. / Il s'ennuie."
+        }
       ]
     },
     {
       "titre": "HABER — auxiliaire et existence",
       "type": "regles",
       "items": [
-        {"regle": "Auxiliaire des temps composés", "detail": "He comido (j'ai mangé). Ha llegado (il est arrivé). Habían salido (ils étaient sortis)."},
-        {"regle": "Toujours haber, même quand le français dit « être »", "detail": "He llegado (je suis arrivé). Ha nacido (il est né). Se ha ido (il est parti)."},
-        {"regle": "hay = il y a (impersonnel, invariable)", "detail": "Hay un problema. Hay tres libros. Hay mucha gente."},
-        {"regle": "hay ≠ está/están (existence vs localisation)", "detail": "Hay un gato en el jardín (il y a). El gato está en el jardín (il est là)."}
+        {
+          "regle": "Auxiliaire des temps composés",
+          "detail": "He comido (j'ai mangé). Ha llegado (il est arrivé). Habían salido (ils étaient sortis)."
+        },
+        {
+          "regle": "Toujours haber, même quand le français dit « être »",
+          "detail": "He llegado (je suis arrivé). Ha nacido (il est né). Se ha ido (il est parti)."
+        },
+        {
+          "regle": "hay = il y a (impersonnel, invariable)",
+          "detail": "Hay un problema. Hay tres libros. Hay mucha gente."
+        },
+        {
+          "regle": "hay ≠ está/están (existence vs localisation)",
+          "detail": "Hay un gato en el jardín (il y a). El gato está en el jardín (il est là)."
+        }
       ]
     },
     {
       "titre": "HAY vs ESTÁ — piège central",
       "type": "exemples",
       "items": [
-        {"es": "Hay un banco cerca.", "fr": "Il y a une banque près d'ici. (existence, on ne sait pas laquelle)"},
-        {"es": "El banco está cerca.", "fr": "La banque est près d'ici. (localisation, on sait laquelle)"},
-        {"es": "Hay tres libros en la mesa.", "fr": "Il y a trois livres sur la table. (existence)"},
-        {"es": "Los libros están en la mesa.", "fr": "Les livres sont sur la table. (localisation)"}
+        {
+          "es": "Hay un banco cerca.",
+          "fr": "Il y a une banque près d'ici. (existence, on ne sait pas laquelle)"
+        },
+        {
+          "es": "El banco está cerca.",
+          "fr": "La banque est près d'ici. (localisation, on sait laquelle)"
+        },
+        {
+          "es": "Hay tres libros en la mesa.",
+          "fr": "Il y a trois livres sur la table. (existence)"
+        },
+        {
+          "es": "Los libros están en la mesa.",
+          "fr": "Les livres sont sur la table. (localisation)"
+        }
       ]
     },
     {
       "titre": "TENER — possession, âge, sensations",
       "type": "regles",
       "items": [
-        {"regle": "Possession", "detail": "Tengo un coche. Tiene dos hijos."},
-        {"regle": "Âge (pas ser !)", "detail": "Tengo 40 años. ¿Cuántos años tienes?"},
-        {"regle": "Sensations physiques (pas estar !)", "detail": "Tengo hambre, sed, frío, calor, sueño, miedo."},
-        {"regle": "Obligation : tener que + infinitif", "detail": "Tengo que estudiar (je dois étudier). Tienes que irte (tu dois partir)."},
-        {"regle": "tener ganas de = avoir envie de", "detail": "Tengo ganas de dormir."},
-        {"regle": "tener razón = avoir raison", "detail": "Tienes razón."},
-        {"regle": "tener suerte = avoir de la chance", "detail": "¡Qué suerte tienes!"}
+        {
+          "regle": "Possession",
+          "detail": "Tengo un coche. Tiene dos hijos."
+        },
+        {
+          "regle": "Âge (pas ser !)",
+          "detail": "Tengo 40 años. ¿Cuántos años tienes?"
+        },
+        {
+          "regle": "Sensations physiques (pas estar !)",
+          "detail": "Tengo hambre, sed, frío, calor, sueño, miedo."
+        },
+        {
+          "regle": "Obligation : tener que + infinitif",
+          "detail": "Tengo que estudiar (je dois étudier). Tienes que irte (tu dois partir)."
+        },
+        {
+          "regle": "tener ganas de = avoir envie de",
+          "detail": "Tengo ganas de dormir."
+        },
+        {
+          "regle": "tener razón = avoir raison",
+          "detail": "Tienes razón."
+        },
+        {
+          "regle": "tener suerte = avoir de la chance",
+          "detail": "¡Qué suerte tienes!"
+        }
       ]
     },
     {
       "titre": "Français « avoir » → espagnol pas toujours TENER",
       "type": "tableau",
-      "colonnes": ["Français", "Espagnol", "Verbe"],
+      "colonnes": [
+        "Français",
+        "Espagnol",
+        "Verbe"
+      ],
       "lignes": [
-        ["j'ai faim", "tengo hambre", "tener"],
-        ["j'ai soif", "tengo sed", "tener"],
-        ["j'ai froid", "tengo frío", "tener"],
-        ["j'ai chaud", "tengo calor", "tener"],
-        ["j'ai peur", "tengo miedo", "tener"],
-        ["j'ai sommeil", "tengo sueño", "tener"],
-        ["j'ai 20 ans", "tengo 20 años", "tener"],
-        ["j'ai raison", "tengo razón", "tener"],
-        ["j'ai mangé", "he comido", "haber !"],
-        ["je suis arrivé", "he llegado", "haber !"]
+        [
+          "j'ai faim",
+          "tengo hambre",
+          "tener"
+        ],
+        [
+          "j'ai soif",
+          "tengo sed",
+          "tener"
+        ],
+        [
+          "j'ai froid",
+          "tengo frío",
+          "tener"
+        ],
+        [
+          "j'ai chaud",
+          "tengo calor",
+          "tener"
+        ],
+        [
+          "j'ai peur",
+          "tengo miedo",
+          "tener"
+        ],
+        [
+          "j'ai sommeil",
+          "tengo sueño",
+          "tener"
+        ],
+        [
+          "j'ai 20 ans",
+          "tengo 20 años",
+          "tener"
+        ],
+        [
+          "j'ai raison",
+          "tengo razón",
+          "tener"
+        ],
+        [
+          "j'ai mangé",
+          "he comido",
+          "haber !"
+        ],
+        [
+          "je suis arrivé",
+          "he llegado",
+          "haber !"
+        ]
       ]
     },
     {
       "titre": "Question mentale rapide",
       "type": "tableau",
-      "colonnes": ["Je veux dire…", "Verbe", "Exemple"],
+      "colonnes": [
+        "Je veux dire…",
+        "Verbe",
+        "Exemple"
+      ],
       "lignes": [
-        ["ce que c'est / qui c'est", "ser", "Es un libro. Es María."],
-        ["comment c'est / où c'est", "estar", "Está bien. Está aquí."],
-        ["il y a / j'ai fait", "haber", "Hay agua. He comido."],
-        ["ce qu'on possède / ressent", "tener", "Tengo hambre. Tengo un perro."]
+        [
+          "ce que c'est / qui c'est",
+          "ser",
+          "Es un libro. Es María."
+        ],
+        [
+          "comment c'est / où c'est",
+          "estar",
+          "Está bien. Está aquí."
+        ],
+        [
+          "il y a / j'ai fait",
+          "haber",
+          "Hay agua. He comido."
+        ],
+        [
+          "ce qu'on possède / ressent",
+          "tener",
+          "Tengo hambre. Tengo un perro."
+        ]
       ]
     }
+  ],
+  "hooks": [
+    "verbo",
+    "vrb"
   ]
 }

@@ -8,14 +8,49 @@
     {
       "titre": "Terminaisons régulières",
       "type": "tableau",
-      "colonnes": ["", "-AR (hablar)", "-ER (comer)", "-IR (vivir)"],
+      "colonnes": [
+        "",
+        "-AR (hablar)",
+        "-ER (comer)",
+        "-IR (vivir)"
+      ],
       "lignes": [
-        ["yo", "-aba (hablaba)", "-ía (comía)", "-ía (vivía)"],
-        ["tú", "-abas (hablabas)", "-ías (comías)", "-ías (vivías)"],
-        ["él/ella", "-aba (hablaba)", "-ía (comía)", "-ía (vivía)"],
-        ["nosotros", "-ábamos (hablábamos)", "-íamos (comíamos)", "-íamos (vivíamos)"],
-        ["vosotros", "-abais (hablabais)", "-íais (comíais)", "-íais (vivíais)"],
-        ["ellos", "-aban (hablaban)", "-ían (comían)", "-ían (vivían)"]
+        [
+          "yo",
+          "-aba (hablaba)",
+          "-ía (comía)",
+          "-ía (vivía)"
+        ],
+        [
+          "tú",
+          "-abas (hablabas)",
+          "-ías (comías)",
+          "-ías (vivías)"
+        ],
+        [
+          "él/ella",
+          "-aba (hablaba)",
+          "-ía (comía)",
+          "-ía (vivía)"
+        ],
+        [
+          "nosotros",
+          "-ábamos (hablábamos)",
+          "-íamos (comíamos)",
+          "-íamos (vivíamos)"
+        ],
+        [
+          "vosotros",
+          "-abais (hablabais)",
+          "-íais (comíais)",
+          "-íais (vivíais)"
+        ],
+        [
+          "ellos",
+          "-aban (hablaban)",
+          "-ían (comían)",
+          "-ían (vivían)"
+        ]
       ]
     },
     {
@@ -26,59 +61,157 @@
     {
       "titre": "Les 3 seuls irréguliers",
       "type": "tableau",
-      "colonnes": ["", "ser", "ir", "ver"],
+      "colonnes": [
+        "",
+        "ser",
+        "ir",
+        "ver"
+      ],
       "lignes": [
-        ["yo", "era", "iba", "veía"],
-        ["tú", "eras", "ibas", "veías"],
-        ["él/ella", "era", "iba", "veía"],
-        ["nosotros", "éramos", "íbamos", "veíamos"],
-        ["vosotros", "erais", "ibais", "veíais"],
-        ["ellos", "eran", "iban", "veían"]
+        [
+          "yo",
+          "era",
+          "iba",
+          "veía"
+        ],
+        [
+          "tú",
+          "eras",
+          "ibas",
+          "veías"
+        ],
+        [
+          "él/ella",
+          "era",
+          "iba",
+          "veía"
+        ],
+        [
+          "nosotros",
+          "éramos",
+          "íbamos",
+          "veíamos"
+        ],
+        [
+          "vosotros",
+          "erais",
+          "ibais",
+          "veíais"
+        ],
+        [
+          "ellos",
+          "eran",
+          "iban",
+          "veían"
+        ]
       ]
     },
     {
       "titre": "yo = él (même forme !)",
       "type": "regles",
       "items": [
-        {"regle": "À l'imparfait, yo et él/ella ont la même forme", "detail": "yo hablaba = él hablaba, yo comía = ella comía, yo era = él era."},
-        {"regle": "Seul le contexte ou le pronom distingue", "detail": "C'est normal et courant. Pas besoin de s'inquiéter."}
+        {
+          "regle": "À l'imparfait, yo et él/ella ont la même forme",
+          "detail": "yo hablaba = él hablaba, yo comía = ella comía, yo era = él era."
+        },
+        {
+          "regle": "Seul le contexte ou le pronom distingue",
+          "detail": "C'est normal et courant. Pas besoin de s'inquiéter."
+        }
       ]
     },
     {
       "titre": "Quand utiliser l'imparfait",
       "type": "regles",
       "items": [
-        {"regle": "Description dans le passé", "detail": "El cielo estaba azul. La casa era grande. Tenía los ojos verdes."},
-        {"regle": "Habitude passée", "detail": "De niño, jugaba en el parque. Siempre comíamos a las dos."},
-        {"regle": "Action en cours (interrompue ou non)", "detail": "Dormía cuando sonó el teléfono. Llovía mucho."},
-        {"regle": "Âge, heure, état dans le passé", "detail": "Tenía 10 años. Eran las tres. Estaba cansado."},
-        {"regle": "Politesse (adoucir)", "detail": "Quería pedirte un favor. ¿Podía hacerle una pregunta?"},
-        {"regle": "Marqueurs typiques", "detail": "siempre, todos los días, de niño, antes, a menudo, mientras, cuando (+ imparfait)"}
+        {
+          "regle": "Description dans le passé",
+          "detail": "El cielo estaba azul. La casa era grande. Tenía los ojos verdes."
+        },
+        {
+          "regle": "Habitude passée",
+          "detail": "De niño, jugaba en el parque. Siempre comíamos a las dos."
+        },
+        {
+          "regle": "Action en cours (interrompue ou non)",
+          "detail": "Dormía cuando sonó el teléfono. Llovía mucho."
+        },
+        {
+          "regle": "Âge, heure, état dans le passé",
+          "detail": "Tenía 10 años. Eran las tres. Estaba cansado."
+        },
+        {
+          "regle": "Politesse (adoucir)",
+          "detail": "Quería pedirte un favor. ¿Podía hacerle una pregunta?"
+        },
+        {
+          "regle": "Marqueurs typiques",
+          "detail": "siempre, todos los días, de niño, antes, a menudo, mientras, cuando (+ imparfait)"
+        }
       ]
     },
     {
       "titre": "Prétérit vs Imparfait — le grand dilemme",
       "type": "tableau",
-      "colonnes": ["Prétérit (indefinido)", "Imparfait (imperfecto)"],
+      "colonnes": [
+        "Prétérit (indefinido)",
+        "Imparfait (imperfecto)"
+      ],
       "lignes": [
-        ["action terminée, ponctuelle", "action en cours, sans fin marquée"],
-        ["séquence d'événements", "description, décor"],
-        ["changement soudain", "état habituel"],
-        ["durée délimitée", "durée indéfinie"],
-        ["ayer, una vez, de repente", "siempre, todos los días, mientras"]
+        [
+          "action terminée, ponctuelle",
+          "action en cours, sans fin marquée"
+        ],
+        [
+          "séquence d'événements",
+          "description, décor"
+        ],
+        [
+          "changement soudain",
+          "état habituel"
+        ],
+        [
+          "durée délimitée",
+          "durée indéfinie"
+        ],
+        [
+          "ayer, una vez, de repente",
+          "siempre, todos los días, mientras"
+        ]
       ]
     },
     {
       "titre": "Prétérit vs Imparfait — exemples côte à côte",
       "type": "exemples",
       "items": [
-        {"es": "Llovía cuando salí.", "fr": "Il pleuvait (imparfait : en cours) quand je suis sorti (prétérit : ponctuel)."},
-        {"es": "De niño, jugaba al fútbol.", "fr": "Enfant, je jouais au foot. (habitude → imparfait)"},
-        {"es": "Ayer jugué al fútbol.", "fr": "Hier j'ai joué au foot. (ponctuel → prétérit)"},
-        {"es": "Era alto y tenía barba.", "fr": "Il était grand et avait une barbe. (description → imparfait)"},
-        {"es": "Se levantó y se fue.", "fr": "Il se leva et s'en alla. (séquence → prétérit)"},
-        {"es": "Mientras dormía, alguien entró.", "fr": "Pendant qu'il dormait (imparfait), quelqu'un entra (prétérit)."}
+        {
+          "es": "Llovía cuando salí.",
+          "fr": "Il pleuvait (imparfait : en cours) quand je suis sorti (prétérit : ponctuel)."
+        },
+        {
+          "es": "De niño, jugaba al fútbol.",
+          "fr": "Enfant, je jouais au foot. (habitude → imparfait)"
+        },
+        {
+          "es": "Ayer jugué al fútbol.",
+          "fr": "Hier j'ai joué au foot. (ponctuel → prétérit)"
+        },
+        {
+          "es": "Era alto y tenía barba.",
+          "fr": "Il était grand et avait une barbe. (description → imparfait)"
+        },
+        {
+          "es": "Se levantó y se fue.",
+          "fr": "Il se leva et s'en alla. (séquence → prétérit)"
+        },
+        {
+          "es": "Mientras dormía, alguien entró.",
+          "fr": "Pendant qu'il dormait (imparfait), quelqu'un entra (prétérit)."
+        }
       ]
     }
+  ],
+  "hooks": [
+    "verbo"
   ]
 }

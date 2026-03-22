@@ -3,7 +3,7 @@
 
 import sys
 import os
-
+os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--log-level=3"
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 import logging

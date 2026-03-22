@@ -30,10 +30,17 @@ class EventBus(QObject):
     expression_cliquee = Signal(int, int)        # (index_phrase, index_expression)
     traduction_demandee = Signal(int)            # index_phrase (clic droit)
     wordref_demandee = Signal(str)               # URL WordReference à charger
+    reference_demandee = Signal(str)              # hook légende → ouvrir fiche référence
 
     # ─── UI ──────────────────────────────────────────────────────────
     status_message = Signal(str)
     chargement_en_cours = Signal(bool)
+
+    # ─── Sessions / sauvegarde ───────────────────────────────────────
+    sauvegarde_demandee = Signal()                # bouton Sauvegarder
+    ouverture_demandee = Signal()                 # bouton Ouvrir
+    page_precedente_demandee = Signal()           # bouton ◀ page précédente
+    page_suivante_demandee = Signal()             # bouton ▶ page suivante
 
 
 # Singleton

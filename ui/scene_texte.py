@@ -187,13 +187,20 @@ class _TokenPhrase:
 
 
 def _decouper_phrases(texte: str) -> tuple[list[str], list[list[_TokenPhrase]]]:
-    """Découpe en phrases (par ponctuation) tout en gardant la structure ligne OCR."""
+    """Découpe en phrases (par ponctuation) tout en gardant la structure ligne OCR.
+
+    Retourne (phrases_textes, lignes_tokens) où chaque token a son ip (index phrase)
+    et im (index mot dans la phrase).
+    """
     phrase_re = re.compile(r'[^.!?…]+[.!?…]+')
 
     phrases_textes: list[str] = []
 
     # Texte plat → découper en phrases
     texte_plat = texte.replace("\n", " ")
+    # Normaliser les espaces multiples
+    texte_plat = re.sub(r"\s+", " ", texte_plat).strip()
+
     matches = phrase_re.findall(texte_plat)
     reste = phrase_re.sub("", texte_plat).strip()
 
@@ -204,16 +211,34 @@ def _decouper_phrases(texte: str) -> tuple[list[str], list[list[_TokenPhrase]]]:
     if reste:
         phrases_textes.append(reste)
 
-    # Séquence plate (ip, im) pour chaque mot
-    flat_phrase_mots: list[tuple[int, int]] = []
-    for ip, pt in enumerate(phrases_textes):
-        for im, _ in enumerate(pt.split()):
-            flat_phrase_mots.append((ip, im))
+    # Construire une séquence plate de (ip, im) en matchant par position
+    # dans le texte plat, pas par comptage de mots split.
+    # On utilise le texte plat pour assigner chaque mot de chaque ligne
+    # à la bonne phrase.
+
+    # Position de départ de chaque phrase dans le texte plat
+    phrase_starts: list[int] = []
+    search_start = 0
+    for pt in phrases_textes:
+        # Chercher les mots de cette phrase séquentiellement
+        pos = texte_plat.find(pt.split()[0], search_start) if pt.split() else search_start
+        if pos < 0:
+            pos = search_start
+        phrase_starts.append(pos)
+        search_start = pos + len(pt)
+
+    def _trouver_phrase(pos_dans_plat: int) -> int:
+        """Retourne l'index de la phrase qui contient cette position."""
+        for i in range(len(phrase_starts) - 1, -1, -1):
+            if pos_dans_plat >= phrase_starts[i]:
+                return i
+        return 0
 
     # Parcourir ligne par ligne pour la mise en page
     lignes = texte.split("\n")
     lignes_tokens: list[list[_TokenPhrase]] = []
-    flat_idx = 0
+    pos_plat = 0  # position courante dans texte_plat
+    mot_compteurs: dict[int, int] = {}  # ip → prochain im
 
     for ligne in lignes:
         ligne_s = ligne.strip()
@@ -223,13 +248,18 @@ def _decouper_phrases(texte: str) -> tuple[list[str], list[list[_TokenPhrase]]]:
 
         tokens: list[_TokenPhrase] = []
         for mot_str in ligne_s.split():
-            if flat_idx < len(flat_phrase_mots):
-                ip, im = flat_phrase_mots[flat_idx]
-            else:
-                ip = len(phrases_textes) - 1
-                im = 0
+            # Trouver ce mot dans le texte plat
+            idx = texte_plat.find(mot_str, pos_plat)
+            if idx < 0:
+                # Fallback : chercher après normalisation
+                idx = pos_plat
+
+            ip = _trouver_phrase(idx)
+            im = mot_compteurs.get(ip, 0)
+            mot_compteurs[ip] = im + 1
+
             tokens.append(_TokenPhrase(mot_str, ip, im))
-            flat_idx += 1
+            pos_plat = idx + len(mot_str)
 
         lignes_tokens.append(tokens)
 
@@ -255,6 +285,7 @@ class SceneTexte(QGraphicsScene):
         self.setBackgroundBrush(QBrush(COULEUR_FOND))
 
         self._textes_phrases: list[str] = []
+        self._texte_brut: str = ""  # texte original avec formatage
         self._blocs: list[BlocPhraseItem] = []
         self._nums: list[NumPhraseItem] = []
         self._mots_items: list[list[MotItem]] = []
@@ -269,8 +300,13 @@ class SceneTexte(QGraphicsScene):
 
     # ─── Chargement texte OCR brut ────────────────────────────────
 
-    def charger_texte_brut(self, texte: str) -> None:
-        """Affiche le texte OCR en respectant le formatage d'origine."""
+    def charger_texte_brut(self, texte: str, auto_select: bool = True) -> None:
+        """Affiche le texte OCR en respectant le formatage d'origine.
+
+        Si auto_select=False, ne sélectionne pas la première phrase
+        (utile pour le chargement depuis la base, où les analyses sont
+        appliquées après le chargement du texte).
+        """
         self.clear()
         self._blocs = []
         self._nums = []
@@ -279,6 +315,7 @@ class SceneTexte(QGraphicsScene):
         self._soulignements = []
         self._analyses = {}
         self._index_selection = -1
+        self._texte_brut = texte
 
         phrases_textes, lignes_tokens = _decouper_phrases(texte)
         self._textes_phrases = phrases_textes
@@ -375,12 +412,16 @@ class SceneTexte(QGraphicsScene):
 
         self.setSceneRect(self.itemsBoundingRect().adjusted(-10, -10, 30, 30))
 
-        if self._blocs:
+        if self._blocs and auto_select:
             self._selectionner(0)
 
     def phrases_texte(self) -> list[str]:
         """Retourne les textes des phrases découpées (pour lancement batch)."""
         return list(self._textes_phrases)
+
+    def texte_brut(self) -> str:
+        """Retourne le texte brut original avec formatage préservé."""
+        return self._texte_brut
 
     # ─── Sélection ────────────────────────────────────────────────
 
@@ -420,7 +461,12 @@ class SceneTexte(QGraphicsScene):
     # ─── Appliquer l'analyse d'une phrase ─────────────────────────
 
     def appliquer_analyse(self, index: int, phrase: PhraseAnalysee) -> None:
-        """Colore les mots de la phrase `index` (couleurs douces)."""
+        """Colore les mots de la phrase `index` (couleurs douces).
+
+        Utilise un matching par contenu textuel pour aligner les mots
+        analysés aux tokens visuels, même si la ponctuation crée des
+        décalages d'index.
+        """
         if index in self._analyses:
             return
         self._analyses[index] = phrase
@@ -428,11 +474,117 @@ class SceneTexte(QGraphicsScene):
         items = self._mots_items[index]
         indices_expr = phrase.indices_expressions()
 
-        for im, item in enumerate(items):
-            if im < len(phrase.mots):
+        # Construire le mapping token visuel → mot analysé.
+        # Algorithme séquentiel bidirectionnel :
+        # 1. Pour chaque token visuel, chercher le mot analysé dans un look-ahead
+        # 2. Si pas de match, vérifier si c'est le token qui est un artefact
+        #    (ponctuation, chiffre isolé) ou si le mot analysé est en avance
+        # L'ordre séquentiel garantit que les mots répétés matchent correctement.
+
+        import unicodedata
+
+        def _normaliser(s: str) -> str:
+            """Retire la ponctuation périphérique pour comparaison."""
+            s = s.strip()
+            while s and not s[0].isalnum():
+                s = s[1:]
+            while s and not s[-1].isalnum():
+                s = s[:-1]
+            return s
+
+        def _est_ponctuation(s: str) -> bool:
+            """Vérifie si un token est uniquement de la ponctuation/symboles."""
+            return bool(s) and all(
+                unicodedata.category(c).startswith(('P', 'S', 'Z'))
+                or c in '()[]{}¡!¿?«»"""\',;:-–—…·•/\\'
+                for c in s
+            )
+
+        def _match(token_n: str, mot_n: str) -> bool:
+            """Teste si un token normalisé correspond à un mot normalisé."""
+            if not token_n or not mot_n:
+                return False
+            if token_n == mot_n:
+                return True
+            if token_n.lower() == mot_n.lower():
+                return True
+            if mot_n in token_n:  # "(REUTERS)" contient "REUTERS"
+                return True
+            if token_n in mot_n:  # token partiel dans mot fusionné
+                return True
+            return False
+
+        mot_idx = 0
+        item_to_mot: dict[int, int] = {}
+        LOOK = 4  # fenêtre de look-ahead dans chaque direction
+        nb_mots = len(phrase.mots)
+
+        for item_idx, item in enumerate(items):
+            if mot_idx >= nb_mots:
+                break
+
+            token_text = item.text().strip()
+            token_norm = _normaliser(token_text)
+
+            # Token vide ou ponctuation pure → sauter le token
+            if not token_norm or _est_ponctuation(token_text):
+                continue
+
+            # Chercher un match dans les prochains mots analysés
+            matched = False
+            for offset in range(min(LOOK, nb_mots - mot_idx)):
+                mot_norm = _normaliser(phrase.mots[mot_idx + offset].mot)
+                if _match(token_norm, mot_norm):
+                    item_to_mot[item_idx] = mot_idx + offset
+                    mot_idx = mot_idx + offset + 1
+                    matched = True
+                    break
+
+            if matched:
+                continue
+
+            # Pas de match en avant dans les mots.
+            # Peut-être que le MOT ANALYSÉ courant correspond à un token
+            # visuel plus loin (le token courant est un artefact non analysé).
+            # Regarder si les prochains tokens visuels matchent le mot courant.
+            # Si oui, on saute ce token (artefact). Si non, on avance mot_idx
+            # (le mot analysé n'a pas de token visuel correspondant).
+            mot_norm_courant = _normaliser(phrase.mots[mot_idx].mot)
+            found_later = False
+            for future in range(1, min(LOOK + 1, len(items) - item_idx)):
+                future_idx = item_idx + future
+                if future_idx >= len(items):
+                    break
+                future_norm = _normaliser(items[future_idx].text().strip())
+                if future_norm and _match(future_norm, mot_norm_courant):
+                    found_later = True
+                    break
+
+            if not found_later:
+                # Le mot analysé courant n'a pas de token visuel correspondant
+                # → avancer mot_idx pour ne pas bloquer le reste
+                mot_idx += 1
+
+        # Log des tokens non matchés (debug)
+        unmatched = [
+            (i, items[i].text().strip()) for i in range(len(items))
+            if i not in item_to_mot
+            and not _est_ponctuation(items[i].text().strip())
+            and _normaliser(items[i].text().strip())
+        ]
+        if unmatched:
+            print(f"[Match] Phrase {index}: {len(unmatched)} non matchés: "
+                  f"{[t for _, t in unmatched[:8]]}")
+
+        # Appliquer les couleurs via le mapping
+        for item_idx, item in enumerate(items):
+            if item_idx in item_to_mot:
+                im = item_to_mot[item_idx]
                 mot = phrase.mots[im]
                 item.appliquer_analyse(
                     mot.categorie, mot.groupe, im in indices_expr)
+                # Stocker l'index du mot analysé pour les clics
+                item.index_mot = im
 
         # ─── Fonds de groupes ─────────────────────────────────────
         for fg in self._fonds_groupes[index]:
@@ -477,8 +629,13 @@ class SceneTexte(QGraphicsScene):
             self.removeItem(s)
         self._soulignements[index] = []
 
+        # Mapping inversé : index mot analysé → index item visuel
+        mot_to_item = {v: k for k, v in item_to_mot.items()}
+
         for expr in phrase.expressions:
-            expr_items = [items[i] for i in expr.indices if i < len(items)]
+            expr_item_indices = [mot_to_item[i] for i in expr.indices
+                                if i in mot_to_item]
+            expr_items = [items[i] for i in expr_item_indices if i < len(items)]
             if not expr_items:
                 continue
             by_line: dict[int, list[MotItem]] = {}

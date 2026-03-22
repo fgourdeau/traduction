@@ -22,6 +22,7 @@ import numpy as np
 
 from core.event_bus import bus
 from core.modeles import PhraseAnalysee
+from core.sanitizer import sanitiser
 from core.config import (
     COULEUR_FOND, COULEUR_PANNEAU, COULEUR_BORDURE, COULEUR_ACCENT,
     COULEURS_CATEGORIES, LABELS_CATEGORIES, police_texte, police_mono,
@@ -58,6 +59,10 @@ class FenetrePrincipale(QMainWindow):
         # Workers — pipeline 2 phases
         self._ocr_worker = OcrWorker(self)
         self._analyse_worker = AnalyseWorker(self)
+
+        # État session/page courante (pour navigation)
+        self._current_session_id: int | None = None
+        self._current_page_id: int | None = None
 
         self._build_ui()
         self._build_menu()
@@ -275,7 +280,14 @@ class FenetrePrincipale(QMainWindow):
             label_fr = LABELS_CATEGORIES.get(cat, cat)
             lbl = QLabel(f"● {label_fr}")
             lbl.setFont(police_texte(10))
-            lbl.setStyleSheet(f"color: {couleur}; font-weight: 500;")
+            lbl.setStyleSheet(
+                f"color: {couleur}; font-weight: 500; padding: 0 2px;"
+            )
+            lbl.setCursor(Qt.PointingHandCursor)
+            # Clic → ouvrir la fiche de référence correspondante
+            lbl.mousePressEvent = lambda ev, key=cat: (
+                bus().reference_demandee.emit(key)
+            )
             self._legende_layout.addWidget(lbl)
 
         # Séparateur visuel
@@ -289,12 +301,15 @@ class FenetrePrincipale(QMainWindow):
             label_fr = LABELS_GROUPES.get(grp, grp)
             lbl = QLabel(f" {label_fr} ")
             lbl.setFont(police_texte(9))
-            # Convertir hex → rgb pour rgba() dans le stylesheet
             c = QColor(hex_color)
             bg_rgba = f"rgba({c.red()}, {c.green()}, {c.blue()}, 0.15)"
             lbl.setStyleSheet(
                 f"background: {bg_rgba}; color: {hex_color}; "
                 f"border-radius: 3px; padding: 1px 4px; font-weight: 500;"
+            )
+            lbl.setCursor(Qt.PointingHandCursor)
+            lbl.mousePressEvent = lambda ev, key=grp: (
+                bus().reference_demandee.emit(key)
             )
             self._legende_layout.addWidget(lbl)
 
@@ -317,6 +332,13 @@ class FenetrePrincipale(QMainWindow):
         b.chargement_en_cours.connect(self._on_chargement)
         # WordReference intégré
         b.wordref_demandee.connect(self._on_wordref)
+        # Sessions
+        b.sauvegarde_demandee.connect(self._on_sauvegarder)
+        b.ouverture_demandee.connect(self._on_ouvrir)
+        b.page_precedente_demandee.connect(self._on_page_precedente)
+        b.page_suivante_demandee.connect(self._on_page_suivante)
+        # Références depuis légende
+        b.reference_demandee.connect(self._on_reference_demandee)
 
     def _setup_shortcuts(self) -> None:
         QShortcut(QKeySequence("F5"), self,
@@ -393,8 +415,21 @@ class FenetrePrincipale(QMainWindow):
         # Reset le worker pour le nouveau texte
         self._analyse_worker.reset()
 
+        # Reset la navigation de session (c'est une nouvelle page, pas encore sauvegardée)
+        self._current_session_id = None
+        self._current_page_id = None
+        self._capture.clear_page_info()
+
+        # Sanitizer : nettoyer le texte avant affichage et analyse
+        texte_propre = sanitiser(texte)
+        if texte_propre != texte:
+            nb_avant = len(texte)
+            nb_apres = len(texte_propre)
+            print(f"[Sanitizer] {nb_avant} → {nb_apres} chars "
+                  f"(-{nb_avant - nb_apres})")
+
         # Charger dans la vue
-        self._vue_texte.scene.charger_texte_brut(texte)
+        self._vue_texte.scene.charger_texte_brut(texte_propre)
         self._vue_texte.setFocus()
 
         # Récupérer les phrases découpées et lancer le batch
@@ -431,9 +466,16 @@ class FenetrePrincipale(QMainWindow):
         if self._webview is not None:
             self._webview.setUrl(QUrl(url))
         else:
-            # Fallback : ouvrir dans le navigateur système
             from PySide6.QtGui import QDesktopServices
             QDesktopServices.openUrl(QUrl(url))
+
+    @Slot(str)
+    def _on_reference_demandee(self, hook: str) -> None:
+        """Clic sur la légende → ouvrir le dock Références sur le bon thème."""
+        if self._panneau_refs.afficher_par_hook(hook):
+            # S'assurer que le dock est visible
+            self._dock_refs.show()
+            self._dock_refs.raise_()
 
     # ─── Configuration ───────────────────────────────────────────────
 
@@ -453,3 +495,152 @@ class FenetrePrincipale(QMainWindow):
             act.setText(f"{'✓ ' if mid == model_id else '  '}{label}")
         self._status.showMessage(f"Modèle: {model_id}", 5000)
         print(f"[Config] Modèle changé: {model_id}")
+
+    # ─── Sessions / Sauvegarde ───────────────────────────────────────
+
+    @Slot()
+    def _on_sauvegarder(self) -> None:
+        """Sauvegarde la page courante dans la session active."""
+        from core.db import db
+        import json
+
+        scene = self._vue_texte.scene
+        texte_brut = scene.texte_brut()
+        analyses = scene._analyses  # dict[int, PhraseAnalysee]
+
+        if not texte_brut.strip():
+            self._status.showMessage("⚠ Rien à sauvegarder", 5000)
+            return
+
+        if not analyses:
+            self._status.showMessage("⚠ Aucune analyse à sauvegarder", 5000)
+            return
+
+        # Construire le JSON d'analyse (format compatible from_api_response)
+        phrases_json = []
+        for ip in sorted(analyses.keys()):
+            phrase = analyses[ip]
+            phrases_json.append({
+                "texte_original": phrase.texte_original,
+                "traduction": phrase.traduction,
+                "mots": [
+                    {
+                        "mot": m.mot, "categorie": m.categorie,
+                        "lemme": m.lemme, "genre": m.genre,
+                        "nombre": m.nombre, "conjugaison": m.conjugaison,
+                        "prononciation": m.prononciation,
+                        "definition": m.definition, "groupe": m.groupe,
+                    }
+                    for m in phrase.mots
+                ],
+                "expressions": [
+                    {"indices": e.indices, "texte": e.texte, "sens": e.sens}
+                    for e in phrase.expressions
+                ],
+            })
+
+        analyse_json = json.dumps({"phrases": phrases_json}, ensure_ascii=False)
+
+        # Session : trouver ou créer
+        nom_session = self._capture.session_name
+        database = db()
+        sessions = database.lister_sessions()
+        session = next((s for s in sessions if s.nom == nom_session), None)
+        if session is None:
+            session = database.creer_session(nom_session)
+            print(f"[Session] Nouvelle session: {nom_session}")
+
+        page = database.sauvegarder_page(session.id, texte_brut, analyse_json)
+        self._status.showMessage(
+            f"💾 Page {page.numero} sauvegardée dans « {nom_session} »", 5000
+        )
+
+    @Slot()
+    def _on_ouvrir(self) -> None:
+        """Ouvre le dialogue de sélection de session/page."""
+        from ui.dialogue_sessions import DialogueSessions
+
+        dlg = DialogueSessions(self)
+        dlg.page_choisie.connect(self._charger_page)
+        dlg.exec()
+
+    @Slot(object)
+    def _charger_page(self, page) -> None:
+        """Charge une page sauvegardée sans appel à Claude."""
+        from core.db import PageRecord, db as get_db
+        from core.modeles import from_api_response
+        import json
+
+        if not isinstance(page, PageRecord):
+            return
+
+        print(f"[Session] Chargement page {page.numero}")
+
+        database = get_db()
+        session = database.session_par_id(page.session_id)
+        pages = database.lister_pages(page.session_id)
+        nb_pages = len(pages)
+
+        # Tracker l'état courant
+        self._current_session_id = page.session_id
+        self._current_page_id = page.id
+
+        # Mettre à jour la navigation dans le widget capture
+        self._capture.set_page_info(session.nom, page.numero, nb_pages)
+
+        # Reset
+        self._analyse_worker.reset()
+
+        # Charger le texte brut SANS sélection auto
+        self._vue_texte.scene.charger_texte_brut(page.texte_brut, auto_select=False)
+        self._vue_texte.setFocus()
+
+        # Charger les analyses sauvegardées (pas d'appel Claude !)
+        try:
+            data = json.loads(page.analyse_json)
+            phrases = from_api_response(data)
+            for i, phrase in enumerate(phrases):
+                self._vue_texte.scene.appliquer_analyse(i, phrase)
+                self._panneau.set_phrase(i, phrase)
+
+            bus().phrase_selectionnee.emit(0)
+
+            self._status.showMessage(
+                f"📖 {session.nom} — Page {page.numero}/{nb_pages} "
+                f"— {len(phrases)} phrases", 5000
+            )
+            print(f"[Session] {len(phrases)} phrases chargées depuis la base")
+        except (json.JSONDecodeError, KeyError) as e:
+            self._on_erreur(f"Erreur chargement analyse: {e}")
+
+    @Slot()
+    def _on_page_precedente(self) -> None:
+        """Charge la page précédente dans la session courante."""
+        self._naviguer_page(-1)
+
+    @Slot()
+    def _on_page_suivante(self) -> None:
+        """Charge la page suivante dans la session courante."""
+        self._naviguer_page(+1)
+
+    def _naviguer_page(self, direction: int) -> None:
+        """Charge la page précédente (-1) ou suivante (+1)."""
+        if self._current_session_id is None or self._current_page_id is None:
+            return
+
+        from core.db import db as get_db
+        pages = get_db().lister_pages(self._current_session_id)
+
+        # Trouver l'index courant
+        current_idx = None
+        for i, p in enumerate(pages):
+            if p.id == self._current_page_id:
+                current_idx = i
+                break
+
+        if current_idx is None:
+            return
+
+        new_idx = current_idx + direction
+        if 0 <= new_idx < len(pages):
+            self._charger_page(pages[new_idx])

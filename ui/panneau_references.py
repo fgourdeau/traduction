@@ -62,6 +62,11 @@ class ThemeReference:
     resume: str
     sections: list[dict]
     chemin: Path
+    hooks: list[str] = None  # clés de légende rattachées (ex: ["sustantivo", "sujeto"])
+
+    def __post_init__(self):
+        if self.hooks is None:
+            self.hooks = []
 
     @classmethod
     def charger(cls, chemin: Path) -> "ThemeReference | None":
@@ -75,6 +80,7 @@ class ThemeReference:
                 resume=data.get("resume", ""),
                 sections=data.get("sections", []),
                 chemin=chemin,
+                hooks=data.get("hooks", []),
             )
         except (json.JSONDecodeError, KeyError, OSError) as e:
             print(f"[Références] Erreur chargement {chemin}: {e}")
@@ -462,6 +468,17 @@ class PanneauReferences(QWidget):
         if not self._themes:
             return
 
+        # Construire l'index hook → index thème
+        self._hook_index: dict[str, int] = {}
+        for i, theme in enumerate(self._themes):
+            for hook in theme.hooks:
+                hook_lower = hook.lower().strip()
+                if hook_lower not in self._hook_index:
+                    self._hook_index[hook_lower] = i
+        if self._hook_index:
+            print(f"[Références] Hooks enregistrés: "
+                  f"{list(self._hook_index.keys())}")
+
         # Créer les boutons seulement
         accent = COULEUR_ACCENT.name()
         for i, theme in enumerate(self._themes):
@@ -518,3 +535,15 @@ class PanneauReferences(QWidget):
     def _on_zoom_changed(self, zoom: float) -> None:
         """Callback depuis _FicheView quand le zoom change."""
         self._lbl_zoom.setText(f"{int(zoom * 100)}%")
+
+    def afficher_par_hook(self, hook: str) -> bool:
+        """Affiche le thème rattaché à ce hook. Retourne True si trouvé."""
+        idx = self._hook_index.get(hook.lower().strip())
+        if idx is not None:
+            self._selectionner(idx)
+            return True
+        return False
+
+    def hooks_disponibles(self) -> set[str]:
+        """Retourne l'ensemble des hooks enregistrés (lowercase)."""
+        return set(self._hook_index.keys())

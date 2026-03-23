@@ -4,6 +4,19 @@
 import sys
 import os
 os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--log-level=3"
+os.environ["QTWEBENGINE_CHROMIUM_FLAGS"] = "--ignore-certificate-errors"
+
+import certifi
+if hasattr(sys, '_MEIPASS'):
+    base_path = sys._MEIPASS
+    cert_path = os.path.join(base_path, 'certifi', 'cacert.pem')
+else:
+    cert_path = certifi.where()
+
+#os.environ['SSL_CERT_FILE'] = cert_path
+#os.environ['REQUESTS_CA_BUNDLE'] = cert_path
+
+
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 import logging

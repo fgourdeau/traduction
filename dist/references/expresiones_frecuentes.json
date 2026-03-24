@@ -1,0 +1,522 @@
+{
+  "id": "expresiones_frecuentes",
+  "titre": "Expressions idiomatiques fréquentes",
+  "icone": "💬",
+  "ordre": 80,
+  "resume": "Expressions courantes dont le sens diffère du littéral — classées par thème",
+  "sections": [
+    {
+      "titre": "Salutations et politesse",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "¿Qué tal?",
+          "fr": "Comment ça va ? (litt. quoi tel ?)"
+        },
+        {
+          "es": "¿Qué hay?",
+          "fr": "Quoi de neuf ? (litt. qu'y a-t-il ?)"
+        },
+        {
+          "es": "¿Cómo andas?",
+          "fr": "Comment tu vas ? (litt. comment marches-tu ?)"
+        },
+        {
+          "es": "Mucho gusto.",
+          "fr": "Enchanté. (litt. beaucoup de plaisir)"
+        },
+        {
+          "es": "No hay de qué.",
+          "fr": "De rien. (litt. il n'y a pas de quoi)"
+        },
+        {
+          "es": "¡Que te vaya bien!",
+          "fr": "Bonne continuation ! (litt. que ça aille bien pour toi)"
+        },
+        {
+          "es": "¡Que aproveche!",
+          "fr": "Bon appétit ! (litt. que ça profite)"
+        }
+      ]
+    },
+    {
+      "titre": "Accord et désaccord",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Desde luego.",
+          "fr": "Bien sûr. (litt. depuis tout de suite)"
+        },
+        {
+          "es": "¡Ni hablar!",
+          "fr": "Pas question ! (litt. ni parler)"
+        },
+        {
+          "es": "¡Ni loco!",
+          "fr": "Jamais de la vie ! (litt. même pas fou)"
+        },
+        {
+          "es": "¡Ya lo creo!",
+          "fr": "Et comment ! Je crois bien ! (litt. je le crois déjà)"
+        },
+        {
+          "es": "No me digas.",
+          "fr": "Sans blague. / C'est pas vrai. (litt. ne me dis pas)"
+        },
+        {
+          "es": "Vale.",
+          "fr": "OK. D'accord. (Espagne, très courant)"
+        },
+        {
+          "es": "¡Qué va!",
+          "fr": "Mais non ! Pas du tout ! (litt. que va !)"
+        }
+      ]
+    },
+    {
+      "titre": "États d'esprit et émotions",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Estar hecho polvo.",
+          "fr": "Être crevé / lessivé. (litt. être fait poussière)"
+        },
+        {
+          "es": "Estar hasta las narices.",
+          "fr": "En avoir ras-le-bol. (litt. en avoir jusqu'aux narines)"
+        },
+        {
+          "es": "Estar en las nubes.",
+          "fr": "Être dans la lune. (litt. être dans les nuages)"
+        },
+        {
+          "es": "Ponerse rojo.",
+          "fr": "Rougir. (litt. se mettre rouge)"
+        },
+        {
+          "es": "Caer bien / mal.",
+          "fr": "Être sympathique / antipathique. (litt. tomber bien / mal)"
+        },
+        {
+          "es": "Dar igual.",
+          "fr": "Être égal / s'en ficher. Me da igual = ça m'est égal."
+        },
+        {
+          "es": "Pasarlo bien / mal.",
+          "fr": "S'amuser / passer un mauvais moment."
+        },
+        {
+          "es": "Quedarse en blanco.",
+          "fr": "Avoir un trou de mémoire. (litt. rester en blanc)"
+        }
+      ]
+    },
+    {
+      "titre": "Parler et communiquer",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Ir al grano.",
+          "fr": "Aller droit au but. (litt. aller au grain)"
+        },
+        {
+          "es": "No tener pelos en la lengua.",
+          "fr": "Ne pas mâcher ses mots. (litt. ne pas avoir de poils sur la langue)"
+        },
+        {
+          "es": "Meter la pata.",
+          "fr": "Faire une gaffe. (litt. mettre la patte)"
+        },
+        {
+          "es": "Tomar el pelo.",
+          "fr": "Se moquer / faire marcher. (litt. prendre le poil)"
+        },
+        {
+          "es": "Dar en el clavo.",
+          "fr": "Mettre dans le mille. (litt. taper sur le clou)"
+        },
+        {
+          "es": "No tener ni idea.",
+          "fr": "N'avoir aucune idée."
+        },
+        {
+          "es": "Hablar por los codos.",
+          "fr": "Être un moulin à paroles. (litt. parler par les coudes)"
+        }
+      ]
+    },
+    {
+      "titre": "Argent et travail",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Costar un ojo de la cara.",
+          "fr": "Coûter les yeux de la tête. (litt. coûter un œil du visage)"
+        },
+        {
+          "es": "Estar sin blanca.",
+          "fr": "Être fauché. (litt. être sans blanche)"
+        },
+        {
+          "es": "Ganarse la vida.",
+          "fr": "Gagner sa vie."
+        },
+        {
+          "es": "Echar una mano.",
+          "fr": "Donner un coup de main. (litt. lancer une main)"
+        },
+        {
+          "es": "Rascarse el bolsillo.",
+          "fr": "Mettre la main à la poche. (litt. se gratter la poche)"
+        },
+        {
+          "es": "Vivir del cuento.",
+          "fr": "Vivre sans travailler / aux crochets. (litt. vivre du conte)"
+        }
+      ]
+    },
+    {
+      "titre": "Temps et fréquence",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "De vez en cuando.",
+          "fr": "De temps en temps."
+        },
+        {
+          "es": "A menudo.",
+          "fr": "Souvent."
+        },
+        {
+          "es": "En un abrir y cerrar de ojos.",
+          "fr": "En un clin d'œil. (litt. en un ouvrir et fermer d'yeux)"
+        },
+        {
+          "es": "De la noche a la mañana.",
+          "fr": "Du jour au lendemain. (litt. de la nuit au matin)"
+        },
+        {
+          "es": "A última hora.",
+          "fr": "À la dernière minute. (litt. à la dernière heure)"
+        },
+        {
+          "es": "Hoy por hoy.",
+          "fr": "À l'heure actuelle. Aujourd'hui."
+        },
+        {
+          "es": "Tarde o temprano.",
+          "fr": "Tôt ou tard. (litt. tard ou tôt — ordre inversé)"
+        }
+      ]
+    },
+    {
+      "titre": "Quantité et intensité",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Un montón de.",
+          "fr": "Un tas de / plein de. (litt. un monticule)"
+        },
+        {
+          "es": "Ni fu ni fa.",
+          "fr": "Bof / ni bien ni mal. (onomatopée)"
+        },
+        {
+          "es": "Más o menos.",
+          "fr": "Plus ou moins. / À peu près."
+        },
+        {
+          "es": "A más no poder.",
+          "fr": "Au maximum, à n'en plus pouvoir."
+        },
+        {
+          "es": "Echar de menos.",
+          "fr": "Manquer (quelqu'un). Te echo de menos = tu me manques."
+        },
+        {
+          "es": "Hacer falta.",
+          "fr": "Avoir besoin. Me hace falta tiempo = j'ai besoin de temps."
+        }
+      ]
+    },
+    {
+      "titre": "Nourriture et boisson",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Dar la lata.",
+          "fr": "Casser les pieds / embêter. (litt. donner la boîte de conserve)"
+        },
+        {
+          "es": "Ser pan comido.",
+          "fr": "Être facile. (litt. être du pain mangé)"
+        },
+        {
+          "es": "Estar como una sopa.",
+          "fr": "Être trempé. (litt. être comme une soupe)"
+        },
+        {
+          "es": "Importar un pepino / pimiento.",
+          "fr": "S'en ficher complètement. (litt. importer un concombre / poivron)"
+        },
+        {
+          "es": "Ponerse las pilas.",
+          "fr": "Se bouger / se motiver. (litt. se mettre les piles)"
+        },
+        {
+          "es": "Estar frito.",
+          "fr": "Être fichu / cuit. (litt. être frit)"
+        }
+      ]
+    },
+    {
+      "titre": "Animaux (expressions avec)",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Ser un buitre.",
+          "fr": "Être un vautour / rapace."
+        },
+        {
+          "es": "Tener memoria de pez.",
+          "fr": "Avoir une mémoire de poisson rouge."
+        },
+        {
+          "es": "Llevarse como el perro y el gato.",
+          "fr": "S'entendre comme chien et chat."
+        },
+        {
+          "es": "Ser un buen pájaro.",
+          "fr": "Être un drôle d'oiseau / être louche. (ironique)"
+        },
+        {
+          "es": "Dormir como un tronco.",
+          "fr": "Dormir comme une souche. (litt. dormir comme un tronc)"
+        },
+        {
+          "es": "Estar pez.",
+          "fr": "N'y rien connaître. (litt. être poisson)"
+        },
+        {
+          "es": "Matar dos pájaros de un tiro.",
+          "fr": "Faire d'une pierre deux coups. (litt. tuer deux oiseaux d'un coup)"
+        }
+      ]
+    },
+    {
+      "titre": "Corps (expressions avec)",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Costar un ojo de la cara.",
+          "fr": "Coûter les yeux de la tête."
+        },
+        {
+          "es": "No pegar ojo.",
+          "fr": "Ne pas fermer l'œil (de la nuit)."
+        },
+        {
+          "es": "Tener mala cara.",
+          "fr": "Avoir mauvaise mine."
+        },
+        {
+          "es": "Dar la espalda.",
+          "fr": "Tourner le dos."
+        },
+        {
+          "es": "Echar un ojo.",
+          "fr": "Jeter un coup d'œil."
+        },
+        {
+          "es": "Tener algo en la punta de la lengua.",
+          "fr": "Avoir quelque chose sur le bout de la langue."
+        },
+        {
+          "es": "Meter las narices.",
+          "fr": "Fourrer son nez (dans les affaires des autres)."
+        },
+        {
+          "es": "Tener sangre fría.",
+          "fr": "Avoir du sang-froid."
+        }
+      ]
+    },
+    {
+      "titre": "Verbes courants à sens idiomatique",
+      "type": "tableau",
+      "colonnes": [
+        "Expression",
+        "Sens",
+        "Piège"
+      ],
+      "lignes": [
+        [
+          "tener que + inf.",
+          "devoir, il faut",
+          "tener ici ≠ avoir"
+        ],
+        [
+          "haber que + inf.",
+          "il faut (impersonnel)",
+          "hay que estudiar = il faut étudier"
+        ],
+        [
+          "acabar de + inf.",
+          "venir de",
+          "acabo de comer = je viens de manger"
+        ],
+        [
+          "dejar de + inf.",
+          "arrêter de",
+          "deja de hablar = arrête de parler"
+        ],
+        [
+          "volver a + inf.",
+          "refaire, encore",
+          "volvió a llamar = il a rappelé"
+        ],
+        [
+          "ponerse a + inf.",
+          "se mettre à",
+          "se puso a llorar = il s'est mis à pleurer"
+        ],
+        [
+          "llegar a + inf.",
+          "parvenir à, finir par",
+          "llegó a entender = il a fini par comprendre"
+        ],
+        [
+          "darse cuenta de",
+          "se rendre compte",
+          "me di cuenta = je me suis rendu compte"
+        ],
+        [
+          "tener ganas de",
+          "avoir envie de",
+          "tengo ganas de dormir = j'ai envie de dormir"
+        ],
+        [
+          "echar de menos",
+          "manquer (qqn/qqch)",
+          "te echo de menos = tu me manques"
+        ]
+      ]
+    },
+    {
+      "titre": "Faux amis idiomatiques",
+      "type": "tableau",
+      "colonnes": [
+        "Espagnol",
+        "On croit comprendre",
+        "Sens réel"
+      ],
+      "lignes": [
+        [
+          "tener éxito",
+          "avoir un exit / une sortie",
+          "avoir du succès, réussir"
+        ],
+        [
+          "estar constipado",
+          "être constipé",
+          "être enrhumé"
+        ],
+        [
+          "molestar",
+          "molester",
+          "déranger, gêner"
+        ],
+        [
+          "embarazada",
+          "embarrassée",
+          "enceinte"
+        ],
+        [
+          "realizar",
+          "réaliser (comprendre)",
+          "accomplir, effectuer"
+        ],
+        [
+          "actualmente",
+          "actuellement (en fait)",
+          "en ce moment (= actuellement)"
+        ],
+        [
+          "asistir a",
+          "assister (aider)",
+          "assister à (être présent)"
+        ],
+        [
+          "introducir",
+          "introduire (présenter qqn)",
+          "insérer, faire entrer"
+        ],
+        [
+          "largo",
+          "large",
+          "long"
+        ],
+        [
+          "sensible",
+          "sensible",
+          "sensible (= pareil, pas faux ami !)"
+        ]
+      ]
+    },
+    {
+      "titre": "Expressions du quotidien — à mémoriser",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "¡Ojo!",
+          "fr": "Attention ! (litt. œil !)"
+        },
+        {
+          "es": "¡Ojalá!",
+          "fr": "Pourvu que / si seulement ! (de l'arabe « inshallah »)"
+        },
+        {
+          "es": "¡Venga!",
+          "fr": "Allez ! (Espagne, très courant)"
+        },
+        {
+          "es": "¡Dale!",
+          "fr": "Vas-y ! (Argentine, très courant)"
+        },
+        {
+          "es": "¿En serio?",
+          "fr": "Sérieusement ? Pour de vrai ?"
+        },
+        {
+          "es": "A lo mejor.",
+          "fr": "Peut-être. (litt. au meilleur)"
+        },
+        {
+          "es": "En fin.",
+          "fr": "Bref. / Enfin."
+        },
+        {
+          "es": "Total, que…",
+          "fr": "Bref, au final… (pour résumer)"
+        },
+        {
+          "es": "O sea.",
+          "fr": "C'est-à-dire. (très fréquent à l'oral)"
+        },
+        {
+          "es": "Es decir.",
+          "fr": "C'est-à-dire. (plus formel)"
+        },
+        {
+          "es": "Por cierto.",
+          "fr": "Au fait. / D'ailleurs."
+        },
+        {
+          "es": "Sin embargo.",
+          "fr": "Cependant. / Toutefois."
+        }
+      ]
+    }
+  ],
+  "hooks": []
+}

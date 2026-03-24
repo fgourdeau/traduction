@@ -1,0 +1,324 @@
+{
+  "id": "preterito_indefinido",
+  "titre": "Prétérit (passé simple)",
+  "icone": "⏮️",
+  "ordre": 25,
+  "resume": "Action terminée dans le passé — conjugaison régulière et irréguliers fréquents",
+  "sections": [
+    {
+      "titre": "Terminaisons régulières",
+      "type": "tableau",
+      "colonnes": [
+        "",
+        "-AR (hablar)",
+        "-ER (comer)",
+        "-IR (vivir)"
+      ],
+      "lignes": [
+        [
+          "yo",
+          "-é (hablé)",
+          "-í (comí)",
+          "-í (viví)"
+        ],
+        [
+          "tú",
+          "-aste (hablaste)",
+          "-iste (comiste)",
+          "-iste (viviste)"
+        ],
+        [
+          "él/ella",
+          "-ó (habló)",
+          "-ió (comió)",
+          "-ió (vivió)"
+        ],
+        [
+          "nosotros",
+          "-amos (hablamos)",
+          "-imos (comimos)",
+          "-imos (vivimos)"
+        ],
+        [
+          "vosotros",
+          "-asteis (hablasteis)",
+          "-isteis (comisteis)",
+          "-isteis (vivisteis)"
+        ],
+        [
+          "ellos",
+          "-aron (hablaron)",
+          "-ieron (comieron)",
+          "-ieron (vivieron)"
+        ]
+      ]
+    },
+    {
+      "titre": "Attention aux accents",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "yo → accent sur la dernière (hablé, comí)",
+          "detail": "Sans accent, hable = subjonctif ! hablo ≠ habló."
+        },
+        {
+          "regle": "él → accent sur la dernière (habló, comió)",
+          "detail": "Distingue le prétérit du présent."
+        },
+        {
+          "regle": "nosotros -AR = identique au présent",
+          "detail": "hablamos (présent) = hablamos (prétérit). Seul le contexte distingue."
+        }
+      ]
+    },
+    {
+      "titre": "Irréguliers à radical fort (pas d'accent !)",
+      "type": "tableau",
+      "colonnes": [
+        "Infinitif",
+        "Radical",
+        "yo",
+        "él",
+        "ellos"
+      ],
+      "lignes": [
+        [
+          "tener",
+          "tuv-",
+          "tuve",
+          "tuvo",
+          "tuvieron"
+        ],
+        [
+          "estar",
+          "estuv-",
+          "estuve",
+          "estuvo",
+          "estuvieron"
+        ],
+        [
+          "poder",
+          "pud-",
+          "pude",
+          "pudo",
+          "pudieron"
+        ],
+        [
+          "poner",
+          "pus-",
+          "puse",
+          "puso",
+          "pusieron"
+        ],
+        [
+          "saber",
+          "sup-",
+          "supe",
+          "supo",
+          "supieron"
+        ],
+        [
+          "hacer",
+          "hic-/hiz-",
+          "hice",
+          "hizo",
+          "hicieron"
+        ],
+        [
+          "querer",
+          "quis-",
+          "quise",
+          "quiso",
+          "quisieron"
+        ],
+        [
+          "venir",
+          "vin-",
+          "vine",
+          "vino",
+          "vinieron"
+        ],
+        [
+          "decir",
+          "dij-",
+          "dije",
+          "dijo",
+          "dijeron"
+        ],
+        [
+          "traer",
+          "traj-",
+          "traje",
+          "trajo",
+          "trajeron"
+        ],
+        [
+          "conducir",
+          "conduj-",
+          "conduje",
+          "condujo",
+          "condujeron"
+        ]
+      ]
+    },
+    {
+      "titre": "Radical fort — terminaisons spéciales",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "yo = -e (PAS -é)",
+          "detail": "tuve, pude, hice. Pas d'accent ! C'est le signe d'un irrégulier."
+        },
+        {
+          "regle": "él = -o (PAS -ó)",
+          "detail": "tuvo, pudo, hizo. Pas d'accent non plus."
+        },
+        {
+          "regle": "Après j → -eron (pas -ieron)",
+          "detail": "dijeron (pas *dijieron), trajeron, condujeron."
+        }
+      ]
+    },
+    {
+      "titre": "Ser et ir — identiques au prétérit !",
+      "type": "tableau",
+      "colonnes": [
+        "",
+        "ser / ir"
+      ],
+      "lignes": [
+        [
+          "yo",
+          "fui"
+        ],
+        [
+          "tú",
+          "fuiste"
+        ],
+        [
+          "él/ella",
+          "fue"
+        ],
+        [
+          "nosotros",
+          "fuimos"
+        ],
+        [
+          "vosotros",
+          "fuisteis"
+        ],
+        [
+          "ellos",
+          "fueron"
+        ]
+      ]
+    },
+    {
+      "titre": "Ser = ir au prétérit — comment distinguer ?",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Fue un buen día.",
+          "fr": "Ce fut un bon jour. (ser → attribut après fue)"
+        },
+        {
+          "es": "Fue al cine.",
+          "fr": "Il alla au cinéma. (ir → complément de lieu)"
+        },
+        {
+          "es": "Fueron amigos.",
+          "fr": "Ils furent amis. (ser)"
+        },
+        {
+          "es": "Fueron a la playa.",
+          "fr": "Ils allèrent à la plage. (ir)"
+        }
+      ]
+    },
+    {
+      "titre": "Dar — court mais irrégulier",
+      "type": "tableau",
+      "colonnes": [
+        "",
+        "dar"
+      ],
+      "lignes": [
+        [
+          "yo",
+          "di"
+        ],
+        [
+          "tú",
+          "diste"
+        ],
+        [
+          "él/ella",
+          "dio"
+        ],
+        [
+          "nosotros",
+          "dimos"
+        ],
+        [
+          "vosotros",
+          "disteis"
+        ],
+        [
+          "ellos",
+          "dieron"
+        ]
+      ]
+    },
+    {
+      "titre": "Changements orthographiques (réguliers !)",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "-car → -qué (yo)",
+          "detail": "buscar → busqué, tocar → toqué, sacar → saqué"
+        },
+        {
+          "regle": "-gar → -gué (yo)",
+          "detail": "llegar → llegué, pagar → pagué, jugar → jugué"
+        },
+        {
+          "regle": "-zar → -cé (yo)",
+          "detail": "empezar → empecé, almorzar → almorcé, cruzar → crucé"
+        },
+        {
+          "regle": "Ce sont des réguliers !",
+          "detail": "Le son ne change pas, seulement l'orthographe pour garder le même son."
+        }
+      ]
+    },
+    {
+      "titre": "Quand utiliser le prétérit",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Action terminée, ponctuelle",
+          "detail": "Ayer comí paella. Llegó a las tres."
+        },
+        {
+          "regle": "Séquence d'événements",
+          "detail": "Se levantó, desayunó y salió."
+        },
+        {
+          "regle": "Durée délimitée",
+          "detail": "Viví allí tres años. La guerra duró seis años."
+        },
+        {
+          "regle": "Changement soudain",
+          "detail": "De repente, se cayó. En ese momento, entendí."
+        },
+        {
+          "regle": "Marqueurs typiques",
+          "detail": "ayer, anoche, el lunes, la semana pasada, en 2020, de repente, una vez"
+        }
+      ]
+    }
+  ],
+  "hooks": [
+    "verbo"
+  ]
+}

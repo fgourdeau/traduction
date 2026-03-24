@@ -1,0 +1,622 @@
+{
+  "id": "genero_sustantivos",
+  "titre": "Genre des noms",
+  "icone": "⚤",
+  "ordre": 50,
+  "resume": "Masculin ou féminin — terminaisons, exceptions, cas particuliers et pièges",
+  "sections": [
+    {
+      "titre": "Règle de base",
+      "type": "tableau",
+      "colonnes": [
+        "Terminaison",
+        "Genre habituel",
+        "Exemples"
+      ],
+      "lignes": [
+        [
+          "-o",
+          "masculin",
+          "el libro, el perro, el chico"
+        ],
+        [
+          "-a",
+          "féminin",
+          "la mesa, la casa, la chica"
+        ]
+      ]
+    },
+    {
+      "titre": "Terminaisons généralement féminines",
+      "type": "tableau",
+      "colonnes": [
+        "Terminaison",
+        "Exemples",
+        "Exception(s)"
+      ],
+      "lignes": [
+        [
+          "-ción",
+          "la nación, la canción, la situación",
+          "—"
+        ],
+        [
+          "-sión",
+          "la pasión, la decisión, la televisión",
+          "—"
+        ],
+        [
+          "-dad",
+          "la verdad, la ciudad, la realidad",
+          "—"
+        ],
+        [
+          "-tad",
+          "la libertad, la voluntad, la dificultad",
+          "—"
+        ],
+        [
+          "-tud",
+          "la juventud, la actitud, la virtud",
+          "—"
+        ],
+        [
+          "-ez",
+          "la vejez, la timidez, la sencillez",
+          "el juez (le juge)"
+        ],
+        [
+          "-umbre",
+          "la costumbre, la muchedumbre, la cumbre",
+          "—"
+        ],
+        [
+          "-triz",
+          "la actriz, la cicatriz, la emperatriz",
+          "—"
+        ],
+        [
+          "-sis",
+          "la crisis, la tesis, la hipótesis",
+          "el análisis, el énfasis, el paréntesis"
+        ]
+      ]
+    },
+    {
+      "titre": "Terminaisons généralement masculines",
+      "type": "tableau",
+      "colonnes": [
+        "Terminaison",
+        "Exemples",
+        "Exception(s)"
+      ],
+      "lignes": [
+        [
+          "-or",
+          "el color, el amor, el calor, el valor",
+          "la flor, la labor, la coliflor"
+        ],
+        [
+          "-aje",
+          "el viaje, el paisaje, el mensaje, el garaje",
+          "—"
+        ],
+        [
+          "-ma (grec)",
+          "el problema, el sistema, el tema, el idioma",
+          "la cama, la mama (non grecs)"
+        ],
+        [
+          "-ta (grec)",
+          "el planeta, el cometa",
+          "—"
+        ],
+        [
+          "-pa (grec)",
+          "el mapa",
+          "—"
+        ]
+      ]
+    },
+    {
+      "titre": "Mots grecs en -ma — à mémoriser",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "el problema — un problème",
+          "fr": "Finit par -a mais masculin ! D'origine grecque."
+        },
+        {
+          "es": "el sistema — un système",
+          "fr": "el sistema operativo (pas *la sistema)"
+        },
+        {
+          "es": "el tema — un thème/sujet",
+          "fr": "el tema principal"
+        },
+        {
+          "es": "el idioma — une langue",
+          "fr": "el idioma español"
+        },
+        {
+          "es": "el drama — un drame",
+          "fr": "el drama familiar"
+        },
+        {
+          "es": "el clima — un climat",
+          "fr": "el clima tropical"
+        },
+        {
+          "es": "el programa — un programme",
+          "fr": "el programa de televisión"
+        },
+        {
+          "es": "el poema — un poème",
+          "fr": "el poema más famoso"
+        },
+        {
+          "es": "el dilema — un dilemme",
+          "fr": "el dilema ético"
+        },
+        {
+          "es": "el diploma — un diplôme",
+          "fr": "el diploma universitario"
+        }
+      ]
+    },
+    {
+      "titre": "Exceptions en -o → féminin",
+      "type": "tableau",
+      "colonnes": [
+        "Mot",
+        "Sens",
+        "Origine / explication"
+      ],
+      "lignes": [
+        [
+          "la mano",
+          "la main",
+          "exception pure, à mémoriser"
+        ],
+        [
+          "la radio",
+          "la radio",
+          "de la radiodifusión"
+        ],
+        [
+          "la foto",
+          "la photo",
+          "de la fotografía"
+        ],
+        [
+          "la moto",
+          "la moto",
+          "de la motocicleta"
+        ],
+        [
+          "la disco",
+          "la discothèque",
+          "de la discoteca"
+        ],
+        [
+          "la polio",
+          "la polio",
+          "de la poliomielitis"
+        ]
+      ]
+    },
+    {
+      "titre": "Exceptions en -a → masculin",
+      "type": "tableau",
+      "colonnes": [
+        "Mot",
+        "Sens",
+        "Catégorie"
+      ],
+      "lignes": [
+        [
+          "el día",
+          "le jour",
+          "exception pure"
+        ],
+        [
+          "el mapa",
+          "la carte",
+          "grec"
+        ],
+        [
+          "el planeta",
+          "la planète",
+          "grec"
+        ],
+        [
+          "el problema",
+          "le problème",
+          "grec -ma"
+        ],
+        [
+          "el idioma",
+          "la langue",
+          "grec -ma"
+        ],
+        [
+          "el tema",
+          "le thème",
+          "grec -ma"
+        ],
+        [
+          "el clima",
+          "le climat",
+          "grec -ma"
+        ],
+        [
+          "el programa",
+          "le programme",
+          "grec -ma"
+        ],
+        [
+          "el sofá",
+          "le canapé",
+          "emprunt"
+        ],
+        [
+          "el yoga",
+          "le yoga",
+          "emprunt"
+        ]
+      ]
+    },
+    {
+      "titre": "El + nom féminin commençant par a-/ha- tonique",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "el agua, el alma, el arma, el águila, el hambre, el hacha",
+          "detail": "L'article el est utilisé au singulier pour éviter le choc sonore la a-. Le nom RESTE féminin."
+        },
+        {
+          "regle": "Adjectifs au féminin",
+          "detail": "el agua fría (pas *frío), el arma blanca, el alma pura."
+        },
+        {
+          "regle": "Pluriel → retour à las",
+          "detail": "las aguas, las almas, las armas, las águilas."
+        },
+        {
+          "regle": "Démonstratifs et indéfinis aussi touchés",
+          "detail": "esta agua (pas *este agua), mucha hambre (pas *mucho hambre). Seul l'article el est concerné."
+        },
+        {
+          "regle": "Ne s'applique PAS si a- n'est pas tonique",
+          "detail": "la abeja (l'abeille), la amiga (l'amie) — accent sur une autre syllabe."
+        }
+      ]
+    },
+    {
+      "titre": "El agua — exemples",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "El agua está fría.",
+          "fr": "L'eau est froide. (el + fría = féminin)"
+        },
+        {
+          "es": "Tengo mucha hambre.",
+          "fr": "J'ai très faim. (mucha, pas *mucho)"
+        },
+        {
+          "es": "Es un arma peligrosa.",
+          "fr": "C'est une arme dangereuse. (un + peligrosa)"
+        },
+        {
+          "es": "Las aguas del río.",
+          "fr": "Les eaux de la rivière. (pluriel → las)"
+        }
+      ]
+    },
+    {
+      "titre": "Noms de personnes et professions",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "-o → -a",
+          "detail": "el médico / la médica, el abogado / la abogada, el ingeniero / la ingeniera"
+        },
+        {
+          "regle": "-or → -ora",
+          "detail": "el profesor / la profesora, el director / la directora, el escritor / la escritora"
+        },
+        {
+          "regle": "-ista → invariable",
+          "detail": "el/la turista, el/la artista, el/la periodista, el/la dentista"
+        },
+        {
+          "regle": "-nte → souvent invariable",
+          "detail": "el/la estudiante, el/la cantante, el/la paciente"
+        },
+        {
+          "regle": "-a pour les deux genres",
+          "detail": "el/la policía, el/la guía, el/la atleta — l'article change, pas le nom"
+        }
+      ]
+    },
+    {
+      "titre": "Professions — exemples",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "La doctora me examinó.",
+          "fr": "La docteure m'a examiné."
+        },
+        {
+          "es": "Es una gran artista.",
+          "fr": "C'est une grande artiste. (-ista invariable)"
+        },
+        {
+          "es": "La presidenta habló.",
+          "fr": "La présidente a parlé. (-ente → -enta courant aujourd'hui)"
+        },
+        {
+          "es": "El policía detuvo al ladrón.",
+          "fr": "Le policier a arrêté le voleur. (-a mais masculin avec el)"
+        }
+      ]
+    },
+    {
+      "titre": "Noms à double genre — sens différent",
+      "type": "tableau",
+      "colonnes": [
+        "Masculin",
+        "Sens",
+        "Féminin",
+        "Sens"
+      ],
+      "lignes": [
+        [
+          "el capital",
+          "l'argent, le capital",
+          "la capital",
+          "la capitale"
+        ],
+        [
+          "el cura",
+          "le prêtre",
+          "la cura",
+          "la guérison, le soin"
+        ],
+        [
+          "el orden",
+          "l'ordre (rangement)",
+          "la orden",
+          "l'ordre (commandement)"
+        ],
+        [
+          "el frente",
+          "le front (militaire/météo)",
+          "la frente",
+          "le front (du visage)"
+        ],
+        [
+          "el cometa",
+          "la comète",
+          "la cometa",
+          "le cerf-volant"
+        ],
+        [
+          "el papa",
+          "le pape",
+          "la papa",
+          "la pomme de terre (Am. lat.)"
+        ],
+        [
+          "el policía",
+          "le policier",
+          "la policía",
+          "la police / la policière"
+        ],
+        [
+          "el guía",
+          "le guide (personne)",
+          "la guía",
+          "le guide (livre) / la guide"
+        ],
+        [
+          "el editorial",
+          "l'éditorial",
+          "la editorial",
+          "la maison d'édition"
+        ],
+        [
+          "el cólera",
+          "le choléra",
+          "la cólera",
+          "la colère"
+        ]
+      ]
+    },
+    {
+      "titre": "Double genre — exemples",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "El capital de la empresa es enorme.",
+          "fr": "Le capital de l'entreprise est énorme. (argent)"
+        },
+        {
+          "es": "Madrid es la capital de España.",
+          "fr": "Madrid est la capitale de l'Espagne. (ville)"
+        },
+        {
+          "es": "El cura habló en la misa.",
+          "fr": "Le prêtre a parlé à la messe."
+        },
+        {
+          "es": "No tiene cura.",
+          "fr": "Ça n'a pas de remède. (guérison)"
+        },
+        {
+          "es": "Me duele la frente.",
+          "fr": "J'ai mal au front. (visage)"
+        },
+        {
+          "es": "El frente frío avanza.",
+          "fr": "Le front froid avance. (météo)"
+        }
+      ]
+    },
+    {
+      "titre": "El mar / la mar",
+      "type": "texte",
+      "contenu": "Les deux genres existent. El mar est le plus courant dans la langue standard. La mar est fréquent dans le langage poétique, maritime et dans certaines expressions : la mar de gente (plein de monde), alta mar (haute mer). En cas de doute, utiliser el mar."
+    },
+    {
+      "titre": "Noms géographiques",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Fleuves, montagnes, océans → souvent masculins",
+          "detail": "el Amazonas, el Atlántico, los Andes, el Mediterráneo."
+        },
+        {
+          "regle": "Pays → souvent sans article",
+          "detail": "España, Francia, México. Mais : el Perú, el Ecuador, los Estados Unidos."
+        },
+        {
+          "regle": "Pays en -a → féminin si article",
+          "detail": "la Argentina, la India, la China (usage variable)."
+        },
+        {
+          "regle": "Villes → généralement sans article ni genre",
+          "detail": "Mais : la Habana, el Cairo."
+        }
+      ]
+    },
+    {
+      "titre": "Comment deviner le genre — méthode rapide",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "1. Regarder la terminaison",
+          "detail": "-o → masc., -a → fém., -ción/-dad/-tud/-umbre/-ez → fém., -or/-aje/-ma grec → masc."
+        },
+        {
+          "regle": "2. Vérifier les exceptions connues",
+          "detail": "la mano, el día, el mapa, la foto, la moto, el problema, el agua (fém. avec el)."
+        },
+        {
+          "regle": "3. En cas de doute : chercher l'article",
+          "detail": "Apprendre el/la avec le nom, pas le nom seul. C'est la méthode la plus fiable."
+        },
+        {
+          "regle": "4. Mot en -e ou -consonne ? Pas de règle fiable",
+          "detail": "el coche, la noche, el árbol, la flor. Il faut mémoriser."
+        }
+      ]
+    },
+    {
+      "titre": "Fiche ultra-compacte",
+      "type": "tableau",
+      "colonnes": [
+        "Généralement masculin",
+        "Généralement féminin"
+      ],
+      "lignes": [
+        [
+          "-o (el libro)",
+          "-a (la casa)"
+        ],
+        [
+          "-or (el color)",
+          "-ción (la nación)"
+        ],
+        [
+          "-aje (el viaje)",
+          "-sión (la pasión)"
+        ],
+        [
+          "-ma grec (el problema)",
+          "-dad (la verdad)"
+        ],
+        [
+          "",
+          "-tad (la libertad)"
+        ],
+        [
+          "",
+          "-tud (la juventud)"
+        ],
+        [
+          "",
+          "-ez (la vejez)"
+        ],
+        [
+          "",
+          "-umbre (la costumbre)"
+        ],
+        [
+          "",
+          "-triz (la actriz)"
+        ],
+        [
+          "",
+          "-sis (la crisis)"
+        ]
+      ]
+    },
+    {
+      "titre": "Exceptions à retenir absolument",
+      "type": "tableau",
+      "colonnes": [
+        "Fém. en -o",
+        "Masc. en -a",
+        "Fém. avec el"
+      ],
+      "lignes": [
+        [
+          "la mano",
+          "el día",
+          "el agua"
+        ],
+        [
+          "la radio",
+          "el mapa",
+          "el alma"
+        ],
+        [
+          "la foto",
+          "el planeta",
+          "el arma"
+        ],
+        [
+          "la moto",
+          "el problema",
+          "el águila"
+        ],
+        [
+          "la disco",
+          "el idioma",
+          "el hambre"
+        ],
+        [
+          "",
+          "el tema",
+          "el hacha"
+        ],
+        [
+          "",
+          "el clima",
+          ""
+        ],
+        [
+          "",
+          "el sofá",
+          ""
+        ]
+      ]
+    }
+  ],
+  "hooks": [
+    "sustantivo",
+    "sujeto"
+  ]
+}

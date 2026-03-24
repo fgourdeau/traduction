@@ -1,0 +1,597 @@
+{
+  "id": "preposiciones",
+  "titre": "Prépositions",
+  "icone": "🔗",
+  "ordre": 65,
+  "resume": "por/para, a/en/de — les grandes prépositions et leurs pièges pour francophones",
+  "sections": [
+    {
+      "titre": "Vue d'ensemble",
+      "type": "tableau",
+      "colonnes": [
+        "Préposition",
+        "Idées principales",
+        "Équivalents français approximatifs"
+      ],
+      "lignes": [
+        [
+          "a",
+          "direction, destinataire, heure, COD personne",
+          "à, vers, chez"
+        ],
+        [
+          "de",
+          "origine, possession, matière, cause",
+          "de, en, d'"
+        ],
+        [
+          "en",
+          "lieu (dedans), moyen, temps",
+          "dans, en, sur"
+        ],
+        [
+          "por",
+          "cause, moyen, échange, traversée, agent",
+          "par, pour (cause), à travers"
+        ],
+        [
+          "para",
+          "but, destination, délai, opinion",
+          "pour (but), afin de"
+        ],
+        [
+          "con",
+          "accompagnement, moyen",
+          "avec"
+        ],
+        [
+          "sin",
+          "absence",
+          "sans"
+        ],
+        [
+          "entre",
+          "entre",
+          "entre"
+        ],
+        [
+          "hasta",
+          "limite",
+          "jusqu'à"
+        ],
+        [
+          "desde",
+          "point de départ",
+          "depuis, dès"
+        ],
+        [
+          "hacia",
+          "direction approximative",
+          "vers"
+        ],
+        [
+          "sobre",
+          "dessus, sujet",
+          "sur, au sujet de"
+        ],
+        [
+          "bajo",
+          "dessous",
+          "sous"
+        ],
+        [
+          "según",
+          "selon",
+          "selon"
+        ]
+      ]
+    },
+    {
+      "titre": "POR — les 7 usages",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Cause / raison (= à cause de, grâce à)",
+          "detail": "Llegó tarde por el tráfico. Gracias por tu ayuda."
+        },
+        {
+          "regle": "Moyen / voie (= par)",
+          "detail": "Hablar por teléfono. Enviar por correo. Por internet."
+        },
+        {
+          "regle": "Lieu traversé (= à travers, le long de)",
+          "detail": "Pasear por la playa. Viajamos por España."
+        },
+        {
+          "regle": "Échange / prix (= pour, contre)",
+          "detail": "Lo compré por diez euros. Cambiar uno por otro."
+        },
+        {
+          "regle": "Durée approximative (= pendant)",
+          "detail": "Viví allí por tres años. Por la mañana (le matin)."
+        },
+        {
+          "regle": "Agent (voix passive) (= par)",
+          "detail": "El libro fue escrito por Cervantes."
+        },
+        {
+          "regle": "En faveur de / à la place de",
+          "detail": "Voto por ti. Hablaré por él (à sa place)."
+        }
+      ]
+    },
+    {
+      "titre": "POR — exemples",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Gracias por venir.",
+          "fr": "Merci d'être venu. (cause)"
+        },
+        {
+          "es": "Te llamo por teléfono.",
+          "fr": "Je t'appelle par téléphone. (moyen)"
+        },
+        {
+          "es": "Caminamos por el centro.",
+          "fr": "Nous marchons dans le centre. (traversée)"
+        },
+        {
+          "es": "Pagué veinte euros por eso.",
+          "fr": "J'ai payé vingt euros pour ça. (échange)"
+        },
+        {
+          "es": "Por la noche llueve.",
+          "fr": "La nuit il pleut. (moment)"
+        }
+      ]
+    },
+    {
+      "titre": "PARA — les 5 usages",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "But / finalité (= pour, afin de)",
+          "detail": "Estudio para aprender. Esto es para ti."
+        },
+        {
+          "regle": "Destination (= pour, vers)",
+          "detail": "Salgo para Madrid. El tren para Barcelona."
+        },
+        {
+          "regle": "Délai / date limite (= pour, d'ici)",
+          "detail": "Lo necesito para el lunes. Para mañana."
+        },
+        {
+          "regle": "Opinion / point de vue (= pour, selon)",
+          "detail": "Para mí, es fácil. Para un niño, lo hace bien."
+        },
+        {
+          "regle": "Comparaison (= pour)",
+          "detail": "Para su edad, habla muy bien. Es alto para ser japonés."
+        }
+      ]
+    },
+    {
+      "titre": "PARA — exemples",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Trabajo para vivir.",
+          "fr": "Je travaille pour vivre. (but)"
+        },
+        {
+          "es": "Este regalo es para ti.",
+          "fr": "Ce cadeau est pour toi. (destination)"
+        },
+        {
+          "es": "Termínalo para el viernes.",
+          "fr": "Finis-le pour vendredi. (délai)"
+        },
+        {
+          "es": "Para mí, no tiene sentido.",
+          "fr": "Pour moi, ça n'a pas de sens. (opinion)"
+        },
+        {
+          "es": "Habla bien para ser extranjero.",
+          "fr": "Il parle bien pour un étranger. (comparaison)"
+        }
+      ]
+    },
+    {
+      "titre": "POR vs PARA — le piège central",
+      "type": "tableau",
+      "colonnes": [
+        "Question mentale",
+        "Réponse",
+        "Préposition"
+      ],
+      "lignes": [
+        [
+          "Pourquoi ? (cause passée)",
+          "à cause de, grâce à",
+          "por"
+        ],
+        [
+          "Pour quoi faire ? (but futur)",
+          "afin de, dans le but de",
+          "para"
+        ],
+        [
+          "En échange de quoi ?",
+          "contre, au prix de",
+          "por"
+        ],
+        [
+          "Pour qui / destiné à ?",
+          "à destination de",
+          "para"
+        ],
+        [
+          "Par où ? (traversée)",
+          "à travers",
+          "por"
+        ],
+        [
+          "Vers où ? (destination)",
+          "en direction de",
+          "para"
+        ],
+        [
+          "Pendant combien de temps ?",
+          "durée",
+          "por"
+        ],
+        [
+          "Pour quand ? (délai)",
+          "d'ici, avant",
+          "para"
+        ]
+      ]
+    },
+    {
+      "titre": "POR vs PARA — paires contrastées",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Lo hago por ti.",
+          "fr": "Je le fais à cause de toi / pour toi (tu es la raison)."
+        },
+        {
+          "es": "Lo hago para ti.",
+          "fr": "Je le fais pour toi (tu es le destinataire)."
+        },
+        {
+          "es": "Camino por el parque.",
+          "fr": "Je marche à travers le parc."
+        },
+        {
+          "es": "Camino para el parque.",
+          "fr": "Je marche vers le parc (destination)."
+        },
+        {
+          "es": "Estuve allí por dos horas.",
+          "fr": "J'y étais pendant deux heures."
+        },
+        {
+          "es": "Lo necesito para las dos.",
+          "fr": "J'en ai besoin pour deux heures (délai)."
+        }
+      ]
+    },
+    {
+      "titre": "A — les usages principaux",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Direction / mouvement (= à, vers)",
+          "detail": "Voy a la escuela. Llego a casa."
+        },
+        {
+          "regle": "COD de personne (a personal)",
+          "detail": "Veo a María. Llamo a mi madre. OBLIGATOIRE devant une personne."
+        },
+        {
+          "regle": "COI / destinataire (= à)",
+          "detail": "Le doy el libro a Pedro. Escribo a mi amigo."
+        },
+        {
+          "regle": "Heure (= à)",
+          "detail": "A las tres. A medianoche."
+        },
+        {
+          "regle": "Manière",
+          "detail": "A pie (à pied). A mano (à la main). A oscuras (dans le noir)."
+        },
+        {
+          "regle": "Après verbes de mouvement",
+          "detail": "Ir a, venir a, llegar a, volver a."
+        },
+        {
+          "regle": "Futur immédiat : ir + a + infinitif",
+          "detail": "Voy a comer. Va a llover."
+        }
+      ]
+    },
+    {
+      "titre": "Le « a personal » — piège majeur",
+      "type": "texte",
+      "contenu": "En espagnol, quand le COD est une personne (ou un animal personnifié), on ajoute « a » devant. C'est invisible en français. Veo a Juan (je vois Juan). Busco a mi hermana (je cherche ma sœur). Mais : Busco un taxi (je cherche un taxi — pas de personne, pas de a)."
+    },
+    {
+      "titre": "A — exemples",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Voy a Madrid.",
+          "fr": "Je vais à Madrid. (direction)"
+        },
+        {
+          "es": "Conozco a tu hermano.",
+          "fr": "Je connais ton frère. (a personal)"
+        },
+        {
+          "es": "Le escribo a mi madre.",
+          "fr": "J'écris à ma mère. (destinataire)"
+        },
+        {
+          "es": "Nos vemos a las ocho.",
+          "fr": "On se voit à huit heures."
+        },
+        {
+          "es": "Voy a estudiar.",
+          "fr": "Je vais étudier. (futur immédiat)"
+        }
+      ]
+    },
+    {
+      "titre": "DE — les usages principaux",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Origine / provenance (= de)",
+          "detail": "Soy de Quebec. Vengo de la oficina."
+        },
+        {
+          "regle": "Possession / appartenance (= de)",
+          "detail": "El libro de Juan. La puerta de la casa."
+        },
+        {
+          "regle": "Matière (= en, de)",
+          "detail": "Una mesa de madera. Un vaso de cristal."
+        },
+        {
+          "regle": "Contenu / type (= de, à)",
+          "detail": "Un vaso de agua. Una clase de español."
+        },
+        {
+          "regle": "Cause (soutenu)",
+          "detail": "Morir de hambre. Temblar de frío."
+        },
+        {
+          "regle": "Heure (à partir de)",
+          "detail": "De las tres a las cinco. De noche (la nuit)."
+        },
+        {
+          "regle": "Superlatif (= de)",
+          "detail": "El más alto de la clase. La mejor de todas."
+        }
+      ]
+    },
+    {
+      "titre": "DE — exemples",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Soy de Canadá.",
+          "fr": "Je suis du Canada. (origine)"
+        },
+        {
+          "es": "La casa de mi abuela.",
+          "fr": "La maison de ma grand-mère. (possession)"
+        },
+        {
+          "es": "Una camisa de algodón.",
+          "fr": "Une chemise en coton. (matière)"
+        },
+        {
+          "es": "Muero de sed.",
+          "fr": "Je meurs de soif. (cause)"
+        },
+        {
+          "es": "Es la mejor película del año.",
+          "fr": "C'est le meilleur film de l'année. (superlatif)"
+        }
+      ]
+    },
+    {
+      "titre": "EN — les usages principaux",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Lieu (sans mouvement) (= dans, à, sur)",
+          "detail": "Estoy en casa. En la mesa. En Madrid."
+        },
+        {
+          "regle": "Moyen de transport (= en)",
+          "detail": "En coche. En avión. En tren. MAIS : a pie."
+        },
+        {
+          "regle": "Temps (mois, année, saison) (= en)",
+          "detail": "En enero. En 2025. En verano."
+        },
+        {
+          "regle": "Temps (durée pour accomplir) (= en)",
+          "detail": "Lo hizo en dos horas."
+        },
+        {
+          "regle": "Matière / domaine",
+          "detail": "Experto en informática. Licenciado en derecho."
+        }
+      ]
+    },
+    {
+      "titre": "EN — piège francophone",
+      "type": "texte",
+      "contenu": "Le français dit « à Madrid » mais l'espagnol dit « en Madrid ». Pour la localisation statique (être quelque part), c'est presque toujours EN. Pour le mouvement vers un lieu, c'est A. Estoy en Madrid (j'y suis). Voy a Madrid (j'y vais)."
+    },
+    {
+      "titre": "EN vs A — contraste",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Estoy en la oficina.",
+          "fr": "Je suis au bureau. (lieu statique → en)"
+        },
+        {
+          "es": "Voy a la oficina.",
+          "fr": "Je vais au bureau. (mouvement → a)"
+        },
+        {
+          "es": "Vivo en Barcelona.",
+          "fr": "Je vis à Barcelone. (statique → en)"
+        },
+        {
+          "es": "Viajo a Barcelona.",
+          "fr": "Je voyage à Barcelone. (mouvement → a)"
+        }
+      ]
+    },
+    {
+      "titre": "Autres prépositions courantes",
+      "type": "tableau",
+      "colonnes": [
+        "Espagnol",
+        "Français",
+        "Exemple"
+      ],
+      "lignes": [
+        [
+          "con",
+          "avec",
+          "Vivo con mi familia."
+        ],
+        [
+          "sin",
+          "sans",
+          "Café sin azúcar."
+        ],
+        [
+          "entre",
+          "entre",
+          "Entre tú y yo."
+        ],
+        [
+          "hasta",
+          "jusqu'à",
+          "Hasta mañana. Hasta las cinco."
+        ],
+        [
+          "desde",
+          "depuis, dès",
+          "Desde ayer. Desde aquí."
+        ],
+        [
+          "hacia",
+          "vers (approximatif)",
+          "Hacia el norte. Hacia las tres."
+        ],
+        [
+          "sobre",
+          "sur, au sujet de",
+          "El libro sobre la mesa. Hablar sobre política."
+        ],
+        [
+          "bajo",
+          "sous",
+          "Bajo la lluvia. Bajo presión."
+        ],
+        [
+          "contra",
+          "contre",
+          "Contra la pared. Luchar contra."
+        ],
+        [
+          "según",
+          "selon",
+          "Según el periódico."
+        ],
+        [
+          "durante",
+          "pendant",
+          "Durante la clase."
+        ],
+        [
+          "tras",
+          "après, derrière",
+          "Tras la puerta. Día tras día."
+        ]
+      ]
+    },
+    {
+      "titre": "Expressions figées à mémoriser",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "Depende de ti.",
+          "fr": "Ça dépend de toi. (depender DE)"
+        },
+        {
+          "es": "Soñar con viajar.",
+          "fr": "Rêver de voyager. (soñar CON, pas *de)"
+        },
+        {
+          "es": "Pensar en algo.",
+          "fr": "Penser à quelque chose. (pensar EN, pas *a)"
+        },
+        {
+          "es": "Consistir en algo.",
+          "fr": "Consister en quelque chose. (consistir EN)"
+        },
+        {
+          "es": "Enamorarse de alguien.",
+          "fr": "Tomber amoureux de quelqu'un. (DE)"
+        },
+        {
+          "es": "Casarse con alguien.",
+          "fr": "Se marier avec quelqu'un. (CON)"
+        },
+        {
+          "es": "Fijarse en algo.",
+          "fr": "Remarquer quelque chose. (EN)"
+        }
+      ]
+    },
+    {
+      "titre": "Résumé express por/para/a/en/de",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "POR = cause, moyen, échange, traversée",
+          "detail": "Pourquoi ? Par quel moyen ? En échange de quoi ?"
+        },
+        {
+          "regle": "PARA = but, destination, délai, opinion",
+          "detail": "Pour quoi faire ? Pour qui ? Pour quand ?"
+        },
+        {
+          "regle": "A = direction, heure, COD personne, destinataire",
+          "detail": "Où vas-tu ? À qui ? À quelle heure ?"
+        },
+        {
+          "regle": "EN = lieu statique, transport, mois/année",
+          "detail": "Où es-tu ? En quoi ? En quel mois ?"
+        },
+        {
+          "regle": "DE = origine, possession, matière, cause",
+          "detail": "D'où ? De qui ? En quoi (matière) ?"
+        }
+      ]
+    }
+  ],
+  "hooks": [
+    "preposición",
+    "complemento",
+    "cpl"
+  ]
+}

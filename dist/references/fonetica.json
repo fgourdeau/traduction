@@ -1,0 +1,534 @@
+{
+  "id": "fonetica",
+  "titre": "Phonétique pour francophones",
+  "icone": "🗣️",
+  "ordre": 75,
+  "resume": "Voyelles, consonnes, pièges de prononciation et correspondances graphie-son",
+  "sections": [
+    {
+      "titre": "Principe clé",
+      "type": "texte",
+      "contenu": "L'espagnol est une langue très phonétique : chaque lettre se prononce (sauf h), et chaque son s'écrit de façon prévisible. Pas de lettres muettes surprises, pas de combinaisons imprévisibles. Un francophone doit surtout désapprendre les habitudes du français."
+    },
+    {
+      "titre": "Les 5 voyelles — simples et stables",
+      "type": "tableau",
+      "colonnes": [
+        "Voyelle",
+        "Prononciation",
+        "Comme en français",
+        "Piège francophone",
+        "Exemple"
+      ],
+      "lignes": [
+        [
+          "a",
+          "toujours /a/ ouvert",
+          "a de papa",
+          "aucun",
+          "casa → ka-sa"
+        ],
+        [
+          "e",
+          "toujours /e/ pur",
+          "entre é et è",
+          "ne jamais faire le e muet français",
+          "mesa → mé-sa"
+        ],
+        [
+          "i",
+          "toujours /i/",
+          "i de lit",
+          "aucun",
+          "vino → bi-no"
+        ],
+        [
+          "o",
+          "toujours /o/ pur",
+          "o de mot",
+          "pas de glissement vers ou",
+          "lobo → lo-bo"
+        ],
+        [
+          "u",
+          "toujours /ou/",
+          "ou de loup",
+          "JAMAIS le u français /y/",
+          "luna → lou-na"
+        ]
+      ]
+    },
+    {
+      "titre": "Voyelles — règles d'or",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Pas de voyelles nasales",
+          "detail": "an, en, in, on, un → chaque lettre se prononce séparément. pan = pa-n (pas comme « pan » français)."
+        },
+        {
+          "regle": "Pas de e muet",
+          "detail": "Toute voyelle écrite se prononce. madre = ma-dré (2 syllabes sonores, pas *madr')."
+        },
+        {
+          "regle": "u = toujours /ou/",
+          "detail": "Le u français (/y/ comme dans « lune ») n'existe PAS en espagnol. una = ou-na."
+        },
+        {
+          "regle": "Pas de liaison entre mots",
+          "detail": "En espagnol, chaque mot garde ses frontières sonores (sauf enchaînements naturels rapides)."
+        }
+      ]
+    },
+    {
+      "titre": "Consonnes à prononciation stable (pas de piège)",
+      "type": "tableau",
+      "colonnes": [
+        "Lettre",
+        "Son",
+        "Comme en français",
+        "Exemple"
+      ],
+      "lignes": [
+        [
+          "p",
+          "/p/",
+          "p de papa",
+          "papá"
+        ],
+        [
+          "t",
+          "/t/",
+          "t de table",
+          "tarde"
+        ],
+        [
+          "f",
+          "/f/",
+          "f de faire",
+          "familia"
+        ],
+        [
+          "m",
+          "/m/",
+          "m de maman",
+          "mano"
+        ],
+        [
+          "n",
+          "/n/",
+          "n de nuit",
+          "noche"
+        ],
+        [
+          "ñ",
+          "/ɲ/",
+          "gn de montagne",
+          "niño → ni-gno"
+        ],
+        [
+          "l",
+          "/l/",
+          "l de lune",
+          "luna"
+        ],
+        [
+          "ch",
+          "/tʃ/",
+          "tch de match",
+          "chico → tchi-ko"
+        ],
+        [
+          "h",
+          "MUET",
+          "ne se prononce jamais",
+          "hola → o-la"
+        ]
+      ]
+    },
+    {
+      "titre": "B et V — le même son !",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "b et v se prononcent pareil",
+          "detail": "C'est LA différence majeure avec le français. Pas de distinction /b/ vs /v/."
+        },
+        {
+          "regle": "Début de mot ou après m/n → /b/ dur",
+          "detail": "boca → bo-ka, vino → bi-no, un beso → oun-bé-so"
+        },
+        {
+          "regle": "Entre voyelles → /β/ doux (fricatif)",
+          "detail": "Les lèvres se rapprochent sans se fermer complètement. saber → sa-βer, vivir → bi-βir"
+        },
+        {
+          "regle": "Savoir si c'est b ou v → mémoire pure",
+          "detail": "Aucune règle de prononciation ne distingue b de v. C'est lexical."
+        }
+      ]
+    },
+    {
+      "titre": "D — dur ou doux selon la position",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Début de mot ou après n/l → /d/ dur",
+          "detail": "día → di-a, donde → don-dé, el día → el-di-a"
+        },
+        {
+          "regle": "Entre voyelles → /ð/ doux (comme th anglais de « the »)",
+          "detail": "cada → ka-ða, todo → to-ðo, nada → na-ða"
+        },
+        {
+          "regle": "En fin de mot → très atténué, presque muet",
+          "detail": "ciudad → thiu-dað (le d final est à peine audible), verdad → ber-dað"
+        }
+      ]
+    },
+    {
+      "titre": "G — dur ou râpeux selon la voyelle",
+      "type": "tableau",
+      "colonnes": [
+        "Combinaison",
+        "Son",
+        "Prononciation",
+        "Exemple"
+      ],
+      "lignes": [
+        [
+          "ga, go, gu",
+          "/g/ dur",
+          "comme g de gare",
+          "gato, gorro, gustar"
+        ],
+        [
+          "gue, gui",
+          "/g/ dur (u muet)",
+          "comme gué, gui",
+          "guerra → ghé-ra, guitarra → ghi-ta-ra"
+        ],
+        [
+          "güe, güi",
+          "/gw/ (u prononcé)",
+          "le tréma = u s'entend",
+          "pingüino → pin-goui-no, vergüenza"
+        ],
+        [
+          "ge, gi",
+          "/x/ râpeux",
+          "comme j espagnol",
+          "gente → rhén-té, girar → rhi-rar"
+        ]
+      ]
+    },
+    {
+      "titre": "Le son /x/ — j et g(e/i)",
+      "type": "texte",
+      "contenu": "Le « jota » espagnol /x/ est un son guttural râpeux, comme un h très aspiré du fond de la gorge. Il n'existe pas en français. C'est le son de j devant toute voyelle (jamón, julio) et de g devant e ou i (gente, girar). C'est le même son dans les deux cas."
+    },
+    {
+      "titre": "Le son /x/ — exemples",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "jamón",
+          "fr": "rha-mon (le j est guttural, pas comme j français)"
+        },
+        {
+          "es": "julio",
+          "fr": "rhou-lio"
+        },
+        {
+          "es": "gente",
+          "fr": "rhén-té (g devant e = même son que j)"
+        },
+        {
+          "es": "hijo",
+          "fr": "i-rho (h muet + j guttural)"
+        },
+        {
+          "es": "reloj",
+          "fr": "ré-lorh (j final guttural)"
+        }
+      ]
+    },
+    {
+      "titre": "C, QU, K — le son /k/",
+      "type": "tableau",
+      "colonnes": [
+        "Combinaison",
+        "Son",
+        "Exemple"
+      ],
+      "lignes": [
+        [
+          "ca, co, cu",
+          "/k/",
+          "casa, comer, cuchara"
+        ],
+        [
+          "que, qui",
+          "/k/ (u muet)",
+          "queso → ké-so, quién → kién"
+        ],
+        [
+          "k",
+          "/k/ (emprunts)",
+          "kilo, kayak"
+        ]
+      ]
+    },
+    {
+      "titre": "C, Z, S — le son /s/ (et /θ/ en Espagne)",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Amérique latine (seseo) : c(e/i), z et s = tous /s/",
+          "detail": "cena = sé-na, zapato = sa-pa-to, casa = ka-sa. Pas de distinction."
+        },
+        {
+          "regle": "Espagne (distinción) : c(e/i) et z = /θ/ (comme th anglais de « think »)",
+          "detail": "cena = θé-na, zapato = θa-pa-to. Mais s reste /s/."
+        },
+        {
+          "regle": "En pratique pour un francophone",
+          "detail": "Prononcer tout en /s/ est parfaitement compris partout. Le θ est optionnel."
+        }
+      ]
+    },
+    {
+      "titre": "R — simple vs roulé",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "r simple /ɾ/ (un seul battement)",
+          "detail": "Un tap rapide de la pointe de la langue contre le palais. pero, caro, escribir."
+        },
+        {
+          "regle": "rr roulé /r/ (vibrant, plusieurs battements)",
+          "detail": "La langue vibre contre le palais. perro, carro, tierra."
+        },
+        {
+          "regle": "r en début de mot = roulé",
+          "detail": "rojo → rro-rho, razón → rra-θon. Un seul r écrit mais son roulé."
+        },
+        {
+          "regle": "r après l, n, s = roulé",
+          "detail": "alrededor, enriquecer, Israel."
+        },
+        {
+          "regle": "Piège francophone",
+          "detail": "Le r espagnol n'est JAMAIS le r français (uvulaire/gorge). C'est toujours avec la pointe de la langue."
+        }
+      ]
+    },
+    {
+      "titre": "R — paires minimales",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "pero (mais) vs perro (chien)",
+          "fr": "Un battement vs vibration : la différence change le sens !"
+        },
+        {
+          "es": "caro (cher) vs carro (chariot)",
+          "fr": "r simple vs rr roulé"
+        },
+        {
+          "es": "para (pour) vs parra (vigne)",
+          "fr": "r simple vs rr roulé"
+        },
+        {
+          "es": "rojo (rouge)",
+          "fr": "r initial = roulé, même si un seul r écrit"
+        }
+      ]
+    },
+    {
+      "titre": "LL et Y — le yeísmo",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Historiquement ll = /ʎ/ (comme gli italien)",
+          "detail": "Encore distingué dans certaines régions rurales d'Espagne et des Andes."
+        },
+        {
+          "regle": "Aujourd'hui ll = y pour la majorité des hispanophones",
+          "detail": "C'est le yeísmo. llave = ya-bé, calle = ka-yé."
+        },
+        {
+          "regle": "Le son exact varie selon la région",
+          "detail": "Espagne/Mexique : /ʝ/ (y doux). Argentine : /ʃ/ (comme ch français). Colombie : /dʒ/ (comme j anglais)."
+        },
+        {
+          "regle": "Pour un francophone",
+          "detail": "Prononcer ll et y comme un y français (yeux) fonctionne partout."
+        }
+      ]
+    },
+    {
+      "titre": "Lettres et sons qui n'existent PAS en espagnol",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Pas de /y/ (u français)",
+          "detail": "Le u espagnol = toujours /ou/. « lune » → luna = lou-na."
+        },
+        {
+          "regle": "Pas de /v/ labiodental",
+          "detail": "Le v espagnol = /b/. vivir = bi-bir."
+        },
+        {
+          "regle": "Pas de /ʒ/ (j français)",
+          "detail": "Le j espagnol = /x/ guttural. jamás ≠ jamais."
+        },
+        {
+          "regle": "Pas de /ʁ/ (r français)",
+          "detail": "Le r espagnol est toujours apical (pointe de langue), jamais uvulaire."
+        },
+        {
+          "regle": "Pas de voyelles nasales",
+          "detail": "on, an, in, en → consonnes séparées. pan = pa-n."
+        },
+        {
+          "regle": "Pas de e muet / e caduc",
+          "detail": "Chaque e s'entend. padre = pa-dré."
+        }
+      ]
+    },
+    {
+      "titre": "Graphie → son — tableau récapitulatif",
+      "type": "tableau",
+      "colonnes": [
+        "Graphie",
+        "Devant a/o/u",
+        "Devant e/i",
+        "Notes"
+      ],
+      "lignes": [
+        [
+          "c",
+          "/k/ (ca, co, cu)",
+          "/s/ ou /θ/ (ce, ci)",
+          "deux sons selon la voyelle"
+        ],
+        [
+          "g",
+          "/g/ dur (ga, go, gu)",
+          "/x/ râpeux (ge, gi)",
+          "deux sons selon la voyelle"
+        ],
+        [
+          "gu",
+          "—",
+          "/g/ dur (gue, gui)",
+          "u muet devant e/i"
+        ],
+        [
+          "gü",
+          "—",
+          "/gw/ (güe, güi)",
+          "tréma = u prononcé"
+        ],
+        [
+          "qu",
+          "—",
+          "/k/ (que, qui)",
+          "u toujours muet"
+        ],
+        [
+          "j",
+          "/x/ (ja, jo, ju)",
+          "/x/ (je, ji)",
+          "toujours le même son râpeux"
+        ],
+        [
+          "z",
+          "/s/ ou /θ/",
+          "rare devant e/i",
+          "même son que c(e/i)"
+        ],
+        [
+          "r",
+          "/ɾ/ simple",
+          "/ɾ/ simple",
+          "roulé si initial ou après l/n/s"
+        ],
+        [
+          "rr",
+          "/r/ roulé",
+          "/r/ roulé",
+          "uniquement entre voyelles"
+        ],
+        [
+          "ll",
+          "/ʝ/ ≈ y",
+          "/ʝ/ ≈ y",
+          "yeísmo quasi universel"
+        ],
+        [
+          "h",
+          "muet",
+          "muet",
+          "jamais prononcé (sauf ch)"
+        ],
+        [
+          "ñ",
+          "/ɲ/",
+          "/ɲ/",
+          "comme gn français"
+        ]
+      ]
+    },
+    {
+      "titre": "Enchaînements fréquents",
+      "type": "exemples",
+      "items": [
+        {
+          "es": "un huevo → ou-nwé-bo",
+          "fr": "hu = /w/ devant voyelle"
+        },
+        {
+          "es": "la iglesia → la-i-glé-sia",
+          "fr": "pas de liaison comme en français"
+        },
+        {
+          "es": "¿Cómo estás? → ko-mo-es-tas",
+          "fr": "chaque mot garde ses frontières"
+        },
+        {
+          "es": "vamos a hablar → ba-mo-sa-blar",
+          "fr": "le h muet permet l'enchaînement naturel"
+        }
+      ]
+    },
+    {
+      "titre": "Conseils pratiques",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Exagérer les voyelles pures",
+          "detail": "Pas de voyelles nasales, pas de e muet, u = ou toujours. En cas de doute, articuler plus."
+        },
+        {
+          "regle": "Travailler le r apical",
+          "detail": "Pointe de la langue contre le palais. Commencer par imiter un moteur (brrr) pour le rr roulé."
+        },
+        {
+          "regle": "Oublier le v français",
+          "detail": "Ne jamais mettre les dents sur la lèvre. b et v = même geste."
+        },
+        {
+          "regle": "Le j/g(e/i) guttural",
+          "detail": "Racler du fond de la gorge, comme pour dire « Bach ». C'est le son le plus étranger pour un francophone."
+        },
+        {
+          "regle": "Écouter la variante qu'on cible",
+          "detail": "Mexique, Espagne, Argentine, Colombie : les consonnes varient (surtout s/z, ll/y, j). Choisir une et être cohérent."
+        }
+      ]
+    }
+  ],
+  "hooks": []
+}

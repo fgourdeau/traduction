@@ -1,0 +1,392 @@
+{
+  "id": "presente_indicativo",
+  "titre": "Présent de l'indicatif",
+  "icone": "⏱️",
+  "ordre": 20,
+  "resume": "Conjugaison régulière (-ar/-er/-ir), verbes à diphtongue, irréguliers courants",
+  "sections": [
+    {
+      "titre": "Terminaisons régulières",
+      "type": "tableau",
+      "colonnes": [
+        "",
+        "-AR (hablar)",
+        "-ER (comer)",
+        "-IR (vivir)"
+      ],
+      "lignes": [
+        [
+          "yo",
+          "-o (hablo)",
+          "-o (como)",
+          "-o (vivo)"
+        ],
+        [
+          "tú",
+          "-as (hablas)",
+          "-es (comes)",
+          "-es (vives)"
+        ],
+        [
+          "él/ella",
+          "-a (habla)",
+          "-e (come)",
+          "-e (vive)"
+        ],
+        [
+          "nosotros",
+          "-amos (hablamos)",
+          "-emos (comemos)",
+          "-imos (vivimos)"
+        ],
+        [
+          "vosotros",
+          "-áis (habláis)",
+          "-éis (coméis)",
+          "-ís (vivís)"
+        ],
+        [
+          "ellos",
+          "-an (hablan)",
+          "-en (comen)",
+          "-en (viven)"
+        ]
+      ]
+    },
+    {
+      "titre": "Astuce mémorisation",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "yo → toujours -o",
+          "detail": "Hablo, como, vivo. Sans exception pour les réguliers."
+        },
+        {
+          "regle": "-ER et -IR sont presque identiques",
+          "detail": "Seules nosotros (-emos/-imos) et vosotros (-éis/-ís) diffèrent."
+        },
+        {
+          "regle": "La voyelle thématique",
+          "detail": "-AR → a domine. -ER → e domine. -IR → e/i alternent."
+        }
+      ]
+    },
+    {
+      "titre": "Verbes à diphtongue (e→ie)",
+      "type": "tableau",
+      "colonnes": [
+        "",
+        "pensar",
+        "querer",
+        "sentir"
+      ],
+      "lignes": [
+        [
+          "yo",
+          "pienso",
+          "quiero",
+          "siento"
+        ],
+        [
+          "tú",
+          "piensas",
+          "quieres",
+          "sientes"
+        ],
+        [
+          "él/ella",
+          "piensa",
+          "quiere",
+          "siente"
+        ],
+        [
+          "nosotros",
+          "pensamos ✓",
+          "queremos ✓",
+          "sentimos ✓"
+        ],
+        [
+          "vosotros",
+          "pensáis ✓",
+          "queréis ✓",
+          "sentís ✓"
+        ],
+        [
+          "ellos",
+          "piensan",
+          "quieren",
+          "sienten"
+        ]
+      ]
+    },
+    {
+      "titre": "Verbes à diphtongue (o→ue)",
+      "type": "tableau",
+      "colonnes": [
+        "",
+        "poder",
+        "dormir",
+        "contar"
+      ],
+      "lignes": [
+        [
+          "yo",
+          "puedo",
+          "duermo",
+          "cuento"
+        ],
+        [
+          "tú",
+          "puedes",
+          "duermes",
+          "cuentas"
+        ],
+        [
+          "él/ella",
+          "puede",
+          "duerme",
+          "cuenta"
+        ],
+        [
+          "nosotros",
+          "podemos ✓",
+          "dormimos ✓",
+          "contamos ✓"
+        ],
+        [
+          "vosotros",
+          "podéis ✓",
+          "dormís ✓",
+          "contáis ✓"
+        ],
+        [
+          "ellos",
+          "pueden",
+          "duermen",
+          "cuentan"
+        ]
+      ]
+    },
+    {
+      "titre": "Diphtongues — règle du « botte »",
+      "type": "texte",
+      "contenu": "La diphtongue touche yo, tú, él, ellos (les 4 formes « accentuées sur le radical ») mais PAS nosotros ni vosotros. Si on dessine les cases qui changent dans le tableau, ça forme une botte. Nosotros et vosotros sont toujours réguliers."
+    },
+    {
+      "titre": "Verbe à diphtongue (e→i) : pedir et similaires",
+      "type": "tableau",
+      "colonnes": [
+        "",
+        "pedir",
+        "Aussi : repetir, seguir, servir, vestir"
+      ],
+      "lignes": [
+        [
+          "yo",
+          "pido",
+          "repito, sigo, sirvo, visto"
+        ],
+        [
+          "tú",
+          "pides",
+          ""
+        ],
+        [
+          "él/ella",
+          "pide",
+          ""
+        ],
+        [
+          "nosotros",
+          "pedimos ✓",
+          ""
+        ],
+        [
+          "vosotros",
+          "pedís ✓",
+          ""
+        ],
+        [
+          "ellos",
+          "piden",
+          ""
+        ]
+      ]
+    },
+    {
+      "titre": "Irréguliers en -go (yo seulement)",
+      "type": "tableau",
+      "colonnes": [
+        "Infinitif",
+        "yo",
+        "tú (régulier)",
+        "Autres formes régulières"
+      ],
+      "lignes": [
+        [
+          "tener",
+          "tengo",
+          "tienes",
+          "tiene, tenemos, tenéis, tienen (+ dipht.)"
+        ],
+        [
+          "venir",
+          "vengo",
+          "vienes",
+          "viene, venimos, venís, vienen (+ dipht.)"
+        ],
+        [
+          "poner",
+          "pongo",
+          "pones",
+          "pone, ponemos, ponéis, ponen"
+        ],
+        [
+          "salir",
+          "salgo",
+          "sales",
+          "sale, salimos, salís, salen"
+        ],
+        [
+          "hacer",
+          "hago",
+          "haces",
+          "hace, hacemos, hacéis, hacen"
+        ],
+        [
+          "traer",
+          "traigo",
+          "traes",
+          "trae, traemos, traéis, traen"
+        ],
+        [
+          "decir",
+          "digo",
+          "dices",
+          "dice, decimos, decís, dicen (+ e→i)"
+        ],
+        [
+          "oír",
+          "oigo",
+          "oyes",
+          "oye, oímos, oís, oyen"
+        ],
+        [
+          "caer",
+          "caigo",
+          "caes",
+          "cae, caemos, caéis, caen"
+        ]
+      ]
+    },
+    {
+      "titre": "Autres irréguliers très fréquents",
+      "type": "tableau",
+      "colonnes": [
+        "",
+        "ir",
+        "dar",
+        "saber",
+        "conocer",
+        "ver"
+      ],
+      "lignes": [
+        [
+          "yo",
+          "voy",
+          "doy",
+          "sé",
+          "conozco",
+          "veo"
+        ],
+        [
+          "tú",
+          "vas",
+          "das",
+          "sabes",
+          "conoces",
+          "ves"
+        ],
+        [
+          "él/ella",
+          "va",
+          "da",
+          "sabe",
+          "conoce",
+          "ve"
+        ],
+        [
+          "nosotros",
+          "vamos",
+          "damos",
+          "sabemos",
+          "conocemos",
+          "vemos"
+        ],
+        [
+          "vosotros",
+          "vais",
+          "dais",
+          "sabéis",
+          "conocéis",
+          "veis"
+        ],
+        [
+          "ellos",
+          "van",
+          "dan",
+          "saben",
+          "conocen",
+          "ven"
+        ]
+      ]
+    },
+    {
+      "titre": "Verbes en -cer/-cir → -zco (yo)",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "conocer → conozco",
+          "detail": "Mais : conoces, conoce, conocemos… (régulier sauf yo)"
+        },
+        {
+          "regle": "Même pattern",
+          "detail": "parecer → parezco, agradecer → agradezco, ofrecer → ofrezco, producir → produzco, traducir → traduzco"
+        },
+        {
+          "regle": "Exception : hacer → hago (pas *hazco)",
+          "detail": "hacer suit le pattern -go, pas -zco."
+        }
+      ]
+    },
+    {
+      "titre": "Usages du présent",
+      "type": "regles",
+      "items": [
+        {
+          "regle": "Action habituelle",
+          "detail": "Trabajo todos los días. Como a las dos."
+        },
+        {
+          "regle": "Vérité générale",
+          "detail": "El agua hierve a 100 grados. La Tierra gira."
+        },
+        {
+          "regle": "Action en cours (sans estar)",
+          "detail": "¿Qué haces? — Leo un libro."
+        },
+        {
+          "regle": "Futur proche (comme en français)",
+          "detail": "Mañana salgo a las ocho. El lunes empiezo."
+        },
+        {
+          "regle": "Présent historique / narratif",
+          "detail": "En 1492, Colón llega a América."
+        }
+      ]
+    }
+  ],
+  "hooks": [
+    "verbo"
+  ]
+}

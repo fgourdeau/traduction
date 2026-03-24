@@ -25,8 +25,8 @@ from core.config import (
 )
 
 # Répertoire par défaut des fiches
-REFERENCES_DIR = Path(__file__).parent.parent / "references"
-
+#REFERENCES_DIR = Path(__file__).parent.parent / "references"
+from core.paths import REFERENCES_DIR
 # Tailles de base
 _BASE = {
     "section_titre": 12,

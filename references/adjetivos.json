@@ -528,6 +528,13 @@
     }
   ],
   "hooks": [
-    "adjetivo"
-  ]
+    "adjetivo",
+    "adjetivo calificativo",
+    "adjetivo demostrativo",
+    "adjetivo posesivo",
+    "comparativo",
+    "superlativo"
+  ],
+  "groupe": "Modificateurs",
+  "couleur_groupe": "#8B5CF6"
 }

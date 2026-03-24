@@ -2,7 +2,7 @@
   "id": "pronombres_personales",
   "titre": "Pronoms personnels",
   "icone": "👤",
-  "ordre": 10,
+  "ordre": 48,
   "resume": "Sujet, complément, préposition, réfléchi — toutes les formes",
   "sections": [
     {
@@ -277,8 +277,15 @@
     }
   ],
   "hooks": [
+    "exclamativo",
+    "interrogativo",
     "pronombre",
-    "relativa",
-    "rel"
-  ]
+    "pronombre personal",
+    "pronombre reflexivo",
+    "pronombre relativo",
+    "rel",
+    "relativa"
+  ],
+  "groupe": "Noms & Pronoms",
+  "couleur_groupe": "#2E9E5A"
 }

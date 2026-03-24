@@ -346,5 +346,7 @@
   ],
   "hooks": [
     "verbo"
-  ]
+  ],
+  "groupe": "Verbes",
+  "couleur_groupe": "#4A90D9"
 }

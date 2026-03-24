@@ -454,6 +454,15 @@
   ],
   "hooks": [
     "artículo",
-    "determinante"
-  ]
+    "artículo definido",
+    "artículo indefinido",
+    "cuantificador",
+    "demostrativo",
+    "determinante",
+    "indefinido",
+    "numeral",
+    "posesivo"
+  ],
+  "groupe": "Noms & Pronoms",
+  "couleur_groupe": "#2E9E5A"
 }

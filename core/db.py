@@ -15,7 +15,8 @@ from datetime import datetime
 from pathlib import Path
 
 # Répertoire par défaut
-SESSIONS_DIR = Path(__file__).parent.parent / "sessions"
+#SESSIONS_DIR = Path(__file__).parent.parent / "sessions"
+from core.paths import SESSIONS_DIR
 DB_PATH = SESSIONS_DIR / "analizador.db"
 
 

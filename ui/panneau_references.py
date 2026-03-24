@@ -1,21 +1,24 @@
 """Panneau de références grammaticales — fiches thématiques depuis JSON.
 
-Architecture v3 :
+Architecture v4 :
+- Barre latérale verticale à gauche avec groupes thématiques colorés
+- Couleurs et groupes lus dynamiquement depuis les champs JSON
+  (« groupe » et « couleur_groupe »)
 - Chargement JIT : seule la fiche sélectionnée est construite en widgets
 - Zoom par QGraphicsView.scale() : pas de reconstruction au zoom
-- Cache LRU : les N dernières fiches sont gardées, les autres libérées
 """
 
 import json
 from pathlib import Path
-from dataclasses import dataclass
+from collections import OrderedDict
+from dataclasses import dataclass, field
 
 from PySide6.QtCore import Qt, Slot
 from PySide6.QtGui import QColor, QWheelEvent
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScrollArea,
     QFrame, QPushButton, QGraphicsView, QGraphicsScene,
-    QGraphicsProxyWidget,
+    QGraphicsProxyWidget, QSizePolicy,
 )
 
 from core.config import (
@@ -25,8 +28,8 @@ from core.config import (
 )
 
 # Répertoire par défaut des fiches
-#REFERENCES_DIR = Path(__file__).parent.parent / "references"
 from core.paths import REFERENCES_DIR
+
 # Tailles de base
 _BASE = {
     "section_titre": 12,
@@ -37,6 +40,7 @@ _BASE = {
     "header": 26,
     "resume": 13,
     "bouton": 11,
+    "groupe_titre": 9,
 }
 
 # Zoom
@@ -45,8 +49,12 @@ ZOOM_MAX = 3.0
 ZOOM_STEP = 0.1
 ZOOM_DEFAULT = 1.0
 
-# Cache LRU : nombre de fiches gardées en mémoire
-CACHE_MAX = 5
+# Largeur barre latérale
+SIDEBAR_WIDTH = 180
+
+# Groupe par défaut si absent du JSON
+GROUPE_DEFAUT = "Autre"
+COULEUR_GROUPE_DEFAUT = "#888888"
 
 
 # ═════════════════════════════════════════════════════════════════════
@@ -62,16 +70,19 @@ class ThemeReference:
     resume: str
     sections: list[dict]
     chemin: Path
-    hooks: list[str] = None  # clés de légende rattachées (ex: ["sustantivo", "sujeto"])
-
-    def __post_init__(self):
-        if self.hooks is None:
-            self.hooks = []
+    hooks: list[str] = field(default_factory=list)
+    groupe: str = GROUPE_DEFAUT
+    couleur_groupe: str = COULEUR_GROUPE_DEFAUT
 
     @classmethod
     def charger(cls, chemin: Path) -> "ThemeReference | None":
         try:
             data = json.loads(chemin.read_text(encoding="utf-8"))
+            groupe_lu = data.get("groupe", GROUPE_DEFAUT)
+            couleur_lue = data.get("couleur_groupe", COULEUR_GROUPE_DEFAUT)
+            print(f"[Réf DEBUG] {chemin.name}: "
+                  f"groupe={groupe_lu!r}, couleur={couleur_lue!r}, "
+                  f"clés racine={[k for k in data.keys() if k not in ('sections',)]}")
             return cls(
                 id=data.get("id", chemin.stem),
                 titre=data.get("titre", chemin.stem),
@@ -81,6 +92,8 @@ class ThemeReference:
                 sections=data.get("sections", []),
                 chemin=chemin,
                 hooks=data.get("hooks", []),
+                groupe=groupe_lu,
+                couleur_groupe=couleur_lue,
             )
         except (json.JSONDecodeError, KeyError, OSError) as e:
             print(f"[Références] Erreur chargement {chemin}: {e}")
@@ -97,7 +110,8 @@ def charger_themes(repertoire: Path | None = None) -> list[ThemeReference]:
         theme = ThemeReference.charger(f)
         if theme:
             themes.append(theme)
-            print(f"[Références] Chargé: {theme.icone} {theme.titre} ({f.name})")
+            print(f"[Références] Chargé: {theme.icone} {theme.titre} "
+                  f"[{theme.groupe}] ({f.name})")
     themes.sort(key=lambda t: t.ordre)
     return themes
 
@@ -108,7 +122,7 @@ def _sz(base_key: str) -> int:
 
 
 # ═════════════════════════════════════════════════════════════════════
-# Rendu des sections
+# Rendu des sections (inchangé)
 # ═════════════════════════════════════════════════════════════════════
 
 def _style_section_titre() -> str:
@@ -265,7 +279,7 @@ _SECTION_RENDERERS = {
 # ═════════════════════════════════════════════════════════════════════
 
 def _construire_fiche_widget(theme: ThemeReference, largeur: int = 800) -> QWidget:
-    """Construit le widget d'une fiche. Appelé une seule fois par thème (cache LRU)."""
+    """Construit le widget d'une fiche. Appelé une seule fois par thème."""
     content = QWidget()
     content.setFixedWidth(largeur)
     content.setStyleSheet(f"background: {COULEUR_PANNEAU.name()};")
@@ -300,8 +314,6 @@ def _construire_fiche_widget(theme: ThemeReference, largeur: int = 800) -> QWidg
         layout.addWidget(widget)
 
     layout.addStretch()
-
-    # Forcer le calcul de la taille
     content.adjustSize()
     return content
 
@@ -311,11 +323,7 @@ def _construire_fiche_widget(theme: ThemeReference, largeur: int = 800) -> QWidg
 # ═════════════════════════════════════════════════════════════════════
 
 class _FicheView(QGraphicsView):
-    """QGraphicsView qui affiche un widget de fiche avec zoom par scale().
-
-    Le zoom est appliqué par transformation, pas par reconstruction.
-    Ctrl+molette = zoom. Molette seule = scroll vertical.
-    """
+    """QGraphicsView qui affiche un widget de fiche avec zoom par scale()."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -333,11 +341,6 @@ class _FicheView(QGraphicsView):
         self.setRenderHint(QPainter.TextAntialiasing, True)
 
     def set_widget(self, widget: QWidget) -> None:
-        """Affiche un widget dans la scène.
-
-        Détruit le contenu précédent (scene.clear) et affiche le nouveau.
-        Pas de cache de widgets — la construction JIT d'une seule fiche est rapide.
-        """
         self._scene.clear()
         self._proxy = self._scene.addWidget(widget)
         self._proxy.setTransformOriginPoint(0, 0)
@@ -367,7 +370,6 @@ class _FicheView(QGraphicsView):
                 self.zoom = self._zoom + ZOOM_STEP
             elif delta < 0:
                 self.zoom = self._zoom - ZOOM_STEP
-            # Remonter l'info au panneau parent pour le label
             parent = self.parent()
             while parent and not isinstance(parent, PanneauReferences):
                 parent = parent.parent()
@@ -379,15 +381,149 @@ class _FicheView(QGraphicsView):
 
 
 # ═════════════════════════════════════════════════════════════════════
+# Barre latérale verticale groupée
+# ═════════════════════════════════════════════════════════════════════
+
+class _BarreLaterale(QScrollArea):
+    """Barre latérale avec boutons groupés par thème, couleurs dynamiques."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._boutons: list[QPushButton] = []
+        self._callback = None
+
+        self.setWidgetResizable(True)
+        self.setFixedWidth(SIDEBAR_WIDTH)
+        self.setFrameShape(QFrame.NoFrame)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.setStyleSheet(
+            f"QScrollArea {{ background: {COULEUR_PANNEAU.name()}; border: none; }}"
+            f"QScrollBar:vertical {{ width: 6px; }}"
+            f"QScrollBar::handle:vertical {{ background: {COULEUR_BORDURE.name()}; "
+            f"border-radius: 3px; min-height: 20px; }}"
+            f"QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical "
+            f"{{ height: 0; }}"
+        )
+
+        self._container = QWidget()
+        self._layout = QVBoxLayout(self._container)
+        self._layout.setContentsMargins(6, 8, 6, 8)
+        self._layout.setSpacing(2)
+        self.setWidget(self._container)
+
+    def set_callback(self, callback) -> None:
+        self._callback = callback
+
+    def peupler(self, themes: list[ThemeReference]) -> None:
+        """Construit les boutons groupés depuis les thèmes."""
+        # Nettoyer
+        for btn in self._boutons:
+            btn.deleteLater()
+        self._boutons.clear()
+
+        while self._layout.count():
+            item = self._layout.takeAt(0)
+            w = item.widget()
+            if w:
+                w.deleteLater()
+
+        if not themes:
+            return
+
+        # Grouper par nom de groupe (en préservant l'ordre d'apparition)
+        groupes: OrderedDict[str, list[tuple[int, ThemeReference]]] = OrderedDict()
+        for i, theme in enumerate(themes):
+            nom_groupe = theme.groupe
+            if nom_groupe not in groupes:
+                groupes[nom_groupe] = []
+            groupes[nom_groupe].append((i, theme))
+
+        # Construire les groupes
+        for nom_groupe, items in groupes.items():
+            couleur = items[0][1].couleur_groupe
+
+            # Titre du groupe
+            lbl_groupe = QLabel(nom_groupe.upper())
+            lbl_groupe.setStyleSheet(
+                f"color: {couleur}; "
+                f"font-size: {_sz('groupe_titre')}px; "
+                f"font-weight: bold; "
+                f"letter-spacing: 1.5px; "
+                f"padding: 8px 4px 3px 4px; "
+                f"border: none; "
+                f"background: transparent;"
+            )
+            self._layout.addWidget(lbl_groupe)
+
+            # Boutons du groupe
+            for idx, theme in items:
+                btn = self._creer_bouton(idx, theme, couleur)
+                self._layout.addWidget(btn)
+                self._boutons.append(btn)
+
+        self._layout.addStretch()
+
+    def _creer_bouton(self, index: int, theme: ThemeReference,
+                      couleur: str) -> QPushButton:
+        """Crée un bouton de thème avec indicateur de couleur latéral."""
+        btn = QPushButton(f"{theme.icone}  {theme.titre}")
+        btn.setCursor(Qt.PointingHandCursor)
+        btn.setCheckable(True)
+        btn.setFixedHeight(30)
+        btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+
+        c = QColor(couleur)
+        btn.setStyleSheet(f"""
+            QPushButton {{
+                background: transparent;
+                border: none;
+                border-left: 3px solid transparent;
+                border-radius: 0;
+                padding: 4px 8px;
+                font-size: {_sz('bouton')}px;
+                color: {COULEUR_TEXTE_SECONDAIRE.name()};
+                text-align: left;
+            }}
+            QPushButton:hover {{
+                background: rgba({c.red()}, {c.green()}, {c.blue()}, 25);
+                border-left: 3px solid {couleur};
+                color: {couleur};
+            }}
+            QPushButton:checked {{
+                background: rgba({c.red()}, {c.green()}, {c.blue()}, 35);
+                border-left: 3px solid {couleur};
+                color: {couleur};
+                font-weight: bold;
+            }}
+        """)
+
+        btn.clicked.connect(lambda checked, idx=index: self._on_click(idx))
+        return btn
+
+    def _on_click(self, index: int) -> None:
+        if self._callback:
+            self._callback(index)
+
+    def set_selection(self, index: int) -> None:
+        """Met à jour l'état checked des boutons."""
+        for i, btn in enumerate(self._boutons):
+            btn.setChecked(i == index)
+
+    def boutons(self) -> list[QPushButton]:
+        return self._boutons
+
+
+# ═════════════════════════════════════════════════════════════════════
 # Panneau principal
 # ═════════════════════════════════════════════════════════════════════
 
 class PanneauReferences(QWidget):
-    """Panneau de références grammaticales — chargement JIT + zoom natif.
+    """Panneau de références grammaticales — barre latérale groupée + fiche.
 
     - Les thèmes sont scannés au chargement (métadonnées seulement)
-    - La fiche n'est construite que quand on la sélectionne
-    - Cache LRU garde les N dernières fiches en mémoire
+    - Groupes et couleurs lus depuis les champs JSON (groupe, couleur_groupe)
+    - La fiche n'est construite que quand on la sélectionne (JIT)
     - Zoom par QGraphicsView.scale() (pas de reconstruction)
     """
 
@@ -395,7 +531,6 @@ class PanneauReferences(QWidget):
         super().__init__(parent)
         self._repertoire = repertoire or REFERENCES_DIR
         self._themes: list[ThemeReference] = []
-        self._boutons: list[QPushButton] = []
         self._index_courant: int = -1
 
         self.setMinimumWidth(300)
@@ -405,64 +540,59 @@ class PanneauReferences(QWidget):
         self.recharger()
 
     def _build_ui(self) -> None:
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
+        layout_principal = QHBoxLayout(self)
+        layout_principal.setContentsMargins(0, 0, 0, 0)
+        layout_principal.setSpacing(0)
 
-        # ─── Barre de thèmes + indicateur zoom ──────────────────
-        barre_container = QWidget()
-        barre_container.setStyleSheet(
+        # ─── Barre latérale gauche ───────────────────────────────
+        self._sidebar = _BarreLaterale(self)
+        self._sidebar.set_callback(self._selectionner)
+        layout_principal.addWidget(self._sidebar)
+
+        # ─── Séparateur vertical ─────────────────────────────────
+        sep = QFrame()
+        sep.setFrameShape(QFrame.VLine)
+        sep.setStyleSheet(f"color: {COULEUR_BORDURE.name()};")
+        layout_principal.addWidget(sep)
+
+        # ─── Zone droite : fiche + zoom ──────────────────────────
+        zone_droite = QWidget()
+        layout_droite = QVBoxLayout(zone_droite)
+        layout_droite.setContentsMargins(0, 0, 0, 0)
+        layout_droite.setSpacing(0)
+
+        # Label zoom en haut à droite
+        barre_zoom = QWidget()
+        barre_zoom.setFixedHeight(24)
+        barre_zoom.setStyleSheet(
             f"background: {COULEUR_PANNEAU.name()}; "
             f"border-bottom: 1px solid {COULEUR_BORDURE.name()};"
         )
-        barre_outer = QHBoxLayout(barre_container)
-        barre_outer.setContentsMargins(0, 0, 8, 0)
-        barre_outer.setSpacing(4)
+        barre_zoom_layout = QHBoxLayout(barre_zoom)
+        barre_zoom_layout.setContentsMargins(8, 0, 8, 0)
+        barre_zoom_layout.addStretch()
 
-        self._barre_scroll = QScrollArea()
-        self._barre_scroll.setWidgetResizable(True)
-        self._barre_scroll.setFixedHeight(44)
-        self._barre_scroll.setFrameShape(QFrame.NoFrame)
-        self._barre_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self._barre_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self._barre_scroll.setStyleSheet("background: transparent; border: none;")
-
-        self._barre_widget = QWidget()
-        self._barre_layout = QHBoxLayout(self._barre_widget)
-        self._barre_layout.setContentsMargins(8, 4, 8, 4)
-        self._barre_layout.setSpacing(4)
-        self._barre_layout.addStretch()
-
-        self._barre_scroll.setWidget(self._barre_widget)
-        barre_outer.addWidget(self._barre_scroll, stretch=1)
-
-        # Label zoom
         self._lbl_zoom = QLabel("100%")
         self._lbl_zoom.setFont(police_mono(9))
         self._lbl_zoom.setStyleSheet(
             f"color: {COULEUR_TEXTE_MUET.name()}; padding: 0 4px;"
         )
-        self._lbl_zoom.setFixedWidth(42)
         self._lbl_zoom.setAlignment(Qt.AlignCenter)
-        barre_outer.addWidget(self._lbl_zoom)
+        barre_zoom_layout.addWidget(self._lbl_zoom)
+        layout_droite.addWidget(barre_zoom)
 
-        layout.addWidget(barre_container)
-
-        # ─── Vue zoomable ────────────────────────────────────────
+        # Vue zoomable
         self._fiche_view = _FicheView(self)
-        layout.addWidget(self._fiche_view, stretch=1)
+        layout_droite.addWidget(self._fiche_view, stretch=1)
+
+        layout_principal.addWidget(zone_droite, stretch=1)
 
     def recharger(self) -> None:
         """Recharge les thèmes depuis le répertoire."""
-        # Nettoyer
-        for btn in self._boutons:
-            self._barre_layout.removeWidget(btn)
-            btn.deleteLater()
-        self._boutons.clear()
         self._fiche_view.clear()
         self._index_courant = -1
 
-        # Charger les métadonnées (pas les widgets)
+        # Charger les métadonnées
         self._themes = charger_themes(self._repertoire)
 
         if not self._themes:
@@ -479,39 +609,10 @@ class PanneauReferences(QWidget):
             print(f"[Références] Hooks enregistrés: "
                   f"{list(self._hook_index.keys())}")
 
-        # Créer les boutons seulement
-        accent = COULEUR_ACCENT.name()
-        for i, theme in enumerate(self._themes):
-            btn = QPushButton(f"{theme.icone} {theme.titre}")
-            btn.setCursor(Qt.PointingHandCursor)
-            btn.setStyleSheet(f"""
-                QPushButton {{
-                    background: transparent;
-                    border: 1px solid {COULEUR_BORDURE.name()};
-                    border-radius: 4px;
-                    padding: 4px 10px;
-                    font-size: {_sz('bouton')}px;
-                    color: {COULEUR_TEXTE_SECONDAIRE.name()};
-                }}
-                QPushButton:hover {{
-                    background: #fff3e0;
-                    border-color: {accent};
-                    color: {accent};
-                }}
-                QPushButton:checked {{
-                    background: {accent};
-                    color: white;
-                    border-color: {accent};
-                }}
-            """)
-            btn.setCheckable(True)
-            btn.clicked.connect(lambda checked, idx=i: self._selectionner(idx))
-            self._barre_layout.insertWidget(
-                self._barre_layout.count() - 1, btn
-            )
-            self._boutons.append(btn)
+        # Peupler la barre latérale
+        self._sidebar.peupler(self._themes)
 
-        # Sélectionner le premier (construit JIT)
+        # Sélectionner le premier
         self._selectionner(0)
 
     def _selectionner(self, index: int) -> None:
@@ -524,8 +625,7 @@ class PanneauReferences(QWidget):
             return
 
         self._index_courant = index
-        for i, btn in enumerate(self._boutons):
-            btn.setChecked(i == index)
+        self._sidebar.set_selection(index)
 
         theme = self._themes[index]
         print(f"[Références] Affichage: {theme.icone} {theme.titre}")

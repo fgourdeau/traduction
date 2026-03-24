@@ -193,18 +193,6 @@ class FenetrePrincipale(QMainWindow):
 
         self.setCentralWidget(centre)
 
-        # ─── Dock gauche : Capture ───────────────────────────────
-        self._capture = CaptureWidget()
-        self._capture.setMinimumWidth(220)
-
-        self._dock_capture = QDockWidget("Capture", self)
-        self._dock_capture.setWidget(self._capture)
-        self._dock_capture.setFeatures(
-            QDockWidget.DockWidgetMovable
-            | QDockWidget.DockWidgetFloatable
-        )
-        self.addDockWidget(Qt.LeftDockWidgetArea, self._dock_capture)
-
         # ─── Dock droit : Panneau détail ─────────────────────────
         self._panneau = PanneauDetail()
 
@@ -213,6 +201,7 @@ class FenetrePrincipale(QMainWindow):
         self._dock_detail.setFeatures(
             QDockWidget.DockWidgetMovable
             | QDockWidget.DockWidgetFloatable
+            | QDockWidget.DockWidgetClosable
         )
         self.addDockWidget(Qt.RightDockWidgetArea, self._dock_detail)
 
@@ -232,8 +221,72 @@ class FenetrePrincipale(QMainWindow):
                 '</body></html>'
             )
 
+            # Wrapper : barre de recherche + webview
+            wordref_wrapper = QWidget()
+            wordref_layout = QVBoxLayout(wordref_wrapper)
+            wordref_layout.setContentsMargins(0, 0, 0, 0)
+            wordref_layout.setSpacing(0)
+
+            # Barre de recherche (Ctrl+F) — cachée par défaut
+            self._wordref_search_bar = QWidget()
+            self._wordref_search_bar.setFixedHeight(34)
+            self._wordref_search_bar.setStyleSheet(
+                f"background: {COULEUR_PANNEAU.name()}; "
+                f"border-bottom: 1px solid {COULEUR_BORDURE.name()};"
+            )
+            search_layout = QHBoxLayout(self._wordref_search_bar)
+            search_layout.setContentsMargins(6, 3, 6, 3)
+            search_layout.setSpacing(4)
+
+            search_icon = QLabel("🔍")
+            search_icon.setFixedWidth(20)
+            search_layout.addWidget(search_icon)
+
+            self._wordref_search_input = QLineEdit()
+            self._wordref_search_input.setPlaceholderText("Rechercher dans la page…")
+            self._wordref_search_input.setFixedHeight(26)
+            self._wordref_search_input.setStyleSheet(f"""
+                QLineEdit {{
+                    border: 1px solid {COULEUR_BORDURE.name()};
+                    border-radius: 4px;
+                    padding: 2px 8px;
+                    font-size: 12px;
+                    background: white;
+                }}
+                QLineEdit:focus {{
+                    border-color: {COULEUR_ACCENT.name()};
+                }}
+            """)
+            self._wordref_search_input.returnPressed.connect(
+                self._wordref_find_next)
+            self._wordref_search_input.textChanged.connect(
+                self._wordref_find_live)
+            search_layout.addWidget(self._wordref_search_input, stretch=1)
+
+            btn_prev = QPushButton("▲")
+            btn_prev.setFixedSize(26, 26)
+            btn_prev.setToolTip("Précédent")
+            btn_prev.clicked.connect(self._wordref_find_prev)
+            search_layout.addWidget(btn_prev)
+
+            btn_next = QPushButton("▼")
+            btn_next.setFixedSize(26, 26)
+            btn_next.setToolTip("Suivant")
+            btn_next.clicked.connect(self._wordref_find_next)
+            search_layout.addWidget(btn_next)
+
+            btn_close_search = QPushButton("✕")
+            btn_close_search.setFixedSize(26, 26)
+            btn_close_search.setToolTip("Fermer (Échap)")
+            btn_close_search.clicked.connect(self._wordref_close_search)
+            search_layout.addWidget(btn_close_search)
+
+            self._wordref_search_bar.hide()
+            wordref_layout.addWidget(self._wordref_search_bar)
+            wordref_layout.addWidget(self._webview, stretch=1)
+
             self._dock_wordref = QDockWidget("WordReference", self)
-            self._dock_wordref.setWidget(self._webview)
+            self._dock_wordref.setWidget(wordref_wrapper)
             self._dock_wordref.setFeatures(
                 QDockWidget.DockWidgetMovable
                 | QDockWidget.DockWidgetFloatable
@@ -245,6 +298,26 @@ class FenetrePrincipale(QMainWindow):
             self.splitDockWidget(
                 self._dock_detail, self._dock_wordref, Qt.Horizontal
             )
+
+        # ─── Dock droit-bas : Capture (sous Détail) ──────────────
+        self._capture = CaptureWidget()
+        self._capture.setMinimumWidth(220)
+
+        self._dock_capture = QDockWidget("Capture", self)
+        self._dock_capture.setWidget(self._capture)
+        self._dock_capture.setFeatures(
+            QDockWidget.DockWidgetMovable
+            | QDockWidget.DockWidgetFloatable
+            | QDockWidget.DockWidgetClosable
+        )
+        self.addDockWidget(Qt.RightDockWidgetArea, self._dock_capture)
+
+        # Empiler Capture sous Détail (split vertical)
+        self.splitDockWidget(
+            self._dock_detail, self._dock_capture, Qt.Vertical
+        )
+        # Proportions appliquées au premier affichage (voir showEvent)
+        self._initial_resize_done = False
 
         # ─── Dock bas : Références grammaticales ─────────────────
         self._panneau_refs = PanneauReferences()
@@ -290,12 +363,20 @@ class FenetrePrincipale(QMainWindow):
             }}
         """)
 
-        menu_capture = menu_bar.addMenu("&Capture")
+        menu_capture = menu_bar.addMenu("&Session")
+
+
+
+        act_ouvrir_session = QAction("📖 Ouvrir…", self)
+        act_ouvrir_session.triggered.connect(
+            lambda: bus().ouverture_demandee.emit())
+        menu_capture.addAction(act_ouvrir_session)
+
+        menu_capture.addSeparator()
 
         act_fichier = QAction("📁 Ouvrir image…\tCtrl+O", self)
         act_fichier.triggered.connect(self._ouvrir_fichier)
         menu_capture.addAction(act_fichier)
-        menu_capture.addSeparator()
 
         act_webcam = QAction("📷 Webcam\tF5", self)
         act_webcam.triggered.connect(lambda: bus().capture_webcam_demandee.emit())
@@ -304,6 +385,18 @@ class FenetrePrincipale(QMainWindow):
         act_ecran = QAction("🖥 Capture écran\tF6", self)
         act_ecran.triggered.connect(lambda: bus().capture_ecran_demandee.emit())
         menu_capture.addAction(act_ecran)
+
+        act_coller = QAction("📋 Coller\tF7", self)
+        act_coller.triggered.connect(
+            lambda: self._capture._coller_presse_papier())
+        menu_capture.addAction(act_coller)
+
+        menu_capture.addSeparator()
+
+        act_sauvegarder = QAction("💾 Sauvegarder page\tCtrl+S", self)
+        act_sauvegarder.triggered.connect(
+            lambda: bus().sauvegarde_demandee.emit())
+        menu_capture.addAction(act_sauvegarder)
 
         menu_config = menu_bar.addMenu("&Configuration")
         act_api = QAction("🔑 Clé API Anthropic…", self)
@@ -364,6 +457,28 @@ class FenetrePrincipale(QMainWindow):
             }}
         """)
         self._status.addPermanentWidget(self._progress)
+
+        # Bouton Annuler (visible uniquement pendant l'analyse)
+        self._btn_annuler = QPushButton("✕ Annuler")
+        self._btn_annuler.setFixedHeight(20)
+        self._btn_annuler.setStyleSheet(f"""
+            QPushButton {{
+                background: transparent;
+                border: 1px solid #e74c3c;
+                border-radius: 4px;
+                padding: 1px 10px;
+                font-size: 11px;
+                color: #e74c3c;
+                font-weight: bold;
+            }}
+            QPushButton:hover {{
+                background: #e74c3c;
+                color: white;
+            }}
+        """)
+        self._btn_annuler.clicked.connect(self._annuler_analyse)
+        self._btn_annuler.hide()
+        self._status.addPermanentWidget(self._btn_annuler)
 
         hint = QLabel(
             "Tab: phrases  •  Clic: définition  •  Clic droit: traduction  "
@@ -451,6 +566,32 @@ class FenetrePrincipale(QMainWindow):
         QShortcut(QKeySequence("F7"), self,
                   lambda: self._capture._coller_presse_papier())
         QShortcut(QKeySequence("Ctrl+O"), self, self._ouvrir_fichier)
+        QShortcut(QKeySequence("Ctrl+S"), self,
+                  lambda: bus().sauvegarde_demandee.emit())
+        if HAS_WEBENGINE:
+            QShortcut(QKeySequence("Ctrl+F"), self, self._wordref_toggle_search)
+            QShortcut(QKeySequence("Escape"), self, self._on_escape)
+
+    # ─── Proportions initiales des docks ────────────────────────────
+
+    def showEvent(self, event) -> None:
+        super().showEvent(event)
+        if not self._initial_resize_done:
+            self._initial_resize_done = True
+            # Différer pour que Qt ait fini le layout
+            from PySide6.QtCore import QTimer
+            QTimer.singleShot(0, self._appliquer_proportions_docks)
+
+    def _appliquer_proportions_docks(self) -> None:
+        """Détail 3/4, Capture 1/4 de la hauteur disponible."""
+        h = self.height()
+        trois_quarts = int(h * 0.75)
+        un_quart = h - trois_quarts
+        self.resizeDocks(
+            [self._dock_detail, self._dock_capture],
+            [trois_quarts, un_quart],
+            Qt.Vertical,
+        )
 
     # ─── Ouvrir fichier image ────────────────────────────────────────
 
@@ -562,6 +703,7 @@ class FenetrePrincipale(QMainWindow):
     @Slot(bool)
     def _on_chargement(self, en_cours: bool) -> None:
         self._progress.setVisible(en_cours)
+        self._btn_annuler.setVisible(en_cours)
 
     def _set_page_info(self, session_nom: str, page_numero: int,
                        nb_pages: int) -> None:
@@ -593,6 +735,70 @@ class FenetrePrincipale(QMainWindow):
             # S'assurer que le dock est visible
             self._dock_refs.show()
             self._dock_refs.raise_()
+
+    # ─── Annulation de l'analyse en cours ──────────────────────────
+
+    def _on_escape(self) -> None:
+        """Échap : ferme la recherche WordRef si visible, sinon annule l'analyse."""
+        if (HAS_WEBENGINE
+                and hasattr(self, '_wordref_search_bar')
+                and self._wordref_search_bar.isVisible()):
+            self._wordref_close_search()
+        elif self._btn_annuler.isVisible():
+            self._annuler_analyse()
+
+    @Slot()
+    def _annuler_analyse(self) -> None:
+        """Annule l'OCR et/ou l'analyse en cours, nettoie la scène."""
+        if hasattr(self._ocr_worker, 'reset'):
+            self._ocr_worker.reset()
+        self._analyse_worker.reset()
+        bus().chargement_en_cours.emit(False)
+        self._vue_texte.scene.clear()
+        self._vue_texte.scene._textes_phrases = []
+        self._vue_texte.scene._analyses = {}
+        self._status.showMessage("⏹ Analyse annulée", 5000)
+        print("[Pipeline] Analyse annulée par l'utilisateur")
+
+    # ─── Recherche dans WordReference (Ctrl+F) ────────────────────────
+
+    def _wordref_toggle_search(self) -> None:
+        """Ctrl+F — ouvre/focus la barre de recherche WordReference."""
+        if not HAS_WEBENGINE or not self._dock_wordref.isVisible():
+            return
+        if self._wordref_search_bar.isVisible():
+            self._wordref_search_input.setFocus()
+            self._wordref_search_input.selectAll()
+        else:
+            self._wordref_search_bar.show()
+            self._wordref_search_input.setFocus()
+
+    def _wordref_close_search(self) -> None:
+        """Ferme la barre de recherche et efface le surlignage."""
+        if not HAS_WEBENGINE:
+            return
+        self._wordref_search_bar.hide()
+        self._wordref_search_input.clear()
+        if self._webview is not None:
+            self._webview.findText("")  # efface le surlignage
+
+    def _wordref_find_live(self, text: str) -> None:
+        """Recherche incrémentale à chaque frappe."""
+        if self._webview is not None:
+            self._webview.findText(text)
+
+    def _wordref_find_next(self) -> None:
+        """Occurrence suivante."""
+        if self._webview is not None:
+            text = self._wordref_search_input.text()
+            self._webview.findText(text)
+
+    def _wordref_find_prev(self) -> None:
+        """Occurrence précédente."""
+        if self._webview is not None:
+            from PySide6.QtWebEngineWidgets import QWebEnginePage
+            text = self._wordref_search_input.text()
+            self._webview.findText(text, QWebEnginePage.FindBackward)
 
     # ─── Configuration ───────────────────────────────────────────────
 

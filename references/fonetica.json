@@ -530,5 +530,7 @@
       ]
     }
   ],
-  "hooks": []
+  "hooks": [],
+  "groupe": "Prononciation",
+  "couleur_groupe": "#E84393"
 }

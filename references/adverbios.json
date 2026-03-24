@@ -4,214 +4,587 @@
   "icone": "📍",
   "ordre": 62,
   "resume": "Lieu, temps, manière, quantité, affirmation, négation, doute — formation et placement",
-  "hooks": ["adverbio"],
+  "hooks": [
+    "adverbio",
+    "locución adverbial"
+  ],
   "sections": [
     {
       "titre": "Les 7 catégories d'adverbes",
       "type": "tableau",
-      "colonnes": ["Catégorie", "Question", "Exemples courants"],
+      "colonnes": [
+        "Catégorie",
+        "Question",
+        "Exemples courants"
+      ],
       "lignes": [
-        ["Lieu", "¿Dónde?", "aquí, ahí, allí, cerca, lejos, dentro, fuera, arriba, abajo, delante, detrás, encima, debajo"],
-        ["Temps", "¿Cuándo?", "hoy, ayer, mañana, ahora, antes, después, luego, siempre, nunca, ya, todavía, aún, pronto, tarde"],
-        ["Manière", "¿Cómo?", "bien, mal, así, despacio, rápido, lentamente, fácilmente + adjectif + -mente"],
-        ["Quantité", "¿Cuánto?", "mucho, poco, bastante, demasiado, más, menos, muy, tan, tanto, casi, apenas, solo"],
-        ["Affirmation", "—", "sí, también, claro, efectivamente, ciertamente"],
-        ["Négation", "—", "no, nunca, jamás, tampoco, nada"],
-        ["Doute", "—", "quizá(s), tal vez, acaso, posiblemente, probablemente"]
+        [
+          "Lieu",
+          "¿Dónde?",
+          "aquí, ahí, allí, cerca, lejos, dentro, fuera, arriba, abajo, delante, detrás, encima, debajo"
+        ],
+        [
+          "Temps",
+          "¿Cuándo?",
+          "hoy, ayer, mañana, ahora, antes, después, luego, siempre, nunca, ya, todavía, aún, pronto, tarde"
+        ],
+        [
+          "Manière",
+          "¿Cómo?",
+          "bien, mal, así, despacio, rápido, lentamente, fácilmente + adjectif + -mente"
+        ],
+        [
+          "Quantité",
+          "¿Cuánto?",
+          "mucho, poco, bastante, demasiado, más, menos, muy, tan, tanto, casi, apenas, solo"
+        ],
+        [
+          "Affirmation",
+          "—",
+          "sí, también, claro, efectivamente, ciertamente"
+        ],
+        [
+          "Négation",
+          "—",
+          "no, nunca, jamás, tampoco, nada"
+        ],
+        [
+          "Doute",
+          "—",
+          "quizá(s), tal vez, acaso, posiblemente, probablemente"
+        ]
       ]
     },
     {
       "titre": "Adverbes de lieu",
       "type": "regles",
       "items": [
-        {"regle": "aquí / acá = ici (près du locuteur)", "detail": "Aquí estoy. Ven acá. acá est plus courant en Amérique latine."},
-        {"regle": "ahí = là (près de l'interlocuteur)", "detail": "Ahí está tu libro. Correspond au démonstratif ese."},
-        {"regle": "allí / allá = là-bas (loin des deux)", "detail": "Allí vive mi abuela. allá est plus vague/lointain. Correspond à aquel."},
-        {"regle": "Système à 3 degrés (comme les démonstratifs)", "detail": "aquí/acá (este) — ahí (ese) — allí/allá (aquel)"},
-        {"regle": "arriba/abajo = en haut/en bas", "detail": "Vive arriba. El gato está abajo."},
-        {"regle": "dentro/fuera = dedans/dehors", "detail": "Está dentro de la caja. Sal fuera."},
-        {"regle": "delante/detrás = devant/derrière", "detail": "Delante de la casa. Detrás de ti."},
-        {"regle": "encima/debajo = dessus/dessous", "detail": "Encima de la mesa. Debajo del puente."}
+        {
+          "regle": "aquí / acá = ici (près du locuteur)",
+          "detail": "Aquí estoy. Ven acá. acá est plus courant en Amérique latine."
+        },
+        {
+          "regle": "ahí = là (près de l'interlocuteur)",
+          "detail": "Ahí está tu libro. Correspond au démonstratif ese."
+        },
+        {
+          "regle": "allí / allá = là-bas (loin des deux)",
+          "detail": "Allí vive mi abuela. allá est plus vague/lointain. Correspond à aquel."
+        },
+        {
+          "regle": "Système à 3 degrés (comme les démonstratifs)",
+          "detail": "aquí/acá (este) — ahí (ese) — allí/allá (aquel)"
+        },
+        {
+          "regle": "arriba/abajo = en haut/en bas",
+          "detail": "Vive arriba. El gato está abajo."
+        },
+        {
+          "regle": "dentro/fuera = dedans/dehors",
+          "detail": "Está dentro de la caja. Sal fuera."
+        },
+        {
+          "regle": "delante/detrás = devant/derrière",
+          "detail": "Delante de la casa. Detrás de ti."
+        },
+        {
+          "regle": "encima/debajo = dessus/dessous",
+          "detail": "Encima de la mesa. Debajo del puente."
+        }
       ]
     },
     {
       "titre": "Lieu — exemples",
       "type": "exemples",
       "items": [
-        {"es": "Ven aquí.", "fr": "Viens ici."},
-        {"es": "¿Qué hay ahí?", "fr": "Qu'y a-t-il là ?"},
-        {"es": "Allí se ve el mar.", "fr": "Là-bas on voit la mer."},
-        {"es": "El perro está debajo de la mesa.", "fr": "Le chien est sous la table."},
-        {"es": "Vive cerca del centro.", "fr": "Il habite près du centre."}
+        {
+          "es": "Ven aquí.",
+          "fr": "Viens ici."
+        },
+        {
+          "es": "¿Qué hay ahí?",
+          "fr": "Qu'y a-t-il là ?"
+        },
+        {
+          "es": "Allí se ve el mar.",
+          "fr": "Là-bas on voit la mer."
+        },
+        {
+          "es": "El perro está debajo de la mesa.",
+          "fr": "Le chien est sous la table."
+        },
+        {
+          "es": "Vive cerca del centro.",
+          "fr": "Il habite près du centre."
+        }
       ]
     },
     {
       "titre": "Adverbes de temps",
       "type": "regles",
       "items": [
-        {"regle": "hoy / ayer / mañana", "detail": "Aujourd'hui / hier / demain. Ayer fui al cine. Mañana salimos."},
-        {"regle": "ahora = maintenant", "detail": "Ahora no puedo. Ahora mismo = tout de suite."},
-        {"regle": "ya = déjà / maintenant", "detail": "Ya he comido (déjà). Ya voy (j'arrive). Ya no = ne… plus."},
-        {"regle": "todavía / aún = encore", "detail": "Todavía está lloviendo. Aún no ha llegado."},
-        {"regle": "siempre / nunca / jamás", "detail": "Toujours / jamais. Nunca et jamás sont interchangeables. Nunca jamás = emphase."},
-        {"regle": "antes / después = avant / après", "detail": "Antes de comer. Después de las tres."},
-        {"regle": "luego / entonces = ensuite / alors", "detail": "Primero como, luego descanso. Entonces se fue."},
-        {"regle": "pronto / tarde = tôt-bientôt / tard", "detail": "Llegó pronto. Es demasiado tarde."},
-        {"regle": "a veces / a menudo = parfois / souvent", "detail": "Locutions adverbiales très courantes."}
+        {
+          "regle": "hoy / ayer / mañana",
+          "detail": "Aujourd'hui / hier / demain. Ayer fui al cine. Mañana salimos."
+        },
+        {
+          "regle": "ahora = maintenant",
+          "detail": "Ahora no puedo. Ahora mismo = tout de suite."
+        },
+        {
+          "regle": "ya = déjà / maintenant",
+          "detail": "Ya he comido (déjà). Ya voy (j'arrive). Ya no = ne… plus."
+        },
+        {
+          "regle": "todavía / aún = encore",
+          "detail": "Todavía está lloviendo. Aún no ha llegado."
+        },
+        {
+          "regle": "siempre / nunca / jamás",
+          "detail": "Toujours / jamais. Nunca et jamás sont interchangeables. Nunca jamás = emphase."
+        },
+        {
+          "regle": "antes / después = avant / après",
+          "detail": "Antes de comer. Después de las tres."
+        },
+        {
+          "regle": "luego / entonces = ensuite / alors",
+          "detail": "Primero como, luego descanso. Entonces se fue."
+        },
+        {
+          "regle": "pronto / tarde = tôt-bientôt / tard",
+          "detail": "Llegó pronto. Es demasiado tarde."
+        },
+        {
+          "regle": "a veces / a menudo = parfois / souvent",
+          "detail": "Locutions adverbiales très courantes."
+        }
       ]
     },
     {
       "titre": "Temps — exemples",
       "type": "exemples",
       "items": [
-        {"es": "Ya no vivo allí.", "fr": "Je n'habite plus là-bas. (ya no = ne… plus)"},
-        {"es": "Todavía no ha llegado.", "fr": "Il n'est pas encore arrivé."},
-        {"es": "Siempre dice lo mismo.", "fr": "Il dit toujours la même chose."},
-        {"es": "Nunca he visto nada igual.", "fr": "Je n'ai jamais rien vu de pareil."},
-        {"es": "Antes era diferente.", "fr": "Avant c'était différent."}
+        {
+          "es": "Ya no vivo allí.",
+          "fr": "Je n'habite plus là-bas. (ya no = ne… plus)"
+        },
+        {
+          "es": "Todavía no ha llegado.",
+          "fr": "Il n'est pas encore arrivé."
+        },
+        {
+          "es": "Siempre dice lo mismo.",
+          "fr": "Il dit toujours la même chose."
+        },
+        {
+          "es": "Nunca he visto nada igual.",
+          "fr": "Je n'ai jamais rien vu de pareil."
+        },
+        {
+          "es": "Antes era diferente.",
+          "fr": "Avant c'était différent."
+        }
       ]
     },
     {
       "titre": "Adverbes en -mente (manière)",
       "type": "regles",
       "items": [
-        {"regle": "Féminin de l'adjectif + -mente", "detail": "rápido → rápida → rápidamente. lento → lenta → lentamente."},
-        {"regle": "Adjectif invariable en genre → directement + -mente", "detail": "fácil → fácilmente. frecuente → frecuentemente."},
-        {"regle": "L'accent de l'adjectif est conservé", "detail": "rápida → rápidamente (accent sur á conservé)."},
-        {"regle": "Deux adverbes en -mente : seul le dernier garde -mente", "detail": "Clara y concisamente (pas *claramente y concisamente)."},
-        {"regle": "Alternative sans -mente : con + nom", "detail": "con cuidado (= cuidadosamente), con frecuencia (= frecuentemente). Souvent préféré."}
+        {
+          "regle": "Féminin de l'adjectif + -mente",
+          "detail": "rápido → rápida → rápidamente. lento → lenta → lentamente."
+        },
+        {
+          "regle": "Adjectif invariable en genre → directement + -mente",
+          "detail": "fácil → fácilmente. frecuente → frecuentemente."
+        },
+        {
+          "regle": "L'accent de l'adjectif est conservé",
+          "detail": "rápida → rápidamente (accent sur á conservé)."
+        },
+        {
+          "regle": "Deux adverbes en -mente : seul le dernier garde -mente",
+          "detail": "Clara y concisamente (pas *claramente y concisamente)."
+        },
+        {
+          "regle": "Alternative sans -mente : con + nom",
+          "detail": "con cuidado (= cuidadosamente), con frecuencia (= frecuentemente). Souvent préféré."
+        }
       ]
     },
     {
       "titre": "Formation en -mente — exemples",
       "type": "exemples",
       "items": [
-        {"es": "Habla lentamente.", "fr": "Il parle lentement. (lenta + mente)"},
-        {"es": "Obviamente, tiene razón.", "fr": "Évidemment, il a raison. (obvia + mente)"},
-        {"es": "Lo hizo rápida y eficazmente.", "fr": "Il l'a fait rapidement et efficacement. (seul le dernier)"},
-        {"es": "Conduce con cuidado.", "fr": "Conduis prudemment. (= cuidadosamente)"}
+        {
+          "es": "Habla lentamente.",
+          "fr": "Il parle lentement. (lenta + mente)"
+        },
+        {
+          "es": "Obviamente, tiene razón.",
+          "fr": "Évidemment, il a raison. (obvia + mente)"
+        },
+        {
+          "es": "Lo hizo rápida y eficazmente.",
+          "fr": "Il l'a fait rapidement et efficacement. (seul le dernier)"
+        },
+        {
+          "es": "Conduce con cuidado.",
+          "fr": "Conduis prudemment. (= cuidadosamente)"
+        }
       ]
     },
     {
       "titre": "Adverbes de quantité",
       "type": "regles",
       "items": [
-        {"regle": "muy = très (devant adjectif ou adverbe)", "detail": "Muy alto. Muy bien. JAMAIS *muy mucho."},
-        {"regle": "mucho = beaucoup (devant verbe ou seul)", "detail": "Trabaja mucho. Me gusta mucho. Mucho más = beaucoup plus."},
-        {"regle": "muy vs mucho — le piège", "detail": "muy + adj/adv : muy grande. mucho + verbe : come mucho. mucho + más/menos/mejor/peor."},
-        {"regle": "tan = si, aussi (devant adj/adv)", "detail": "Es tan grande. Tan rápidamente."},
-        {"regle": "tanto = tant, autant (devant verbe)", "detail": "Trabaja tanto. No te preocupes tanto."},
-        {"regle": "bastante = assez", "detail": "Es bastante difícil. Come bastante."},
-        {"regle": "demasiado = trop", "detail": "Es demasiado caro. Hablas demasiado."},
-        {"regle": "casi = presque", "detail": "Casi termino. Son casi las tres."},
-        {"regle": "apenas = à peine", "detail": "Apenas lo conozco. Apenas queda tiempo."}
+        {
+          "regle": "muy = très (devant adjectif ou adverbe)",
+          "detail": "Muy alto. Muy bien. JAMAIS *muy mucho."
+        },
+        {
+          "regle": "mucho = beaucoup (devant verbe ou seul)",
+          "detail": "Trabaja mucho. Me gusta mucho. Mucho más = beaucoup plus."
+        },
+        {
+          "regle": "muy vs mucho — le piège",
+          "detail": "muy + adj/adv : muy grande. mucho + verbe : come mucho. mucho + más/menos/mejor/peor."
+        },
+        {
+          "regle": "tan = si, aussi (devant adj/adv)",
+          "detail": "Es tan grande. Tan rápidamente."
+        },
+        {
+          "regle": "tanto = tant, autant (devant verbe)",
+          "detail": "Trabaja tanto. No te preocupes tanto."
+        },
+        {
+          "regle": "bastante = assez",
+          "detail": "Es bastante difícil. Come bastante."
+        },
+        {
+          "regle": "demasiado = trop",
+          "detail": "Es demasiado caro. Hablas demasiado."
+        },
+        {
+          "regle": "casi = presque",
+          "detail": "Casi termino. Son casi las tres."
+        },
+        {
+          "regle": "apenas = à peine",
+          "detail": "Apenas lo conozco. Apenas queda tiempo."
+        }
       ]
     },
     {
       "titre": "MUY vs MUCHO — résumé",
       "type": "tableau",
-      "colonnes": ["", "muy", "mucho"],
+      "colonnes": [
+        "",
+        "muy",
+        "mucho"
+      ],
       "lignes": [
-        ["Devant adjectif", "muy grande ✓", "mucho grande ✗"],
-        ["Devant adverbe", "muy bien ✓", "mucho bien ✗"],
-        ["Après verbe", "come muy ✗", "come mucho ✓"],
-        ["Devant más/menos", "muy más ✗", "mucho más ✓"],
-        ["Devant mejor/peor", "muy mejor ✗", "mucho mejor ✓"]
+        [
+          "Devant adjectif",
+          "muy grande ✓",
+          "mucho grande ✗"
+        ],
+        [
+          "Devant adverbe",
+          "muy bien ✓",
+          "mucho bien ✗"
+        ],
+        [
+          "Après verbe",
+          "come muy ✗",
+          "come mucho ✓"
+        ],
+        [
+          "Devant más/menos",
+          "muy más ✗",
+          "mucho más ✓"
+        ],
+        [
+          "Devant mejor/peor",
+          "muy mejor ✗",
+          "mucho mejor ✓"
+        ]
       ]
     },
     {
       "titre": "Négation — règles spéciales",
       "type": "regles",
       "items": [
-        {"regle": "no se place AVANT le verbe", "detail": "No quiero. No lo sé. No me gusta."},
-        {"regle": "Double négation obligatoire (après le verbe)", "detail": "No viene nadie. No tengo nada. No voy nunca. (pas comme en français)"},
-        {"regle": "Simple négation (avant le verbe)", "detail": "Nadie viene. Nada tengo. Nunca voy. (pas besoin de no si avant le verbe)"},
-        {"regle": "tampoco = non plus", "detail": "Yo tampoco. No quiero ir tampoco."},
-        {"regle": "ni… ni… = ni… ni…", "detail": "No come ni bebe. Ni tú ni yo."},
-        {"regle": "ya no = ne… plus", "detail": "Ya no vive aquí. Ya no quiero."},
-        {"regle": "todavía no = ne… pas encore", "detail": "Todavía no ha llegado."}
+        {
+          "regle": "no se place AVANT le verbe",
+          "detail": "No quiero. No lo sé. No me gusta."
+        },
+        {
+          "regle": "Double négation obligatoire (après le verbe)",
+          "detail": "No viene nadie. No tengo nada. No voy nunca. (pas comme en français)"
+        },
+        {
+          "regle": "Simple négation (avant le verbe)",
+          "detail": "Nadie viene. Nada tengo. Nunca voy. (pas besoin de no si avant le verbe)"
+        },
+        {
+          "regle": "tampoco = non plus",
+          "detail": "Yo tampoco. No quiero ir tampoco."
+        },
+        {
+          "regle": "ni… ni… = ni… ni…",
+          "detail": "No come ni bebe. Ni tú ni yo."
+        },
+        {
+          "regle": "ya no = ne… plus",
+          "detail": "Ya no vive aquí. Ya no quiero."
+        },
+        {
+          "regle": "todavía no = ne… pas encore",
+          "detail": "Todavía no ha llegado."
+        }
       ]
     },
     {
       "titre": "Négation — exemples",
       "type": "exemples",
       "items": [
-        {"es": "No hay nadie.", "fr": "Il n'y a personne. (double négation)"},
-        {"es": "Nadie lo sabe.", "fr": "Personne ne le sait. (avant le verbe = pas de no)"},
-        {"es": "No quiero nada.", "fr": "Je ne veux rien."},
-        {"es": "Nunca he estado allí.", "fr": "Je n'y suis jamais allé."},
-        {"es": "No me gusta ni el café ni el té.", "fr": "Je n'aime ni le café ni le thé."},
-        {"es": "— ¿Tú vas? — Yo tampoco.", "fr": "— Tu y vas ? — Moi non plus."}
+        {
+          "es": "No hay nadie.",
+          "fr": "Il n'y a personne. (double négation)"
+        },
+        {
+          "es": "Nadie lo sabe.",
+          "fr": "Personne ne le sait. (avant le verbe = pas de no)"
+        },
+        {
+          "es": "No quiero nada.",
+          "fr": "Je ne veux rien."
+        },
+        {
+          "es": "Nunca he estado allí.",
+          "fr": "Je n'y suis jamais allé."
+        },
+        {
+          "es": "No me gusta ni el café ni el té.",
+          "fr": "Je n'aime ni le café ni le thé."
+        },
+        {
+          "es": "— ¿Tú vas? — Yo tampoco.",
+          "fr": "— Tu y vas ? — Moi non plus."
+        }
       ]
     },
     {
       "titre": "Doute — quizá(s), tal vez, a lo mejor",
       "type": "regles",
       "items": [
-        {"regle": "quizá(s) + subjonctif (doute) ou indicatif (quasi-certain)", "detail": "Quizás venga mañana (doute). Quizás viene hoy (probable)."},
-        {"regle": "tal vez = même usage que quizá(s)", "detail": "Tal vez llueva. Tal vez es mejor así."},
-        {"regle": "a lo mejor + indicatif (toujours !)", "detail": "A lo mejor viene. A lo mejor tiene razón. JAMAIS subjonctif."},
-        {"regle": "posiblemente / probablemente + subjonctif ou indicatif", "detail": "Posiblemente sea cierto. Probablemente llega tarde."}
+        {
+          "regle": "quizá(s) + subjonctif (doute) ou indicatif (quasi-certain)",
+          "detail": "Quizás venga mañana (doute). Quizás viene hoy (probable)."
+        },
+        {
+          "regle": "tal vez = même usage que quizá(s)",
+          "detail": "Tal vez llueva. Tal vez es mejor así."
+        },
+        {
+          "regle": "a lo mejor + indicatif (toujours !)",
+          "detail": "A lo mejor viene. A lo mejor tiene razón. JAMAIS subjonctif."
+        },
+        {
+          "regle": "posiblemente / probablemente + subjonctif ou indicatif",
+          "detail": "Posiblemente sea cierto. Probablemente llega tarde."
+        }
       ]
     },
     {
       "titre": "Placement de l'adverbe",
       "type": "regles",
       "items": [
-        {"regle": "Généralement après le verbe", "detail": "Habla bien. Come mucho. Vive lejos. Position neutre."},
-        {"regle": "Avant le verbe pour emphase", "detail": "Siempre llega tarde. Nunca dice nada. También quiero ir."},
-        {"regle": "Avant l'adjectif qu'il modifie", "detail": "Muy grande. Bastante difícil. Demasiado caro."},
-        {"regle": "no : toujours avant le verbe (et ses pronoms)", "detail": "No lo quiero. No me digas. No se puede."},
-        {"regle": "Les adverbes longs (-mente) préfèrent la fin", "detail": "Habló claramente. Lo hizo perfectamente."}
+        {
+          "regle": "Généralement après le verbe",
+          "detail": "Habla bien. Come mucho. Vive lejos. Position neutre."
+        },
+        {
+          "regle": "Avant le verbe pour emphase",
+          "detail": "Siempre llega tarde. Nunca dice nada. También quiero ir."
+        },
+        {
+          "regle": "Avant l'adjectif qu'il modifie",
+          "detail": "Muy grande. Bastante difícil. Demasiado caro."
+        },
+        {
+          "regle": "no : toujours avant le verbe (et ses pronoms)",
+          "detail": "No lo quiero. No me digas. No se puede."
+        },
+        {
+          "regle": "Les adverbes longs (-mente) préfèrent la fin",
+          "detail": "Habló claramente. Lo hizo perfectamente."
+        }
       ]
     },
     {
       "titre": "Adverbes vs adjectifs — piège",
       "type": "regles",
       "items": [
-        {"regle": "L'adverbe est invariable, l'adjectif s'accorde", "detail": "Corre rápido (adverbe, invariable). Es rápido/rápida (adjectif, accord)."},
-        {"regle": "mucho/poco/demasiado/bastante : double nature", "detail": "Comme adverbe (invariable) : come mucho, es bastante difícil. Comme adjectif (accord) : muchos libros, bastantes problemas."},
-        {"regle": "medio : adverbe ou adjectif", "detail": "Está medio dormida (adverbe, invariable). Media hora (adjectif, accord)."}
+        {
+          "regle": "L'adverbe est invariable, l'adjectif s'accorde",
+          "detail": "Corre rápido (adverbe, invariable). Es rápido/rápida (adjectif, accord)."
+        },
+        {
+          "regle": "mucho/poco/demasiado/bastante : double nature",
+          "detail": "Comme adverbe (invariable) : come mucho, es bastante difícil. Comme adjectif (accord) : muchos libros, bastantes problemas."
+        },
+        {
+          "regle": "medio : adverbe ou adjectif",
+          "detail": "Está medio dormida (adverbe, invariable). Media hora (adjectif, accord)."
+        }
       ]
     },
     {
       "titre": "Locutions adverbiales fréquentes",
       "type": "tableau",
-      "colonnes": ["Espagnol", "Français", "Type"],
+      "colonnes": [
+        "Espagnol",
+        "Français",
+        "Type"
+      ],
       "lignes": [
-        ["a veces", "parfois", "temps"],
-        ["a menudo", "souvent", "temps"],
-        ["de repente", "soudain", "temps"],
-        ["en seguida", "tout de suite", "temps"],
-        ["por fin", "enfin", "temps"],
-        ["de vez en cuando", "de temps en temps", "temps"],
-        ["a lo mejor", "peut-être", "doute"],
-        ["en realidad", "en réalité", "manière"],
-        ["en general", "en général", "manière"],
-        ["por supuesto", "bien sûr", "affirmation"],
-        ["desde luego", "bien sûr", "affirmation"],
-        ["sin duda", "sans aucun doute", "affirmation"],
-        ["al menos", "au moins", "quantité"],
-        ["por lo menos", "au moins", "quantité"],
-        ["más o menos", "plus ou moins", "quantité"],
-        ["sobre todo", "surtout", "quantité"],
-        ["en cambio", "en revanche", "opposition"],
-        ["sin embargo", "cependant", "opposition"],
-        ["por lo tanto", "par conséquent", "conséquence"],
-        ["al final", "à la fin, finalement", "temps"]
+        [
+          "a veces",
+          "parfois",
+          "temps"
+        ],
+        [
+          "a menudo",
+          "souvent",
+          "temps"
+        ],
+        [
+          "de repente",
+          "soudain",
+          "temps"
+        ],
+        [
+          "en seguida",
+          "tout de suite",
+          "temps"
+        ],
+        [
+          "por fin",
+          "enfin",
+          "temps"
+        ],
+        [
+          "de vez en cuando",
+          "de temps en temps",
+          "temps"
+        ],
+        [
+          "a lo mejor",
+          "peut-être",
+          "doute"
+        ],
+        [
+          "en realidad",
+          "en réalité",
+          "manière"
+        ],
+        [
+          "en general",
+          "en général",
+          "manière"
+        ],
+        [
+          "por supuesto",
+          "bien sûr",
+          "affirmation"
+        ],
+        [
+          "desde luego",
+          "bien sûr",
+          "affirmation"
+        ],
+        [
+          "sin duda",
+          "sans aucun doute",
+          "affirmation"
+        ],
+        [
+          "al menos",
+          "au moins",
+          "quantité"
+        ],
+        [
+          "por lo menos",
+          "au moins",
+          "quantité"
+        ],
+        [
+          "más o menos",
+          "plus ou moins",
+          "quantité"
+        ],
+        [
+          "sobre todo",
+          "surtout",
+          "quantité"
+        ],
+        [
+          "en cambio",
+          "en revanche",
+          "opposition"
+        ],
+        [
+          "sin embargo",
+          "cependant",
+          "opposition"
+        ],
+        [
+          "por lo tanto",
+          "par conséquent",
+          "conséquence"
+        ],
+        [
+          "al final",
+          "à la fin, finalement",
+          "temps"
+        ]
       ]
     },
     {
       "titre": "Résumé express",
       "type": "regles",
       "items": [
-        {"regle": "Lieu : 3 degrés aquí/ahí/allí", "detail": "Comme les démonstratifs este/ese/aquel."},
-        {"regle": "Temps : ya (déjà), todavía (encore), ya no (ne…plus)", "detail": "Les plus piégeux pour francophones."},
-        {"regle": "-mente = fém. adjectif + mente", "detail": "L'accent de l'adjectif est conservé. Deux -mente → seul le dernier."},
-        {"regle": "muy + adj/adv, mucho + verbe", "detail": "JAMAIS muy mucho ni mucho grande."},
-        {"regle": "Double négation après le verbe", "detail": "No… nadie/nada/nunca. Mais avant le verbe = pas de no."},
-        {"regle": "quizás/tal vez + subjonctif, a lo mejor + indicatif", "detail": "Le mode change le degré de doute."}
+        {
+          "regle": "Lieu : 3 degrés aquí/ahí/allí",
+          "detail": "Comme les démonstratifs este/ese/aquel."
+        },
+        {
+          "regle": "Temps : ya (déjà), todavía (encore), ya no (ne…plus)",
+          "detail": "Les plus piégeux pour francophones."
+        },
+        {
+          "regle": "-mente = fém. adjectif + mente",
+          "detail": "L'accent de l'adjectif est conservé. Deux -mente → seul le dernier."
+        },
+        {
+          "regle": "muy + adj/adv, mucho + verbe",
+          "detail": "JAMAIS muy mucho ni mucho grande."
+        },
+        {
+          "regle": "Double négation après le verbe",
+          "detail": "No… nadie/nada/nunca. Mais avant le verbe = pas de no."
+        },
+        {
+          "regle": "quizás/tal vez + subjonctif, a lo mejor + indicatif",
+          "detail": "Le mode change le degré de doute."
+        }
       ]
     }
-  ]
+  ],
+  "groupe": "Modificateurs",
+  "couleur_groupe": "#8B5CF6"
 }

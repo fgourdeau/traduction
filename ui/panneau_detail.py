@@ -71,6 +71,9 @@ class PanneauDetail(QWidget):
         self._lbl_categorie = QLabel()
         self._lbl_categorie.setFont(police_texte(11))
         self._lbl_categorie.setAlignment(Qt.AlignLeft)
+        self._lbl_categorie.setCursor(Qt.PointingHandCursor)
+        self._lbl_categorie.setToolTip("Cliquer pour ouvrir la fiche de référence")
+        self._lbl_categorie.mousePressEvent = lambda ev: self._on_categorie_click()
         mot_layout.addWidget(self._lbl_categorie)
 
         # Séparateur
@@ -113,6 +116,17 @@ class PanneauDetail(QWidget):
             f"color: {COULEUR_ACCENT.name()}; padding: 4px 0;"
         )
         mot_layout.addWidget(self._lbl_wordref)
+
+        # Lien fiche de référence — clic → ouvrir le dock Références
+        self._lbl_fiche_ref = QLabel()
+        self._lbl_fiche_ref.setFont(police_texte(11))
+        self._lbl_fiche_ref.setCursor(Qt.PointingHandCursor)
+        self._lbl_fiche_ref.setStyleSheet(
+            f"color: {COULEUR_TEXTE_MUET.name()}; padding: 2px 0;"
+        )
+        self._lbl_fiche_ref.mousePressEvent = lambda ev: self._on_categorie_click()
+        self._lbl_fiche_ref.hide()
+        mot_layout.addWidget(self._lbl_fiche_ref)
 
         self._section_mot.hide()
         self._layout.addWidget(self._section_mot)
@@ -227,6 +241,7 @@ class PanneauDetail(QWidget):
         self._lbl_prononciation.setText(f"/{mot.prononciation}/")
 
         label_cat = LABELS_CATEGORIES.get(mot.categorie.lower(), mot.categorie)
+        self._categorie_courante = mot.categorie.lower()
         self._lbl_categorie.setText(f"  {label_cat.upper()}  ")
         self._lbl_categorie.setStyleSheet(f"""
             color: white;
@@ -236,6 +251,10 @@ class PanneauDetail(QWidget):
             font-weight: bold;
             letter-spacing: 1px;
         """)
+
+        # Lien fiche de référence
+        self._lbl_fiche_ref.setText(f"📖 Fiche : {label_cat}")
+        self._lbl_fiche_ref.show()
 
         # Infos grammaticales
         infos = []
@@ -307,3 +326,9 @@ class PanneauDetail(QWidget):
     def _on_wordref_click(self, url: str) -> None:
         """Clic sur le lien WordReference → émettre le signal pour le navigateur intégré."""
         bus().wordref_demandee.emit(url)
+
+    def _on_categorie_click(self) -> None:
+        """Clic sur le badge catégorie ou le lien fiche → ouvrir la référence."""
+        cat = getattr(self, "_categorie_courante", None)
+        if cat:
+            bus().reference_demandee.emit(cat)

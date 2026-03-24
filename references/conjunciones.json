@@ -528,6 +528,9 @@
     }
   ],
   "hooks": [
-    "conjunción"
-  ]
+    "conjunción",
+    "locución conjuntiva"
+  ],
+  "groupe": "Liens",
+  "couleur_groupe": "#E67E22"
 }

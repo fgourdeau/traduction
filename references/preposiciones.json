@@ -590,8 +590,11 @@
     }
   ],
   "hooks": [
-    "preposición",
     "complemento",
-    "cpl"
-  ]
+    "cpl",
+    "locución prepositiva",
+    "preposición"
+  ],
+  "groupe": "Liens",
+  "couleur_groupe": "#E67E22"
 }

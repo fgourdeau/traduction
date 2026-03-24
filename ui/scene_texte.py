@@ -196,8 +196,10 @@ def _decouper_phrases(texte: str) -> tuple[list[str], list[list[_TokenPhrase]]]:
 
     phrases_textes: list[str] = []
 
-    # Texte plat → découper en phrases
-    texte_plat = texte.replace("\n", " ")
+    # Texte plat → reconstituer les mots coupés en fin de ligne (césure)
+    # "memo-\nrizado" → "memorizado"
+    texte_plat = re.sub(r'(\w)-\s*\n\s*(\w)', r'\1\2', texte)
+    texte_plat = texte_plat.replace("\n", " ")
     # Normaliser les espaces multiples
     texte_plat = re.sub(r"\s+", " ", texte_plat).strip()
 
@@ -519,9 +521,26 @@ class SceneTexte(QGraphicsScene):
         LOOK = 4  # fenêtre de look-ahead dans chaque direction
         nb_mots = len(phrase.mots)
 
+        # Pré-calculer les paires de césure : token finissant par "-"
+        # suivi d'un token texte → les deux forment un seul mot
+        cesure_pairs: dict[int, int] = {}  # item_idx_debut → item_idx_fin
+        for ii in range(len(items) - 1):
+            txt = items[ii].text().strip()
+            if txt.endswith('-') and len(txt) > 1:
+                # Le token suivant non-ponctuation est la suite
+                for jj in range(ii + 1, min(ii + 3, len(items))):
+                    txt_suite = _normaliser(items[jj].text().strip())
+                    if txt_suite and not _est_ponctuation(items[jj].text().strip()):
+                        cesure_pairs[ii] = jj
+                        break
+
+        skip_items: set[int] = set()  # items déjà traités comme suite de césure
+
         for item_idx, item in enumerate(items):
             if mot_idx >= nb_mots:
                 break
+            if item_idx in skip_items:
+                continue
 
             token_text = item.text().strip()
             token_norm = _normaliser(token_text)
@@ -529,6 +548,31 @@ class SceneTexte(QGraphicsScene):
             # Token vide ou ponctuation pure → sauter le token
             if not token_norm or _est_ponctuation(token_text):
                 continue
+
+            # ─── Césure : token finit par "-" → concaténer avec le suivant ───
+            if item_idx in cesure_pairs:
+                suite_idx = cesure_pairs[item_idx]
+                # Reconstituer le mot : "memo" + "rizado" = "memorizado"
+                prefixe = token_norm  # "memo" (trait d'union retiré par _normaliser)
+                suffixe = _normaliser(items[suite_idx].text().strip())
+                mot_reconstitue = prefixe + suffixe
+
+                matched_cesure = False
+                for offset in range(min(LOOK, nb_mots - mot_idx)):
+                    mot_norm = _normaliser(phrase.mots[mot_idx + offset].mot)
+                    if _match(mot_reconstitue, mot_norm):
+                        # Les deux tokens pointent vers le même mot analysé
+                        item_to_mot[item_idx] = mot_idx + offset
+                        item_to_mot[suite_idx] = mot_idx + offset
+                        skip_items.add(suite_idx)
+                        mot_idx = mot_idx + offset + 1
+                        matched_cesure = True
+                        break
+
+                if matched_cesure:
+                    continue
+
+            # ─── Matching normal ─────────────────────────────────────────
 
             # Chercher un match dans les prochains mots analysés
             matched = False

@@ -616,7 +616,12 @@
     }
   ],
   "hooks": [
+    "nombre",
+    "sujeto",
     "sustantivo",
-    "sujeto"
-  ]
+    "sustantivo común",
+    "sustantivo propio"
+  ],
+  "groupe": "Noms & Pronoms",
+  "couleur_groupe": "#2E9E5A"
 }

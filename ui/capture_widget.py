@@ -36,6 +36,8 @@ class PreviewWidget(QWidget):
         super().__init__(parent)
         self._pixmap: QPixmap | None = None
         self._frame_bgr: np.ndarray | None = None
+        self._frame_bgr_raw: np.ndarray | None = None  # avant rotation
+        self._rotation: int = 0  # 0, 90, 180, 270
 
         # Cadre de visée (en coordonnées widget)
         self._cadre = QRect(40, 20, 200, 260)
@@ -70,10 +72,26 @@ class PreviewWidget(QWidget):
 
     # ─── Mise à jour frame ───────────────────────────────────────
 
-    def set_frame(self, frame_bgr: np.ndarray) -> None:
-        """Met à jour la frame affichée (BGR numpy)."""
-        self._frame_bgr = frame_bgr
-        rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
+    def set_frame(self, frame_bgr: np.ndarray, is_raw: bool = True) -> None:
+        """Met à jour la frame affichée (BGR numpy), avec rotation appliquée.
+
+        is_raw=True signifie que c'est un frame brut (webcam/fichier),
+        la rotation sera appliquée. is_raw=False = déjà rotaté.
+        """
+        if is_raw:
+            self._frame_bgr_raw = frame_bgr
+
+        # Appliquer la rotation
+        rotated = frame_bgr
+        if self._rotation == 90:
+            rotated = cv2.rotate(frame_bgr, cv2.ROTATE_90_CLOCKWISE)
+        elif self._rotation == 180:
+            rotated = cv2.rotate(frame_bgr, cv2.ROTATE_180)
+        elif self._rotation == 270:
+            rotated = cv2.rotate(frame_bgr, cv2.ROTATE_90_COUNTERCLOCKWISE)
+
+        self._frame_bgr = rotated
+        rgb = cv2.cvtColor(rotated, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb.shape
         rgb = np.ascontiguousarray(rgb)
         qimg = QImage(rgb.data, w, h, ch * w, QImage.Format_RGB888)
@@ -84,6 +102,13 @@ class PreviewWidget(QWidget):
             self._cadre_initialise = True
 
         self.update()
+
+    def tourner(self) -> None:
+        """Tourne de 90° dans le sens horaire. Réinitialise le cadre."""
+        self._rotation = (self._rotation + 90) % 360
+        self._cadre_initialise = False
+        if self._frame_bgr_raw is not None:
+            self.set_frame(self._frame_bgr_raw, is_raw=True)
 
     def set_pixmap(self, pixmap: QPixmap, frame_bgr: np.ndarray) -> None:
         """Met à jour depuis un QPixmap + frame BGR."""
@@ -409,8 +434,12 @@ class CaptureWidget(QWidget):
         self._btn_webcam = QPushButton("📷 Webcam")
         self._btn_ecran = QPushButton("🖥 Écran")
         self._btn_coller = QPushButton("📋 Coller")
+        self._btn_rotation = QPushButton("🔄")
+        self._btn_rotation.setToolTip("Rotation 90°")
         self._btn_capturer = QPushButton("⏎ Capturer")
         self._btn_capturer.setEnabled(False)
+        self._btn_capturer_bbox = QPushButton("🔲 Bulles")
+        self._btn_capturer_bbox.setEnabled(False)
         self._btn_stop = QPushButton("⏹ Stop")
         self._btn_stop.setEnabled(False)
 
@@ -436,14 +465,18 @@ class CaptureWidget(QWidget):
             }}
         """
         for btn in (self._btn_webcam, self._btn_ecran, self._btn_coller,
-                    self._btn_capturer, self._btn_stop):
+                    self._btn_rotation,
+                    self._btn_capturer, self._btn_capturer_bbox, self._btn_stop):
             btn.setFixedHeight(32)
             btn.setStyleSheet(btn_style)
+        self._btn_rotation.setFixedWidth(36)
 
         row1.addWidget(self._btn_webcam)
         row1.addWidget(self._btn_ecran)
         row1.addWidget(self._btn_coller)
+        row1.addWidget(self._btn_rotation)
         row2.addWidget(self._btn_capturer)
+        row2.addWidget(self._btn_capturer_bbox)
         row2.addWidget(self._btn_stop)
 
         btn_grid.addLayout(row1)
@@ -453,12 +486,24 @@ class CaptureWidget(QWidget):
         self._btn_webcam.clicked.connect(self._demarrer_webcam)
         self._btn_ecran.clicked.connect(self._capturer_ecran)
         self._btn_coller.clicked.connect(self._coller_presse_papier)
+        self._btn_rotation.clicked.connect(self._tourner_preview)
         self._btn_capturer.clicked.connect(self._envoyer_capture)
+        self._btn_capturer_bbox.clicked.connect(self._envoyer_capture_bbox)
         self._btn_stop.clicked.connect(self._arreter_webcam)
 
     def _connect_signals(self) -> None:
         bus().capture_webcam_demandee.connect(self._demarrer_webcam)
         bus().capture_ecran_demandee.connect(self._capturer_ecran)
+
+    @Slot()
+    def _tourner_preview(self) -> None:
+        """Tourne la preview de 90° dans le sens horaire."""
+        self._preview.tourner()
+
+    def _set_capturer_enabled(self, on: bool) -> None:
+        """Active/désactive les deux boutons de capture."""
+        self._btn_capturer.setEnabled(on)
+        self._btn_capturer_bbox.setEnabled(on)
 
     # ─── Webcam ──────────────────────────────────────────────────────
 
@@ -472,12 +517,20 @@ class CaptureWidget(QWidget):
             self._cap = None
             return
 
+        # Demander la résolution max
+        self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+        self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        actual_w = int(self._cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        actual_h = int(self._cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        print(f"[Webcam] Résolution: {actual_w}×{actual_h}")
+
         self._btn_capturer.setEnabled(True)
+        self._btn_capturer_bbox.setEnabled(True)
         self._btn_stop.setEnabled(True)
         self._btn_webcam.setEnabled(False)
         self._timer.start(33)
         bus().status_message.emit(
-            "Webcam active — positionnez le cadre sur le texte, puis Capturer"
+            f"Webcam active ({actual_w}×{actual_h}) — positionnez le cadre, puis Capturer"
         )
 
     @Slot()
@@ -487,6 +540,7 @@ class CaptureWidget(QWidget):
             self._cap.release()
             self._cap = None
         self._btn_capturer.setEnabled(False)
+        self._btn_capturer_bbox.setEnabled(False)
         self._btn_stop.setEnabled(False)
         self._btn_webcam.setEnabled(True)
 
@@ -519,6 +573,7 @@ class CaptureWidget(QWidget):
 
         self._preview.set_frame(frame)
         self._btn_capturer.setEnabled(True)
+        self._btn_capturer_bbox.setEnabled(True)
         bus().status_message.emit(
             "Capture écran — ajustez le cadre sur le texte, puis Capturer"
         )
@@ -547,6 +602,7 @@ class CaptureWidget(QWidget):
             self._arreter_webcam()
             self._preview.set_frame(frame)
             self._btn_capturer.setEnabled(True)
+            self._btn_capturer_bbox.setEnabled(True)
             bus().status_message.emit(
                 f"Image collée ({w}×{h}) — ajustez le cadre, puis Capturer"
             )
@@ -589,6 +645,30 @@ class CaptureWidget(QWidget):
         bus().image_capturee.emit(zone)
         bus().status_message.emit(
             f"Zone capturée ({w}×{h} px) → analyse"
+        )
+
+    @Slot()
+    def _envoyer_capture_bbox(self) -> None:
+        """Capture la zone et l'envoie pour détection de bulles.
+
+        Utilise le frame courant de la webcam (déjà en 1920×1080 grâce
+        au set lors de l'init webcam). L'upscale se fait dans bbox_worker
+        si le crop est trop petit.
+        """
+        zone = self._preview.extraire_zone()
+        if zone is None:
+            bus().status_message.emit("⚠ Impossible d'extraire la zone")
+            return
+
+        h, w = zone.shape[:2]
+        if self._preview._frame_bgr is not None:
+            sh, sw = self._preview._frame_bgr.shape[:2]
+            print(f"[Capture BBox] Source: {sw}×{sh} → crop: {w}×{h}")
+
+        self._arreter_webcam()
+        bus().bbox_capture_demandee.emit(zone)
+        bus().status_message.emit(
+            f"Zone capturée ({w}×{h} px) → détection bulles"
         )
 
     def closeEvent(self, event) -> None:

@@ -4,6 +4,7 @@
 import sys
 import os
 
+
 # --- Gestion des chemins (Interne vs Externe) ---
 if hasattr(sys, '_MEIPASS'):
     # Dossier temporaire interne (lecture seule, pour certifi, icônes, etc.)

@@ -11,10 +11,12 @@ from dataclasses import dataclass
 from PySide6.QtCore import Qt, QRectF
 from PySide6.QtGui import (
     QColor, QFont, QPen, QBrush, QPainterPath, QCursor,
+    QPixmap, QImage,
 )
 from PySide6.QtWidgets import (
     QGraphicsScene, QGraphicsView, QGraphicsRectItem,
     QGraphicsSimpleTextItem, QGraphicsPathItem,
+    QGraphicsPixmapItem,
     QWidget, QVBoxLayout,
 )
 
@@ -156,7 +158,10 @@ class SoulignementItem(QGraphicsPathItem):
 
 
 class BlocPhraseItem(QGraphicsRectItem):
-    """Rectangle de fond invisible mais cliquable pour une phrase."""
+    """Rectangle de fond invisible mais cliquable pour une phrase.
+
+    En mode bbox, un clic toggle la visibilité du texte de la bulle.
+    """
 
     def __init__(self, rect: QRectF, index_phrase: int):
         super().__init__(rect)
@@ -171,6 +176,9 @@ class BlocPhraseItem(QGraphicsRectItem):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
+            scene = self.scene()
+            if isinstance(scene, SceneTexte) and scene._mode_bbox:
+                scene.toggle_bulle(self.index_phrase)
             bus().phrase_selectionnee.emit(self.index_phrase)
         super().mousePressEvent(event)
 
@@ -298,6 +306,12 @@ class SceneTexte(QGraphicsScene):
         self._font = police_texte(17)
         self._font_num = police_mono(10)
 
+        # Mode bounding box
+        self._mode_bbox = False
+        self._image_item: QGraphicsPixmapItem | None = None
+        self._bbox_rects: dict[int, QRectF] = {}  # bulle_id → rect scène
+        self._bbox_scale: float = 1.0  # facteur d'affichage
+
         bus().phrase_selectionnee.connect(self._on_phrase_selectionnee)
 
     # ─── Chargement texte OCR brut ────────────────────────────────
@@ -318,6 +332,9 @@ class SceneTexte(QGraphicsScene):
         self._analyses = {}
         self._index_selection = -1
         self._texte_brut = texte
+        self._mode_bbox = False
+        self._image_item = None
+        self._bbox_rects = {}
 
         phrases_textes, lignes_tokens = _decouper_phrases(texte)
         self._textes_phrases = phrases_textes
@@ -423,7 +440,211 @@ class SceneTexte(QGraphicsScene):
 
     def texte_brut(self) -> str:
         """Retourne le texte brut original avec formatage préservé."""
+        if self._mode_bbox and not self._texte_brut:
+            # En mode bbox, reconstituer depuis les textes OCR des bulles
+            return "\n\n".join(
+                t for t in self._textes_phrases if t.strip()
+            )
         return self._texte_brut
+
+    # ─── Mode Bounding Box ───────────────────────────────────────
+
+    def charger_image_bulles(self, image_bgr, bulles: list) -> None:
+        """Affiche l'image en fond et crée les overlays pour chaque bulle.
+
+        L'image est redimensionnée pour l'affichage (max ~900px de large)
+        et les coordonnées des bboxes sont mises à l'échelle.
+        """
+        import cv2
+        import numpy as np
+
+        self.clear()
+        self._blocs = []
+        self._nums = []
+        self._mots_items = []
+        self._fonds_groupes = []
+        self._soulignements = []
+        self._analyses = {}
+        self._index_selection = -1
+        self._texte_brut = ""
+        self._textes_phrases = []
+        self._mode_bbox = True
+        self._bbox_rects = {}
+
+        # Redimensionner pour l'affichage
+        h, w = image_bgr.shape[:2]
+        MAX_DISPLAY_W = 900
+        if w > MAX_DISPLAY_W:
+            self._bbox_scale = MAX_DISPLAY_W / w
+            disp_w = MAX_DISPLAY_W
+            disp_h = int(h * self._bbox_scale)
+            display_bgr = cv2.resize(image_bgr, (disp_w, disp_h),
+                                     interpolation=cv2.INTER_AREA)
+        else:
+            self._bbox_scale = 1.0
+            display_bgr = image_bgr
+            disp_h, disp_w = h, w
+
+        # Image de fond
+        rgb = cv2.cvtColor(display_bgr, cv2.COLOR_BGR2RGB)
+        rgb = np.ascontiguousarray(rgb)
+        qimg = QImage(rgb.data, disp_w, disp_h, 3 * disp_w,
+                      QImage.Format_RGB888)
+        pixmap = QPixmap.fromImage(qimg)
+        self._image_item = QGraphicsPixmapItem(pixmap)
+        self._image_item.setZValue(-10)
+        self.addItem(self._image_item)
+
+        nb = len(bulles)
+        for _ in range(nb):
+            self._mots_items.append([])
+            self._fonds_groupes.append([])
+            self._soulignements.append([])
+            self._textes_phrases.append("")
+
+        s = self._bbox_scale
+        self._bbox_overlays: dict[int, QGraphicsRectItem] = {}
+
+        # Overlays pour chaque bulle (cachés par défaut, toggle au clic)
+        for bulle in bulles:
+            bid = bulle.id
+            bx, by, bw, bh = bulle.bbox_px
+            # Appliquer le scale d'affichage
+            sx, sy, sw, sh = bx * s, by * s, bw * s, bh * s
+            rect = QRectF(sx, sy, sw, sh)
+            self._bbox_rects[bid] = rect
+
+            # Fond blanc semi-transparent (caché par défaut)
+            overlay = QGraphicsRectItem(rect)
+            overlay.setPen(QPen(COULEUR_ACCENT, 1.5))
+            overlay.setBrush(QBrush(QColor(255, 255, 255, 180)))
+            overlay.setZValue(0)
+            overlay.setVisible(False)
+            self.addItem(overlay)
+            self._bbox_overlays[bid] = overlay
+
+            # Numéro de bulle (toujours visible)
+            num = NumPhraseItem(f"B{bid}", self._font_num)
+            num.setPos(sx + 2, sy + 2)
+            num.setZValue(5)
+            self.addItem(num)
+            self._nums.append(num)
+
+            # Bloc cliquable (toujours actif)
+            bloc = BlocPhraseItem(rect, bid)
+            bloc.setZValue(1)
+            self.addItem(bloc)
+            self._blocs.append(bloc)
+
+        self.setSceneRect(self.itemsBoundingRect().adjusted(-5, -5, 5, 5))
+
+    def remplir_bulle_texte(self, bulle_id: int, texte: str) -> None:
+        """OCR terminé pour une bulle → créer les mots dans la bbox.
+
+        Les mots sont CACHÉS par défaut — seul le label Bx est visible.
+        Un clic sur le label toggle l'affichage.
+        """
+        if bulle_id not in self._bbox_rects:
+            return
+
+        rect = self._bbox_rects[bulle_id]
+        self._textes_phrases[bulle_id] = texte
+
+        # Nettoyer les anciens mots de cette bulle
+        for item in self._mots_items[bulle_id]:
+            self.removeItem(item)
+        self._mots_items[bulle_id] = []
+
+        # Zone utile (avec marge intérieure)
+        pad = 6
+        zone_x = rect.x() + pad
+        zone_y = rect.y() + pad + 14  # 14px pour le label Bx
+        zone_w = rect.width() - 2 * pad
+        zone_h = rect.height() - 2 * pad - 14
+
+        if zone_w < 10 or zone_h < 10:
+            return
+
+        # Trouver la taille de police qui fait rentrer le texte
+        mots = texte.replace("\n", " ").split()
+        if not mots:
+            return
+
+        taille = self._trouver_taille_police(mots, zone_w, zone_h)
+        font = police_texte(taille)
+
+        # Disposer les mots dans la zone
+        from PySide6.QtGui import QFontMetrics
+        fm = QFontMetrics(font)
+        espacement = max(3, taille // 4)
+
+        x = zone_x
+        y = zone_y
+        line_h = fm.height()
+
+        for im, mot_str in enumerate(mots):
+            item = MotItem(mot_str, bulle_id, im, font)
+            w_mot = fm.horizontalAdvance(mot_str)
+
+            if x + w_mot > zone_x + zone_w and x > zone_x:
+                x = zone_x
+                y += line_h + 2
+
+            item.setPos(x, y)
+            item.setZValue(3)
+            item.setVisible(False)  # Caché par défaut
+            self.addItem(item)
+            self._mots_items[bulle_id].append(item)
+
+            x += w_mot + espacement
+
+    def toggle_bulle(self, bulle_id: int) -> None:
+        """Toggle la visibilité du texte et du fond d'une bulle."""
+        if bulle_id >= len(self._mots_items):
+            return
+        items = self._mots_items[bulle_id]
+        if not items:
+            return
+        visible = not items[0].isVisible()
+        for item in items:
+            item.setVisible(visible)
+        # Toggle l'overlay blanc
+        if bulle_id in self._bbox_overlays:
+            self._bbox_overlays[bulle_id].setVisible(visible)
+        # Toggle les fonds de groupes et soulignements
+        if bulle_id < len(self._fonds_groupes):
+            for fg in self._fonds_groupes[bulle_id]:
+                fg.setVisible(visible)
+        if bulle_id < len(self._soulignements):
+            for s in self._soulignements[bulle_id]:
+                s.setVisible(visible)
+
+    @staticmethod
+    def _trouver_taille_police(mots: list[str], largeur: float,
+                                hauteur: float) -> int:
+        """Cherche la plus grande taille de police qui fait rentrer les mots."""
+        from PySide6.QtGui import QFontMetrics
+
+        for taille in range(16, 5, -1):
+            font = police_texte(taille)
+            fm = QFontMetrics(font)
+            esp = max(3, taille // 4)
+            line_h = fm.height()
+
+            x = 0.0
+            y = 0.0
+            for mot in mots:
+                w_mot = fm.horizontalAdvance(mot)
+                if x + w_mot > largeur and x > 0:
+                    x = 0
+                    y += line_h + 2
+                x += w_mot + esp
+
+            total_h = y + line_h
+            if total_h <= hauteur:
+                return taille
+
+        return 6  # taille minimale
 
     # ─── Sélection ────────────────────────────────────────────────
 
@@ -448,7 +669,10 @@ class SceneTexte(QGraphicsScene):
             self._nums[index].set_actif(True, self)
 
         # Demander l'analyse si pas encore faite
-        if index not in self._analyses and index < len(self._textes_phrases):
+        # (en mode bbox, l'analyse est gérée par BBoxWorker, pas ici)
+        if (not self._mode_bbox
+                and index not in self._analyses
+                and index < len(self._textes_phrases)):
             bus().analyse_phrase_demandee.emit(
                 index, self._textes_phrases[index])
 
@@ -698,20 +922,64 @@ class SceneTexte(QGraphicsScene):
 
 
 # ═════════════════════════════════════════════════════════════════════
+# Vue avec zoom/pan
+# ═════════════════════════════════════════════════════════════════════
+
+class _ZoomPanView(QGraphicsView):
+    """QGraphicsView avec Ctrl+molette = zoom et clic-drag = pan."""
+
+    def __init__(self, scene, parent=None):
+        super().__init__(scene, parent)
+        self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
+        self.setDragMode(QGraphicsView.ScrollHandDrag)
+        self._zoom = 1.0
+
+    def wheelEvent(self, event):
+        if event.modifiers() & Qt.ControlModifier:
+            delta = event.angleDelta().y()
+            factor = 1.15 if delta > 0 else 1 / 1.15
+            self._zoom *= factor
+            # Limiter le zoom
+            self._zoom = max(0.2, min(self._zoom, 5.0))
+            self.setTransform(
+                self.transform().scale(factor, factor) if 0.2 < self._zoom < 5.0
+                else self.transform()
+            )
+            event.accept()
+        else:
+            super().wheelEvent(event)
+
+    def mousePressEvent(self, event):
+        # En mode bbox, le drag est pour le pan — sauf si on clique sur un item
+        if event.button() == Qt.LeftButton:
+            item = self.itemAt(event.pos())
+            if item and isinstance(item, (MotItem, BlocPhraseItem)):
+                # Laisser l'item gérer le clic
+                self.setDragMode(QGraphicsView.NoDrag)
+            else:
+                self.setDragMode(QGraphicsView.ScrollHandDrag)
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvent(event)
+        self.setDragMode(QGraphicsView.ScrollHandDrag)
+
+
+# ═════════════════════════════════════════════════════════════════════
 # Widget conteneur
 # ═════════════════════════════════════════════════════════════════════
 
 class VueTexte(QWidget):
-    """QGraphicsView + gestion clavier Tab/Shift+Tab."""
+    """QGraphicsView + gestion clavier Tab/Shift+Tab + zoom/pan."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._scene = SceneTexte()
-        self._view = QGraphicsView(self._scene)
+        self._view = _ZoomPanView(self._scene)
         from PySide6.QtGui import QPainter
         self._view.setRenderHint(QPainter.Antialiasing, True)
         self._view.setRenderHint(QPainter.TextAntialiasing, True)
-        self._view.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self._view.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self._view.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
         self._view.setStyleSheet(
             "QGraphicsView { border: none; background: transparent; }")

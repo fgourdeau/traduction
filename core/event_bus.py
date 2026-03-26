@@ -42,6 +42,11 @@ class EventBus(QObject):
     page_precedente_demandee = Signal()           # bouton ◀ page précédente
     page_suivante_demandee = Signal()             # bouton ▶ page suivante
 
+    # ─── Mode Bounding Box ───────────────────────────────────────────
+    bbox_capture_demandee = Signal(object)         # image np.ndarray → détection
+    bbox_detection_terminee = Signal(object, list)  # image, list[BulleDetectee]
+    bbox_ocr_terminee = Signal(int, str)            # bulle_id, texte OCR
+
 
 # Singleton
 _instance: EventBus | None = None

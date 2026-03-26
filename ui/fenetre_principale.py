@@ -32,6 +32,7 @@ from ui.scene_texte import VueTexte
 from ui.panneau_detail import PanneauDetail
 from ui.panneau_references import PanneauReferences
 from workers.analyse_worker import OcrWorker, AnalyseWorker
+from workers.bbox_worker import BBoxWorker
 
 # Résolution minimale pour un bon OCR Vision
 MIN_OCR_LONG_SIDE = 1500
@@ -59,6 +60,7 @@ class FenetrePrincipale(QMainWindow):
         # Workers — pipeline 2 phases
         self._ocr_worker = OcrWorker(self)
         self._analyse_worker = AnalyseWorker(self)
+        self._bbox_worker = BBoxWorker(self)
 
         # État session/page courante (pour navigation)
         self._current_session_id: int | None = None
@@ -545,6 +547,9 @@ class FenetrePrincipale(QMainWindow):
         # Analyse phrase par phrase
         b.analyse_phrase_terminee.connect(self._on_phrase_analysee)
         b.analyse_erreur.connect(self._on_erreur)
+        # Mode bounding box
+        b.bbox_detection_terminee.connect(self._on_bbox_detection)
+        b.bbox_ocr_terminee.connect(self._on_bbox_ocr)
         # UI
         b.status_message.connect(self._status.showMessage)
         b.chargement_en_cours.connect(self._on_chargement)
@@ -691,6 +696,27 @@ class FenetrePrincipale(QMainWindow):
         print(f"[Pipeline] Phrase {index + 1} analysée: {len(phrase.mots)} mots")
         self._vue_texte.scene.appliquer_analyse(index, phrase)
         self._panneau.set_phrase(index, phrase)
+
+    # ─── Slots pipeline mode Bounding Box ────────────────────────────
+
+    @Slot(np.ndarray, list)
+    def _on_bbox_detection(self, image: np.ndarray, bulles: list) -> None:
+        """Bulles détectées → afficher image + overlays dans la scène."""
+        self._analyse_worker.reset()
+        self._current_session_id = None
+        self._current_page_id = None
+        self._clear_page_info()
+
+        self._vue_texte.scene.charger_image_bulles(image, bulles)
+        self._vue_texte.setFocus()
+
+        if not bulles:
+            self._status.showMessage("Aucune bulle détectée", 5000)
+
+    @Slot(int, str)
+    def _on_bbox_ocr(self, bulle_id: int, texte: str) -> None:
+        """OCR d'une bulle terminé → remplir le texte dans l'overlay."""
+        self._vue_texte.scene.remplir_bulle_texte(bulle_id, texte)
 
     @Slot(str)
     def _on_erreur(self, message: str) -> None:

@@ -2,7 +2,7 @@
 
 Pipeline :
   0. Super-résolution RealSR-NCNN-Vulkan (×4, optionnel)
-  1. Détection zones texte (Paddle TextDetection ou EasyOCR + DBSCAN)
+  1. Détection zones texte (Paddle TextDetection + DBSCAN)
   2. Pour chaque bulle : OCR Claude Vision → texte
   3. Pour chaque bulle : Analyse grammaticale Claude → JSON
      (le texte peut contenir plusieurs phrases → fusionnées pour la bbox)
@@ -114,7 +114,7 @@ class BulleDetectee:
 
 
 # ─────────────────────────────────────────────────────────────────
-# Fonctions de détection (Paddle / EasyOCR)
+# Fonctions de détection (Paddle)
 # ─────────────────────────────────────────────────────────────────
 
 def _detect_paddle(img: np.ndarray, box_thresh: float = 0.3):
@@ -166,33 +166,6 @@ def _detect_paddle(img: np.ndarray, box_thresh: float = 0.3):
     return segments
 
 
-def _detect_easyocr(img: np.ndarray):
-    """Détecte via EasyOCR (CRAFT). Fallback si Paddle indisponible."""
-    import easyocr
-
-    reader = easyocr.Reader(["es"], gpu=False)
-    raw = reader.readtext(img)
-
-    h_img, w_img = img.shape[:2]
-    img_area = w_img * h_img
-    segments = []
-
-    for bbox_pts, text, conf in raw:
-        xs = [p[0] for p in bbox_pts]
-        ys = [p[1] for p in bbox_pts]
-        x, y = int(min(xs)), int(min(ys))
-        w, h = int(max(xs) - x), int(max(ys) - y)
-        if (w * h) / img_area < 0.0005:
-            continue
-        segments.append({
-            "bbox_px": [x, y, w, h],
-            "cx": x + w // 2,
-            "cy": y + h // 2,
-        })
-
-    return segments
-
-
 # ─────────────────────────────────────────────────────────────────
 # Stage 1 : Détection + DBSCAN
 # ─────────────────────────────────────────────────────────────────
@@ -218,21 +191,11 @@ class _DetectionTask(QThread):
             print(f"[BBox] Détection {self._detector} sur {w_img}×{h_img}")
 
             t0 = time.time()
-            if self._detector == "paddle":
-                try:
-                    segments = _detect_paddle(img, self._box_thresh)
-                    print(f"[BBox] Paddle: {len(segments)} segments "
-                          f"en {time.time() - t0:.1f}s")
-                except Exception as e:
-                    print(f"[BBox] Paddle échoué ({e}), fallback EasyOCR")
-                    t0 = time.time()
-                    segments = _detect_easyocr(img)
-                    print(f"[BBox] EasyOCR fallback: {len(segments)} segments "
-                          f"en {time.time() - t0:.1f}s")
-            else:
-                segments = _detect_easyocr(img)
-                print(f"[BBox] EasyOCR: {len(segments)} segments "
-                      f"en {time.time() - t0:.1f}s")
+
+            segments = _detect_paddle(img, self._box_thresh)
+            print(f"[BBox] Paddle: {len(segments)} segments "
+                  f"en {time.time() - t0:.1f}s")
+
 
             if not segments:
                 self.termine.emit(self._image, [])
@@ -417,7 +380,7 @@ MAX_PARALLEL_BBOX = 3
 class BBoxWorker(QObject):
     """Orchestre détection → OCR → analyse par bulle.
 
-    Paddle par défaut (eps=0.03), fallback EasyOCR si Paddle échoue.
+    Paddle par défaut (eps=0.03)
     Multi-phrases par bulle fusionnées en une PhraseAnalysee.
     """
 

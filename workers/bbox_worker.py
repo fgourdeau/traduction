@@ -117,19 +117,80 @@ class BulleDetectee:
 # Fonctions de détection (Paddle)
 # ─────────────────────────────────────────────────────────────────
 
+# Variables d'environnement Paddle — avant tout import paddle
+os.environ["FLAGS_use_mkldnn"] = "0"
+os.environ["PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK"] = "True"
+os.environ["GLOG_minloglevel"] = "2"  # WARNING+ seulement (pas INFO)
+
+# Cache du modèle Paddle — chargé une seule fois
+_paddle_model = None
+
+# Chemins possibles pour le modèle de détection
+_MODEL_NAME = "PP-OCRv5_server_det"
+_MODEL_SEARCH_PATHS = [
+    Path("models") / "PP-OCRv5_server_det_infer",     # Local (téléchargé manuellement)
+    Path("models") / _MODEL_NAME,                      # Local (nommé comme PaddleX)
+    Path.home() / ".paddlex" / "official_models" / _MODEL_NAME,  # Cache PaddleX
+]
+
+
+def _get_paddle_model():
+    """Retourne le modèle TextDetection (singleton, chargé une seule fois).
+
+    Cherche le modèle dans l'ordre :
+    1. models/PP-OCRv5_server_det_infer/ (local, téléchargé par setup_onnx_det.py)
+    2. models/PP-OCRv5_server_det/ (local, nommé comme PaddleX)
+    3. ~/.paddlex/official_models/PP-OCRv5_server_det/ (cache PaddleX)
+    4. Téléchargement automatique par PaddleX (premier lancement)
+    """
+    global _paddle_model
+    if _paddle_model is None:
+        import warnings
+        warnings.filterwarnings("ignore", message=".*ccache.*")
+
+        from paddleocr import TextDetection
+
+        # Chercher le modèle local
+        model_dir = None
+        for path in _MODEL_SEARCH_PATHS:
+            if path.exists() and (path / "inference.pdiparams").exists():
+                model_dir = str(path)
+                break
+
+        print(f"[Paddle] Chargement {_MODEL_NAME}…")
+        if model_dir:
+            print(f"[Paddle] Modèle local: {model_dir}")
+        else:
+            print(f"[Paddle] Modèle local introuvable → téléchargement PaddleX")
+
+        t0 = time.time()
+        if model_dir:
+            _paddle_model = TextDetection(
+                model_name=_MODEL_NAME,
+                model_dir=model_dir,
+            )
+        else:
+            _paddle_model = TextDetection(model_name=_MODEL_NAME)
+
+        print(f"[Paddle] Modèle chargé en {time.time() - t0:.1f}s")
+    return _paddle_model
+
+
 def _detect_paddle(img: np.ndarray, box_thresh: float = 0.3):
-    """Détecte via PaddleOCR TextDetection (det-only, pas de rec)."""
-    os.environ["FLAGS_use_mkldnn"] = "0"
-    os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
+    """Détecte via PaddleOCR 3.x TextDetection (det-only, pas de rec).
 
-    from paddleocr import TextDetection
+    Le modèle est chargé une seule fois (singleton). Les appels suivants
+    ne font que l'inférence (~2-5s au lieu de ~10-30s).
+    """
+    model = _get_paddle_model()
 
-    model = TextDetection(model_name="PP-OCRv5_server_det")
+    # Paddle max_side_limit = 4000 — au-delà il redimensionne en interne
+    side_len = min(max(img.shape[:2]), 4000)
     output = model.predict(
         input=img,
         batch_size=1,
         box_thresh=box_thresh,
-        limit_side_len=max(img.shape[:2]),
+        limit_side_len=side_len,
         limit_type="max",
     )
 
@@ -387,9 +448,9 @@ class BBoxWorker(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self._detection_task: _DetectionTask | None = None
-        self._image: np.ndarray | None = None
-        self._image_hires: np.ndarray | None = None
-        self._hires_scale: float = 1.0
+        self._image: np.ndarray | None = None          # Image native (pour détection + affichage)
+        self._image_hires: np.ndarray | None = None     # Image ×4 (pour crops OCR)
+        self._hires_scale: float = 1.0                  # Ratio ×4/native
         self._bulles: list[BulleDetectee] = []
 
         self._ocr_actives: dict[int, _BulleOcrTask] = {}
@@ -409,17 +470,30 @@ class BBoxWorker(QObject):
         h, w = image.shape[:2]
         print(f"[BBox] Image reçue: {w}×{h}")
 
-        # Stocker l'image native pour la détection ET l'affichage
-        self._image = image
-        # L'image upscalée sera stockée séparément pour les crops OCR
-        self._image_hires: np.ndarray | None = None
-
-        bus().status_message.emit("Détection des bulles (Paddle+DBSCAN)…")
         bus().chargement_en_cours.emit(True)
 
-        # Détection sur l'image NATIVE (pas upscalée) — meilleures bbox
+        # Stocker l'image native pour la détection ET l'affichage
+        self._image = image
+
+        # ── Étape 0 : Super-résolution RealSR ×4 (pour l'OCR uniquement) ──
+        bus().status_message.emit("Super-résolution RealSR (×4)…")
+        upscaled = _realsr_upscale(image, scale=4)
+        if upscaled is not None:
+            h2, w2 = upscaled.shape[:2]
+            self._image_hires = upscaled
+            self._hires_scale = w2 / w
+            print(f"[BBox] RealSR: {w}×{h} → {w2}×{h2} (×{self._hires_scale:.1f})")
+        else:
+            self._image_hires = image
+            self._hires_scale = 1.0
+            print(f"[BBox] RealSR indisponible, crops en résolution native")
+
+        # ── Étape 1 : Détection Paddle sur l'image NATIVE ──
+        # Les bbox seront dans l'espace natif → bon eps, bon clustering
+        bus().status_message.emit("Détection des bulles (Paddle+DBSCAN)…")
+
         self._detection_task = _DetectionTask(
-            image, detector="paddle", eps=0.05,
+            self._image, detector="paddle", eps=0.05,
             y_stretch=1.5, box_thresh=0.3, parent=self)
         self._detection_task.termine.connect(self._on_detection_ok)
         self._detection_task.erreur.connect(self._on_erreur)
@@ -428,29 +502,13 @@ class BBoxWorker(QObject):
     def _on_detection_ok(self, image: np.ndarray, bulles: list) -> None:
         from core.event_bus import bus
         self._bulles = bulles
-        # Émettre l'image native pour l'affichage dans la scène
+        # Émettre l'image native pour l'affichage (pas la ×4)
         bus().bbox_detection_terminee.emit(image, bulles)
 
         if not bulles:
             bus().status_message.emit("Aucune bulle détectée")
             bus().chargement_en_cours.emit(False)
             return
-
-        bus().status_message.emit(
-            f"{len(bulles)} bulles → super-résolution RealSR…")
-
-        # Upscale l'image complète pour avoir des crops haute-res
-        upscaled = _realsr_upscale(self._image)
-        if upscaled is not None:
-            h2, w2 = upscaled.shape[:2]
-            h1, w1 = self._image.shape[:2]
-            self._hires_scale = w2 / w1
-            self._image_hires = upscaled
-            print(f"[BBox] RealSR: {w1}×{h1} → {w2}×{h2} (×{self._hires_scale:.1f})")
-        else:
-            self._hires_scale = 1.0
-            self._image_hires = self._image
-            print(f"[BBox] RealSR indisponible, crops natifs")
 
         bus().status_message.emit(
             f"{len(bulles)} bulles détectées → OCR en cours…")
@@ -466,7 +524,7 @@ class BBoxWorker(QObject):
             bulle = self._bulles[bid]
             bx, by, bw, bh = bulle.bbox_px
 
-            # Crop depuis l'image haute-res (coordonnées scalées)
+            # Crop depuis l'image ×4 (coordonnées scalées)
             s = self._hires_scale
             hx, hy = int(bx * s), int(by * s)
             hw, hh = int(bw * s), int(bh * s)

@@ -636,13 +636,21 @@ class FenetrePrincipale(QMainWindow):
         """Image capturée → validation résolution → Phase 1 OCR."""
         h, w = image.shape[:2]
         print(f"[Pipeline] Image reçue: {w}×{h} px")
-        image = self._assurer_resolution(image)
+
+        # Essayer RealSR d'abord, sinon fallback sur upscale basique
+        from workers.bbox_worker import _realsr_upscale
+        upscaled = _realsr_upscale(image)
+        if upscaled is not None:
+            h2, w2 = upscaled.shape[:2]
+            print(f"[Pipeline] RealSR: {w}×{h} → {w2}×{h2}")
+            bus().status_message.emit(f"RealSR {w}×{h} → {w2}×{h2}")
+            image = upscaled
+        else:
+            image = self._assurer_resolution(image)
+
         h2, w2 = image.shape[:2]
         if (h2, w2) != (h, w):
-            print(f"[Pipeline] Upscale: {w}×{h} → {w2}×{h2}")
-            bus().status_message.emit(
-                f"Upscale {w}×{h} → {w2}×{h2} pour OCR"
-            )
+            print(f"[Pipeline] Résolution finale: {w2}×{h2}")
         print(f"[Pipeline] → Phase 1 : OCR ({w2}×{h2})")
         bus().ocr_lance.emit(image)
 

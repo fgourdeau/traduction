@@ -49,13 +49,31 @@ class GroupeFondItem(QGraphicsRectItem):
 
 
 class NumPhraseItem(QGraphicsSimpleTextItem):
-    """Numéro de phrase — surligné quand la phrase est active."""
+    """Numéro de phrase — surligné quand la phrase est active.
+
+    En mode bbox, un clic toggle la visibilité du texte de la bulle.
+    """
 
     def __init__(self, numero: str, font: QFont):
         super().__init__(numero)
         self.setFont(font)
         self.setBrush(QBrush(COULEUR_NUM_NORMAL))
         self._fond: QGraphicsRectItem | None = None
+        self.setCursor(QCursor(Qt.PointingHandCursor))
+        self.setAcceptedMouseButtons(Qt.LeftButton)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            scene = self.scene()
+            if isinstance(scene, SceneTexte) and scene._mode_bbox:
+                txt = self.text()
+                if txt.startswith("B") and txt[1:].isdigit():
+                    bulle_id = int(txt[1:])
+                    scene.toggle_bulle(bulle_id)
+                    bus().phrase_selectionnee.emit(bulle_id)
+                event.accept()
+                return
+        super().mousePressEvent(event)
 
     def set_actif(self, on: bool, scene: QGraphicsScene) -> None:
         if on:
@@ -160,7 +178,8 @@ class SoulignementItem(QGraphicsPathItem):
 class BlocPhraseItem(QGraphicsRectItem):
     """Rectangle de fond invisible mais cliquable pour une phrase.
 
-    En mode bbox, un clic toggle la visibilité du texte de la bulle.
+    En mode bbox, un clic OUVRE la bulle (mais ne la ferme pas).
+    Fermeture = clic sur l'étiquette Bx uniquement.
     """
 
     def __init__(self, rect: QRectF, index_phrase: int):
@@ -178,7 +197,8 @@ class BlocPhraseItem(QGraphicsRectItem):
         if event.button() == Qt.LeftButton:
             scene = self.scene()
             if isinstance(scene, SceneTexte) and scene._mode_bbox:
-                scene.toggle_bulle(self.index_phrase)
+                # Ouvrir seulement (pas toggle) — fermeture via NumPhraseItem
+                scene.ouvrir_bulle(self.index_phrase)
             bus().phrase_selectionnee.emit(self.index_phrase)
         super().mousePressEvent(event)
 
@@ -606,7 +626,22 @@ class SceneTexte(QGraphicsScene):
         if not items:
             return
         visible = not items[0].isVisible()
-        for item in items:
+        self._set_bulle_visible(bulle_id, visible)
+
+    def ouvrir_bulle(self, bulle_id: int) -> None:
+        """Ouvre une bulle (sans la fermer si déjà ouverte)."""
+        if bulle_id >= len(self._mots_items):
+            return
+        items = self._mots_items[bulle_id]
+        if not items:
+            return
+        if items[0].isVisible():
+            return  # Déjà ouverte
+        self._set_bulle_visible(bulle_id, True)
+
+    def _set_bulle_visible(self, bulle_id: int, visible: bool) -> None:
+        """Affiche ou cache le contenu d'une bulle."""
+        for item in self._mots_items[bulle_id]:
             item.setVisible(visible)
         # Toggle l'overlay blanc
         if bulle_id in self._bbox_overlays:
@@ -889,6 +924,9 @@ class SceneTexte(QGraphicsScene):
             y_max = y_min + h + 2 * PAD_Y
             rect = QRectF(x_min, y_min, x_max - x_min, y_max - y_min)
             fond = GroupeFondItem(rect, couleur)
+            # En mode bbox, cacher si la bulle est collapsed
+            if self._mode_bbox and items and not items[0].isVisible():
+                fond.setVisible(False)
             self.addItem(fond)
             self._fonds_groupes[index].append(fond)
 
@@ -899,6 +937,9 @@ class SceneTexte(QGraphicsScene):
 
         # Mapping inversé : index mot analysé → index item visuel
         mot_to_item = {v: k for k, v in item_to_mot.items()}
+
+        # Déterminer si la bulle est visible (pour cacher les soulignements)
+        bulle_visible = not self._mode_bbox or (items and items[0].isVisible())
 
         for expr in phrase.expressions:
             expr_item_indices = [mot_to_item[i] for i in expr.indices
@@ -917,6 +958,8 @@ class SceneTexte(QGraphicsScene):
                 )
                 h = line_items[0].boundingRect().height()
                 s = SoulignementItem(x_min, ly + h + 2, x_max - x_min)
+                if not bulle_visible:
+                    s.setVisible(False)
                 self.addItem(s)
                 self._soulignements[index].append(s)
 

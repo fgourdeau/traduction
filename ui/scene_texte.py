@@ -45,7 +45,7 @@ class GroupeFondItem(QGraphicsRectItem):
         super().__init__(rect)
         self.setPen(QPen(Qt.NoPen))
         self.setBrush(QBrush(couleur))
-        self.setZValue(-0.5)
+        self.setZValue(2)  # Au-dessus de l'overlay (0), sous les mots (3)
 
 
 class NumPhraseItem(QGraphicsSimpleTextItem):
@@ -331,6 +331,8 @@ class SceneTexte(QGraphicsScene):
         self._image_item: QGraphicsPixmapItem | None = None
         self._bbox_rects: dict[int, QRectF] = {}  # bulle_id → rect scène
         self._bbox_scale: float = 1.0  # facteur d'affichage
+        self._image_bgr_original = None  # image BGR pour sauvegarde document
+        self._bbox_text_bgs: dict[int, list[QGraphicsRectItem]] = {}  # fonds blancs par bulle
 
         bus().phrase_selectionnee.connect(self._on_phrase_selectionnee)
 
@@ -355,6 +357,8 @@ class SceneTexte(QGraphicsScene):
         self._mode_bbox = False
         self._image_item = None
         self._bbox_rects = {}
+        self._image_bgr_original = None
+        self._bbox_text_bgs = {}
 
         phrases_textes, lignes_tokens = _decouper_phrases(texte)
         self._textes_phrases = phrases_textes
@@ -490,6 +494,10 @@ class SceneTexte(QGraphicsScene):
         self._textes_phrases = []
         self._mode_bbox = True
         self._bbox_rects = {}
+        self._bbox_text_bgs = {}
+
+        # Conserver l'image BGR originale pour sauvegarde en document
+        self._image_bgr_original = image_bgr.copy()
 
         # Redimensionner pour l'affichage
         h, w = image_bgr.shape[:2]
@@ -534,10 +542,11 @@ class SceneTexte(QGraphicsScene):
             rect = QRectF(sx, sy, sw, sh)
             self._bbox_rects[bid] = rect
 
-            # Fond blanc semi-transparent (caché par défaut)
+            # Contour discret de la bulle (sans fond blanc)
             overlay = QGraphicsRectItem(rect)
-            overlay.setPen(QPen(COULEUR_ACCENT, 1.5))
-            overlay.setBrush(QBrush(QColor(255, 255, 255, 180)))
+            pen = QPen(QColor(192, 184, 173), 1.0, Qt.DashLine)
+            overlay.setPen(pen)
+            overlay.setBrush(QBrush(Qt.transparent))
             overlay.setZValue(0)
             overlay.setVisible(False)
             self.addItem(overlay)
@@ -563,6 +572,7 @@ class SceneTexte(QGraphicsScene):
 
         Les mots sont CACHÉS par défaut — seul le label Bx est visible.
         Un clic sur le label toggle l'affichage.
+        Un fond blanc opaque est placé derrière chaque ligne de texte.
         """
         if bulle_id not in self._bbox_rects:
             return
@@ -570,10 +580,14 @@ class SceneTexte(QGraphicsScene):
         rect = self._bbox_rects[bulle_id]
         self._textes_phrases[bulle_id] = texte
 
-        # Nettoyer les anciens mots de cette bulle
+        # Nettoyer les anciens mots et fonds de cette bulle
         for item in self._mots_items[bulle_id]:
             self.removeItem(item)
         self._mots_items[bulle_id] = []
+
+        for bg in self._bbox_text_bgs.get(bulle_id, []):
+            self.removeItem(bg)
+        self._bbox_text_bgs[bulle_id] = []
 
         # Zone utile (avec marge intérieure)
         pad = 6
@@ -602,6 +616,9 @@ class SceneTexte(QGraphicsScene):
         y = zone_y
         line_h = fm.height()
 
+        # Stocker les mots par ligne pour créer les fonds après
+        lignes: list[list[MotItem]] = [[]]
+
         for im, mot_str in enumerate(mots):
             item = MotItem(mot_str, bulle_id, im, font)
             w_mot = fm.horizontalAdvance(mot_str)
@@ -609,14 +626,37 @@ class SceneTexte(QGraphicsScene):
             if x + w_mot > zone_x + zone_w and x > zone_x:
                 x = zone_x
                 y += line_h + 2
+                lignes.append([])
 
             item.setPos(x, y)
             item.setZValue(3)
             item.setVisible(False)  # Caché par défaut
             self.addItem(item)
             self._mots_items[bulle_id].append(item)
+            lignes[-1].append(item)
 
             x += w_mot + espacement
+
+        # Créer un fond blanc opaque derrière chaque ligne de texte
+        PAD_BG = 4
+        for ligne_items in lignes:
+            if not ligne_items:
+                continue
+            x_min = min(it.pos().x() for it in ligne_items) - PAD_BG
+            x_max = max(
+                it.pos().x() + it.boundingRect().width()
+                for it in ligne_items
+            ) + PAD_BG
+            y_top = ligne_items[0].pos().y() - 1
+            h_bg = ligne_items[0].boundingRect().height() + 2
+
+            bg = QGraphicsRectItem(QRectF(x_min, y_top, x_max - x_min, h_bg))
+            bg.setPen(QPen(Qt.NoPen))
+            bg.setBrush(QBrush(QColor(255, 255, 255, 220)))
+            bg.setZValue(2.5)  # Sous les mots (3), au-dessus de l'image
+            bg.setVisible(False)
+            self.addItem(bg)
+            self._bbox_text_bgs.setdefault(bulle_id, []).append(bg)
 
     def toggle_bulle(self, bulle_id: int) -> None:
         """Toggle la visibilité du texte et du fond d'une bulle."""
@@ -643,9 +683,12 @@ class SceneTexte(QGraphicsScene):
         """Affiche ou cache le contenu d'une bulle."""
         for item in self._mots_items[bulle_id]:
             item.setVisible(visible)
-        # Toggle l'overlay blanc
+        # Toggle l'overlay contour
         if bulle_id in self._bbox_overlays:
             self._bbox_overlays[bulle_id].setVisible(visible)
+        # Toggle les fonds blancs de texte
+        for bg in self._bbox_text_bgs.get(bulle_id, []):
+            bg.setVisible(visible)
         # Toggle les fonds de groupes et soulignements
         if bulle_id < len(self._fonds_groupes):
             for fg in self._fonds_groupes[bulle_id]:
@@ -916,6 +959,11 @@ class SceneTexte(QGraphicsScene):
             couleur = couleur_fond_groupe(groupe)
             if couleur is None:
                 continue
+            # En mode bbox, augmenter l'opacité pour lisibilité sur l'image
+            if self._mode_bbox:
+                c = QColor(couleur)
+                c.setAlpha(min(c.alpha() + 80, 200))
+                couleur = c
             first, last = items[deb], items[fin - 1]
             x_min = first.pos().x() - PAD_X
             y_min = first.pos().y() - PAD_Y

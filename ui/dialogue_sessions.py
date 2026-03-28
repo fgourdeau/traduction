@@ -5,6 +5,7 @@ from PySide6.QtGui import QFont
 from PySide6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, QListWidget,
     QListWidgetItem, QPushButton, QSplitter, QWidget, QMessageBox,
+    QFileDialog,
 )
 
 from core.db import db, SessionRecord, PageRecord
@@ -22,7 +23,7 @@ class DialogueSessions(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Ouvrir une page sauvegardée")
+        self.setWindowTitle("Gestionnaire de sessions")
         self.setMinimumSize(700, 450)
         self.resize(800, 500)
 
@@ -76,6 +77,21 @@ class DialogueSessions(QDialog):
         btn_suppr_session = QPushButton("🗑 Supprimer session")
         btn_suppr_session.clicked.connect(self._supprimer_session)
         left_layout.addWidget(btn_suppr_session)
+
+        # ─── Boutons document ────────────────────────────────────
+        btn_nouveau_doc = QPushButton("📄 Nouveau document")
+        btn_nouveau_doc.setToolTip(
+            "Exporter la session sélectionnée en document .anlz"
+        )
+        btn_nouveau_doc.clicked.connect(self._nouveau_document)
+        left_layout.addWidget(btn_nouveau_doc)
+
+        btn_ajout_doc = QPushButton("➕ Ajout à un document")
+        btn_ajout_doc.setToolTip(
+            "Ajouter les pages de la session à un document .anlz existant"
+        )
+        btn_ajout_doc.clicked.connect(self._ajout_a_document)
+        left_layout.addWidget(btn_ajout_doc)
 
         splitter.addWidget(left)
 
@@ -221,3 +237,88 @@ class DialogueSessions(QDialog):
             db().supprimer_page(self._page_selectionnee.id)
             row = self._list_sessions.currentRow()
             self._on_session_selectionnee(row)
+
+    # ─── Documents (.anlz) ───────────────────────────────────────
+
+    def _session_selectionnee(self) -> SessionRecord | None:
+        """Retourne la session sélectionnée, ou None."""
+        row = self._list_sessions.currentRow()
+        if row < 0 or row >= len(self._sessions):
+            return None
+        return self._sessions[row]
+
+    @Slot()
+    def _nouveau_document(self) -> None:
+        """Exporte la session sélectionnée en nouveau document .anlz."""
+        session = self._session_selectionnee()
+        if session is None:
+            QMessageBox.information(
+                self, "Nouveau document",
+                "Sélectionnez d'abord une session.",
+            )
+            return
+
+        path, _ = QFileDialog.getSaveFileName(
+            self, "Enregistrer le document",
+            f"{session.nom}.anlz",
+            "Documents Analizador (*.anlz)",
+        )
+        if not path:
+            return
+
+        try:
+            from core.document import session_vers_document, sauvegarder_document
+
+            doc = session_vers_document(session.id)
+            chemin = sauvegarder_document(doc, path)
+
+            QMessageBox.information(
+                self, "Document créé",
+                f"Document créé : {chemin.name}\n"
+                f"{doc.nb_pages} pages exportées.",
+            )
+        except Exception as e:
+            QMessageBox.critical(self, "Erreur", str(e))
+
+    @Slot()
+    def _ajout_a_document(self) -> None:
+        """Ajoute les pages de la session à un document .anlz existant."""
+        session = self._session_selectionnee()
+        if session is None:
+            QMessageBox.information(
+                self, "Ajout à un document",
+                "Sélectionnez d'abord une session.",
+            )
+            return
+
+        path, _ = QFileDialog.getOpenFileName(
+            self, "Choisir le document cible", "",
+            "Documents Analizador (*.anlz);;Tous (*)",
+        )
+        if not path:
+            return
+
+        try:
+            from core.document import (
+                charger_document, sauvegarder_document,
+                session_vers_document,
+            )
+
+            doc = charger_document(path)
+            doc_source = session_vers_document(session.id)
+
+            nb_avant = doc.nb_pages
+            for page in doc_source.pages:
+                doc.ajouter_page(page)
+            doc._renumeroter()
+
+            sauvegarder_document(doc, path)
+
+            nb_ajoutees = doc.nb_pages - nb_avant
+            QMessageBox.information(
+                self, "Ajout terminé",
+                f"{nb_ajoutees} pages ajoutées à « {doc.nom} ».\n"
+                f"Total : {doc.nb_pages} pages.",
+            )
+        except Exception as e:
+            QMessageBox.critical(self, "Erreur", str(e))

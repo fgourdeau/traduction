@@ -212,6 +212,11 @@ class FenetrePrincipale(QMainWindow):
         if HAS_WEBENGINE:
             self._webview = QWebEngineView()
             self._webview.setMinimumWidth(350)
+
+            # Installer le bloqueur de publicités
+            from ui.ad_blocker import installer_bloqueur
+            installer_bloqueur(self._webview)
+
             self._webview.setHtml(
                 '<html><body style="font-family:sans-serif; color:#9b9084; '
                 'display:flex; align-items:center; justify-content:center; '
@@ -365,6 +370,14 @@ class FenetrePrincipale(QMainWindow):
             }}
         """)
 
+        # ─── Menu Document (.anlz) — en premier ────────────────────
+        menu_doc = menu_bar.addMenu("&Document")
+
+        act_gestionnaire = QAction("📄 Ouvrir le gestionnaire…", self)
+        act_gestionnaire.triggered.connect(self._ouvrir_gestionnaire_documents)
+        menu_doc.addAction(act_gestionnaire)
+
+        # ─── Menu Session ────────────────────────────────────────
         menu_capture = menu_bar.addMenu("&Session")
 
 
@@ -483,7 +496,7 @@ class FenetrePrincipale(QMainWindow):
         self._status.addPermanentWidget(self._btn_annuler)
 
         hint = QLabel(
-            "Tab: phrases  •  Clic: définition  •  Clic droit: traduction  "
+            "Tab: phrases  •  Clic: définition  "
             "•  Légende: références"
         )
         hint.setStyleSheet("color: #9b9084; font-size: 11px;")
@@ -636,6 +649,9 @@ class FenetrePrincipale(QMainWindow):
         """Image capturée → validation résolution → Phase 1 OCR."""
         h, w = image.shape[:2]
         print(f"[Pipeline] Image reçue: {w}×{h} px")
+        bus().status_message.emit(f"Image reçue ({w}×{h}) — préparation OCR…")
+        from PySide6.QtWidgets import QApplication
+        QApplication.processEvents()
 
         # Essayer RealSR d'abord, sinon fallback sur upscale basique
         from workers.bbox_worker import _realsr_upscale
@@ -658,12 +674,14 @@ class FenetrePrincipale(QMainWindow):
     def _on_ocr_termine(self, texte: str) -> None:
         """OCR terminé → afficher le texte brut → lancer analyse batch."""
         print(f"[Pipeline] OCR ok ({len(texte)} chars) → affichage texte brut")
+        bus().status_message.emit("OCR terminé — analyse grammaticale…")
         self._charger_et_analyser(texte)
 
     @Slot(str)
     def _on_texte_colle(self, texte: str) -> None:
         """Texte collé → bypass OCR → lancer analyse batch."""
         print(f"[Pipeline] Texte collé ({len(texte)} chars) → affichage")
+        bus().status_message.emit("Texte reçu — analyse en cours…")
         self._charger_et_analyser(texte)
 
     def _charger_et_analyser(self, texte: str) -> None:
@@ -694,6 +712,8 @@ class FenetrePrincipale(QMainWindow):
         if phrases:
             batch = [(i, t) for i, t in enumerate(phrases)]
             print(f"[Pipeline] → Phase 2 : Analyse batch ({len(batch)} phrases)")
+            bus().status_message.emit(
+                f"Analyse grammaticale — {len(batch)} phrases…")
             bus().analyse_batch_demandee.emit(batch)
 
     @Slot(int, object)
@@ -701,9 +721,19 @@ class FenetrePrincipale(QMainWindow):
         """Une phrase a été analysée → appliquer les couleurs en place."""
         if not isinstance(phrase, PhraseAnalysee):
             return
+        nb_phrases = len(self._vue_texte.scene._textes_phrases)
         print(f"[Pipeline] Phrase {index + 1} analysée: {len(phrase.mots)} mots")
         self._vue_texte.scene.appliquer_analyse(index, phrase)
         self._panneau.set_phrase(index, phrase)
+
+        # Message de progression
+        nb_done = len(self._vue_texte.scene._analyses)
+        if nb_done >= nb_phrases:
+            self._status.showMessage(
+                f"✓ Analyse terminée — {nb_phrases} phrases", 8000)
+        else:
+            self._status.showMessage(
+                f"Analyse {nb_done}/{nb_phrases} phrases…")
 
     # ─── Slots pipeline mode Bounding Box ────────────────────────────
 
@@ -896,7 +926,27 @@ class FenetrePrincipale(QMainWindow):
                 ],
             })
 
-        analyse_json = json.dumps({"phrases": phrases_json}, ensure_ascii=False)
+        # En mode bulle, sauvegarder les bbox pour la restauration
+        # Les coords sont sauvées en espace image natif (avant le scale d'affichage)
+        bbox_data = None
+        if scene._mode_bbox and scene._bbox_rects:
+            s = scene._bbox_scale if scene._bbox_scale > 0 else 1.0
+            bbox_data = {
+                str(bid): [
+                    r.x() / s, r.y() / s,
+                    r.width() / s, r.height() / s,
+                ]
+                for bid, r in scene._bbox_rects.items()
+            }
+
+        data_json = {"phrases": phrases_json}
+        if bbox_data:
+            data_json["bbox_rects"] = bbox_data
+
+        analyse_json = json.dumps(data_json, ensure_ascii=False)
+
+        # Capturer l'image de fond si mode bulle/BD
+        image_data = self._capturer_image_scene()
 
         # Session : trouver ou créer
         nom_session = self._session_name.text().strip() or "Sans titre"
@@ -907,10 +957,56 @@ class FenetrePrincipale(QMainWindow):
             session = database.creer_session(nom_session)
             print(f"[Session] Nouvelle session: {nom_session}")
 
-        page = database.sauvegarder_page(session.id, texte_brut, analyse_json)
-        self._status.showMessage(
-            f"💾 Page {page.numero} sauvegardée dans « {nom_session} »", 5000
+        page = database.sauvegarder_page(
+            session.id, texte_brut, analyse_json, image_data=image_data
         )
+        img_info = f" + image {len(image_data)//1024}Ko" if image_data else ""
+        self._status.showMessage(
+            f"💾 Page {page.numero} sauvegardée dans « {nom_session} »{img_info}",
+            5000,
+        )
+
+    def _capturer_image_scene(self) -> bytes | None:
+        """Extrait l'image de fond de la scène en PNG (mode bulle/BD).
+
+        Retourne None si la scène est en mode texte pur.
+        Stratégie :
+        1. Attribut _image_bgr_original (ajouté par le patch scene_texte)
+        2. Fallback : extraction depuis le QGraphicsPixmapItem
+        """
+        scene = self._vue_texte.scene
+
+        # Pas en mode bbox → pas d'image à sauvegarder
+        if not getattr(scene, '_mode_bbox', False):
+            return None
+
+        # Stratégie 1 : image BGR numpy conservée dans la scène
+        image_np = getattr(scene, '_image_bgr_original', None)
+        if image_np is not None:
+            success, buf = cv2.imencode(
+                '.png', image_np,
+                [cv2.IMWRITE_PNG_COMPRESSION, 6],
+            )
+            if success:
+                data = buf.tobytes()
+                print(f"[Save] Image BGR: {len(data) // 1024} Ko")
+                return data
+
+        # Stratégie 2 : extraire depuis le QGraphicsPixmapItem
+        image_item = getattr(scene, '_image_item', None)
+        if image_item is not None:
+            from PySide6.QtCore import QBuffer, QIODevice
+            pixmap = image_item.pixmap()
+            if not pixmap.isNull():
+                buffer = QBuffer()
+                buffer.open(QIODevice.WriteOnly)
+                pixmap.save(buffer, "PNG")
+                data = bytes(buffer.data())
+                buffer.close()
+                print(f"[Save] Image QPixmap: {len(data) // 1024} Ko")
+                return data
+
+        return None
 
     @Slot()
     def _on_ouvrir(self) -> None:
@@ -948,8 +1044,74 @@ class FenetrePrincipale(QMainWindow):
         # Reset
         self._analyse_worker.reset()
 
-        # Charger le texte brut SANS sélection auto
-        self._vue_texte.scene.charger_texte_brut(page.texte_brut, auto_select=False)
+        # Vérifier si la page a une image (mode bulle)
+        image_data = database.charger_image_page(page.id)
+        if image_data:
+            # Mode bulle : restaurer l'image de fond + analyses
+            image_np = self._decoder_image(image_data)
+            if image_np is not None:
+                print(f"[Session] Restauration mode bulle "
+                      f"({image_np.shape[1]}×{image_np.shape[0]})")
+
+                # Lire les bbox et les phrases pour la restauration
+                data = json.loads(page.analyse_json)
+                bbox_data = data.get("bbox_rects", {})
+                phrases = from_api_response(data)
+
+                from types import SimpleNamespace
+
+                if bbox_data:
+                    # Recréer les bulles à partir des bbox sauvegardées
+                    # Coords en espace image natif (charger_image_bulles appliquera le scale)
+                    bulles_sim = []
+                    for bid_str, coords in sorted(bbox_data.items()):
+                        bid = int(bid_str)
+                        bulles_sim.append(SimpleNamespace(
+                            id=bid,
+                            bbox_px=(
+                                int(coords[0]), int(coords[1]),
+                                int(coords[2]), int(coords[3]),
+                            ),
+                        ))
+                else:
+                    # Legacy : pas de bbox sauvées → générer des rects empilés
+                    h_img, w_img = image_np.shape[:2]
+                    n = len(phrases)
+                    rect_h = max(60, h_img // max(n, 1))
+                    bulles_sim = []
+                    for bid in range(n):
+                        bulles_sim.append(SimpleNamespace(
+                            id=bid,
+                            bbox_px=(10, 10 + bid * rect_h,
+                                     w_img - 20, rect_h - 5),
+                        ))
+                    print(f"[Session] Legacy: {n} rects générés "
+                          f"({w_img - 20}×{rect_h})")
+
+                # Charger l'image avec les bulles restaurées
+                self._vue_texte.scene.charger_image_bulles(image_np, bulles_sim)
+
+                # Remplir le texte de chaque bulle puis appliquer l'analyse
+                for i, phrase in enumerate(phrases):
+                    texte_phrase = phrase.texte_original
+                    self._vue_texte.scene.remplir_bulle_texte(i, texte_phrase)
+                    self._vue_texte.scene.appliquer_analyse(i, phrase)
+                    self._panneau.set_phrase(i, phrase)
+
+                bus().phrase_selectionnee.emit(0)
+
+                self._vue_texte.setFocus()
+                self._status.showMessage(
+                    f"📖 {session.nom} — Page {page.numero}/{nb_pages} "
+                    f"— {len(phrases)} phrases (bulle)", 5000
+                )
+                print(f"[Session] {len(phrases)} phrases chargées (mode bulle)")
+                return
+        # Mode texte : charger le texte brut SANS sélection auto
+        self._vue_texte.scene.charger_texte_brut(
+            page.texte_brut, auto_select=False
+        )
+
         self._vue_texte.setFocus()
 
         # Charger les analyses sauvegardées (pas d'appel Claude !)
@@ -964,11 +1126,39 @@ class FenetrePrincipale(QMainWindow):
 
             self._status.showMessage(
                 f"📖 {session.nom} — Page {page.numero}/{nb_pages} "
-                f"— {len(phrases)} phrases", 5000
+                f"— {len(phrases)} phrases (texte)", 5000
             )
             print(f"[Session] {len(phrases)} phrases chargées depuis la base")
         except (json.JSONDecodeError, KeyError) as e:
             self._on_erreur(f"Erreur chargement analyse: {e}")
+
+    @staticmethod
+    def _decoder_image(data: bytes):
+        """Décode des bytes PNG en image numpy BGR."""
+        import numpy as np
+        arr = np.frombuffer(data, dtype=np.uint8)
+        image = cv2.imdecode(arr, cv2.IMREAD_COLOR)
+        return image
+
+    # ─── Documents (.anlz) ──────────────────────────────────────────
+
+    @Slot()
+    def _ouvrir_gestionnaire_documents(self) -> None:
+        """Ouvre le dialogue de gestion de documents."""
+        from ui.dialogue_documents import DialogueDocuments
+
+        dlg = DialogueDocuments(self)
+        dlg.document_importe.connect(self._on_document_importe)
+        dlg.exec()
+
+    @Slot(int)
+    def _on_document_importe(self, session_id: int) -> None:
+        """Un document a été importé comme session → charger la première page."""
+        from core.db import db as get_db
+
+        pages = get_db().lister_pages(session_id)
+        if pages:
+            self._charger_page(get_db().page_par_id(pages[0].id))
 
     @Slot()
     def _on_page_precedente(self) -> None:

@@ -23,7 +23,6 @@ from pathlib import Path
 import cv2
 import numpy as np
 from PySide6.QtCore import QThread, QObject, Signal, Slot
-from sklearn.cluster import DBSCAN
 
 import anthropic
 
@@ -109,6 +108,7 @@ class BulleDetectee:
     bbox_px: list[int]       # [x, y, w, h] dans l'image source
     bbox_pct: list[float]    # [x%, y%, w%, h%] relatif à l'image
     nb_segments: int
+    hull: object = None      # np.ndarray enveloppe convexe (N,1,2) ou None
     texte_ocr: str | None = None
     phrase: object | None = None
 
@@ -228,6 +228,97 @@ def _detect_paddle(img: np.ndarray, box_thresh: float = 0.3):
 
 
 # ─────────────────────────────────────────────────────────────────
+# Clustering par chevauchement de bbox (remplace DBSCAN)
+# ─────────────────────────────────────────────────────────────────
+
+def _cluster_bbox_overlap(segments, w_img, h_img, marge_ratio=0.03):
+    """Regroupe les segments dont les bboxes se touchent après expansion.
+
+    Union-find : deux segments dont les bboxes (+ marge) se chevauchent
+    sont fusionnés. Insensible à la taille du texte, contrairement à
+    DBSCAN sur les centres.
+
+    Args:
+        segments: list de dict avec "bbox_px" [x, y, w, h]
+        w_img, h_img: dimensions de l'image
+        marge_ratio: marge d'expansion en fraction de largeur image
+
+    Returns:
+        list de list[int] — groupes d'indices de segments
+    """
+    n = len(segments)
+    if n == 0:
+        return []
+
+    marge = int(w_img * marge_ratio)
+
+    # Expandre chaque bbox en (x1, y1, x2, y2)
+    rects = []
+    for s in segments:
+        x, y, w, h = s["bbox_px"]
+        rects.append((
+            max(0, x - marge),
+            max(0, y - marge),
+            min(w_img, x + w + marge),
+            min(h_img, y + h + marge),
+        ))
+
+    # Union-Find avec path compression
+    parent = list(range(n))
+
+    def find(i):
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    def union(a, b):
+        ra, rb = find(a), find(b)
+        if ra != rb:
+            parent[ra] = rb
+
+    # Fusionner les paires qui se chevauchent (O(n²), n < 50 typiquement)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if (rects[i][0] < rects[j][2] and rects[j][0] < rects[i][2]
+                    and rects[i][1] < rects[j][3] and rects[j][1] < rects[i][3]):
+                union(i, j)
+
+    # Regrouper par racine
+    groupes: dict[int, list[int]] = {}
+    for i in range(n):
+        groupes.setdefault(find(i), []).append(i)
+
+    return list(groupes.values())
+
+
+def _enveloppe_convexe_groupe(segments, member_indices, pad=8):
+    """Calcule l'enveloppe convexe des bbox d'un groupe de segments.
+
+    Retourne (hull_points, bbox_englobante) où :
+    - hull_points: np.ndarray de points (N, 1, 2) — enveloppe convexe
+    - bbox_englobante: (x, y, w, h) du rectangle englobant l'enveloppe
+    """
+    # Collecter tous les coins de toutes les bbox du groupe
+    coins = []
+    for idx in member_indices:
+        x, y, w, h = segments[idx]["bbox_px"]
+        coins.extend([
+            [x - pad, y - pad],
+            [x + w + pad, y - pad],
+            [x + w + pad, y + h + pad],
+            [x - pad, y + h + pad],
+        ])
+
+    pts = np.array(coins, dtype=np.int32)
+    hull = cv2.convexHull(pts)
+
+    # Bbox englobante de l'enveloppe
+    hx, hy, hw, hh = cv2.boundingRect(hull)
+    return hull, (hx, hy, hw, hh)
+
+
+# ─────────────────────────────────────────────────────────────────
 # Stage 1 : Détection + DBSCAN
 # ─────────────────────────────────────────────────────────────────
 
@@ -262,33 +353,23 @@ class _DetectionTask(QThread):
                 self.termine.emit(self._image, [])
                 return
 
-            # DBSCAN clustering
-            centres = np.array([[s["cx"], s["cy"]] for s in segments],
-                               dtype=float)
-            centres_scaled = centres.copy()
-            centres_scaled[:, 1] *= self._y_stretch
+            # ── Clustering par chevauchement de bbox ─────────────
+            groupes = _cluster_bbox_overlap(
+                segments, w_img, h_img, marge_ratio=self._eps)
 
-            eps_px = w_img * self._eps
-            labels = DBSCAN(eps=eps_px, min_samples=1).fit_predict(
-                centres_scaled)
-
-            # Construire les bulles
-            pad = 12
             bulles = []
-            for cluster_id in range(max(labels) + 1):
-                member_mask = labels == cluster_id
-                indices = np.where(member_mask)[0]
-                membres = [segments[i] for i in indices]
+            for cluster_id, member_indices in enumerate(groupes):
+                membres = [segments[i] for i in member_indices]
 
-                x1 = min(m["bbox_px"][0] for m in membres)
-                y1 = min(m["bbox_px"][1] for m in membres)
-                x2 = max(m["bbox_px"][0] + m["bbox_px"][2] for m in membres)
-                y2 = max(m["bbox_px"][1] + m["bbox_px"][3] for m in membres)
+                # Enveloppe convexe des bbox du groupe
+                hull, (bx, by, bw, bh) = _enveloppe_convexe_groupe(
+                    segments, member_indices, pad=12)
 
-                bx = max(0, x1 - pad)
-                by = max(0, y1 - pad)
-                bw = min(w_img, x2 + pad) - bx
-                bh = min(h_img, y2 + pad) - by
+                # Clamp aux limites de l'image
+                bx = max(0, bx)
+                by = max(0, by)
+                bw = min(w_img - bx, bw)
+                bh = min(h_img - by, bh)
 
                 bulles.append(BulleDetectee(
                     id=cluster_id,
@@ -300,6 +381,7 @@ class _DetectionTask(QThread):
                         round(bh / h_img * 100, 2),
                     ],
                     nb_segments=len(membres),
+                    hull=hull,
                 ))
 
             # Trier par position de lecture (haut→bas, gauche→droite)
@@ -307,7 +389,8 @@ class _DetectionTask(QThread):
             for i, b in enumerate(bulles):
                 b.id = i
 
-            print(f"[BBox] {len(bulles)} bulles détectées")
+            print(f"[BBox] {len(segments)} segments → {len(bulles)} bulles "
+                  f"(overlap marge={self._eps})")
             self.termine.emit(self._image, bulles)
 
         except Exception as e:
@@ -465,18 +548,20 @@ class BBoxWorker(QObject):
     @Slot(np.ndarray)
     def _on_capture(self, image: np.ndarray) -> None:
         from core.event_bus import bus
+        from PySide6.QtWidgets import QApplication
         self.reset()
 
         h, w = image.shape[:2]
         print(f"[BBox] Image reçue: {w}×{h}")
 
         bus().chargement_en_cours.emit(True)
+        bus().status_message.emit(f"Image reçue ({w}×{h}) — super-résolution…")
+        QApplication.processEvents()  # Peindre le message immédiatement
 
         # Stocker l'image native pour la détection ET l'affichage
         self._image = image
 
         # ── Étape 0 : Super-résolution RealSR ×4 (pour l'OCR uniquement) ──
-        bus().status_message.emit("Super-résolution RealSR (×4)…")
         upscaled = _realsr_upscale(image, scale=4)
         if upscaled is not None:
             h2, w2 = upscaled.shape[:2]
@@ -490,7 +575,8 @@ class BBoxWorker(QObject):
 
         # ── Étape 1 : Détection Paddle sur l'image NATIVE ──
         # Les bbox seront dans l'espace natif → bon eps, bon clustering
-        bus().status_message.emit("Détection des bulles (Paddle+DBSCAN)…")
+        bus().status_message.emit("Détection des bulles (Paddle)…")
+        QApplication.processEvents()
 
         self._detection_task = _DetectionTask(
             self._image, detector="paddle", eps=0.05,
@@ -528,7 +614,16 @@ class BBoxWorker(QObject):
             s = self._hires_scale
             hx, hy = int(bx * s), int(by * s)
             hw, hh = int(bw * s), int(bh * s)
-            crop = self._image_hires[hy:hy + hh, hx:hx + hw]
+            crop = self._image_hires[hy:hy + hh, hx:hx + hw].copy()
+
+            # Masquer les pixels hors de l'enveloppe convexe (fond blanc)
+            if bulle.hull is not None:
+                hull_local = bulle.hull.copy()
+                hull_local[:, :, 0] = ((hull_local[:, :, 0] - bx) * s).astype(int)
+                hull_local[:, :, 1] = ((hull_local[:, :, 1] - by) * s).astype(int)
+                mask = np.zeros(crop.shape[:2], dtype=np.uint8)
+                cv2.fillConvexPoly(mask, hull_local, 255)
+                crop[mask == 0] = 255  # Fond blanc hors enveloppe
 
             task = _BulleOcrTask(bid, crop, parent=self)
             task.termine.connect(self._on_ocr_bulle_ok)
